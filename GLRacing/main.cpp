@@ -49,6 +49,8 @@ void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, i
 
 vector<GLfloat> vertices;
 
+
+// Cube Used for initial testing instead of the kart
 GLfloat cube[] = {
 	-0.5f, -0.5f, -0.5f, 
 	0.5f, -0.5f, -0.5f,  
