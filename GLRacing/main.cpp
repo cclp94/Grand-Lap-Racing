@@ -40,60 +40,13 @@ glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 GLuint VBO, VAO, EBO;
 
 GLfloat point_size = 3.0f;
+kart Kart;
 
 bool initialize();
 bool cleanUp();
 GLuint loadShaders(std::string vertex_shader_path, std::string fragment_shader_path);
 
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
-vector<GLfloat> vertices;
-
-
-// Cube Used for initial testing instead of the kart
-GLfloat cube[] = {
-	-0.5f, -0.5f, -0.5f, 
-	0.5f, -0.5f, -0.5f,  
-	0.5f,  0.5f, -0.5f,  
-	0.5f,  0.5f, -0.5f,  
-	-0.5f,  0.5f, -0.5f, 
-	-0.5f, -0.5f, -0.5f, 
-
-	-0.5f, -0.5f,  0.5f,  
-	0.5f, -0.5f,  0.5f,  
-	0.5f,  0.5f,  0.5f,  
-	0.5f,  0.5f,  0.5f,  
-	-0.5f,  0.5f,  0.5f,  
-	-0.5f, -0.5f,  0.5f,  
-
-	-0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, -0.5f,  0.5f,
-	-0.5f,  0.5f,  0.5f,
-
-	0.5f,  0.5f,  0.5f, 
-	0.5f,  0.5f, -0.5f, 
-	0.5f, -0.5f, -0.5f, 
-	0.5f, -0.5f, -0.5f, 
-	0.5f, -0.5f,  0.5f, 
-	0.5f,  0.5f,  0.5f, 
-
-	-0.5f, -0.5f, -0.5f,
-	0.5f, -0.5f, -0.5f, 
-	0.5f, -0.5f,  0.5f, 
-	0.5f, -0.5f,  0.5f, 
-	-0.5f, -0.5f,  0.5f,
-	-0.5f, -0.5f, -0.5f,
-
-	-0.5f,  0.5f, -0.5f,
-	0.5f,  0.5f, -0.5f, 
-	0.5f,  0.5f,  0.5f, 
-	0.5f,  0.5f,  0.5f, 
-	-0.5f,  0.5f,  0.5f,
-	-0.5f,  0.5f, -0.5f
-};
 
 
 int main() {
@@ -111,13 +64,8 @@ int main() {
 	// The following commands will talk about our 'vertexbuffer' buffer
 	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
 
-	glGenBuffers(1, &EBO);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
-	//kart kart;
-
 	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cube), cube, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, Kart.getModelsize(), Kart.getModelVertices(), GL_STATIC_DRAW);
 	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GL_FLOAT)*indices.size(), &indices[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(
 		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
@@ -141,12 +89,9 @@ int main() {
 		glUseProgram(shader_program);
 
 
-		//GLfloat radius = 10.0f;
-		//GLfloat camX = sin(glfwGetTime()) * radius;
-		//GLfloat camZ = cos(glfwGetTime()) * radius;
 		view_matrix = glm::lookAt(cameraPos, glm::vec3(0.0, 0.0, 0.0), cameraUp);
 
-		//view_matrix = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+
 		proj_matrix = glm::perspective(45.0f, (GLfloat)800 / (GLfloat)600, 0.1f, 100.0f);
 
 
@@ -156,6 +101,10 @@ int main() {
 		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
 
 		glBindVertexArray(VAO);
+
+		Kart.update();
+
+		model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -Kart.getSpeed()));
 		// Draw the triangle
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 
@@ -332,10 +281,10 @@ GLuint loadShaders(std::string vertex_shader_path, std::string fragment_shader_p
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	switch (key) {
 	case GLFW_KEY_DOWN:
-		model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, 0.05));
+		Kart.deaccelerate();
 		break;
 	case GLFW_KEY_UP:
-		model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -0.05));
+		Kart.accelerate();
 		break;
 	case GLFW_KEY_LEFT:
 		model_matrix = glm::rotate(model_matrix, 0.05f, glm::vec3(0.0, 1.0, 0.0));

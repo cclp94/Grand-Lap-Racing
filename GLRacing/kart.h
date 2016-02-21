@@ -8,7 +8,17 @@ using namespace std;
 
 class kart {
 public:
-	vector <GLfloat> vertices;
-	int size;
 	kart();
+	float getSpeed();
+	void update();
+	void accelerate();
+	void deaccelerate();
+	float* getModelVertices();
+	GLuint getModelsize();
+private:
+	float maxSpeed;
+	float speed;
+	vector <GLfloat> vertices;
+	float acceleration;
+	void getModel();
 };
