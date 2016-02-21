@@ -4,7 +4,7 @@
 
 kart::kart() {
 	maxSpeed = 100.0f;
-	acceleration = 0.5f;
+	acceleration = 0.3f;
 	speed = 0.0f;
 	getModel();
 }
@@ -31,7 +31,7 @@ void kart::deaccelerate() {
 		speed = -100;
 	}
 	else {
-		speed -= acceleration;
+		speed -= acceleration * 2;		// Breaking faster than acceleration
 	}
 }
 

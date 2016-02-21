@@ -280,16 +280,16 @@ GLuint loadShaders(std::string vertex_shader_path, std::string fragment_shader_p
 
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	switch (key) {
-	case GLFW_KEY_DOWN:
+	case GLFW_KEY_S:
 		Kart.deaccelerate();
 		break;
-	case GLFW_KEY_UP:
+	case GLFW_KEY_W:
 		Kart.accelerate();
 		break;
-	case GLFW_KEY_LEFT:
+	case GLFW_KEY_A:
 		model_matrix = glm::rotate(model_matrix, 0.05f, glm::vec3(0.0, 1.0, 0.0));
 		break;
-	case GLFW_KEY_RIGHT:
+	case GLFW_KEY_D:
 		model_matrix = glm::rotate(model_matrix, -0.05f, glm::vec3(0.0, 1.0, 0.0));
 		break;
 	}
