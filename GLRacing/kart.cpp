@@ -4,9 +4,18 @@
 
 kart::kart() {
 	maxSpeed = 100.0f;
-	acceleration = 0.3f;
+	acceleration = 0.2f;
 	speed = 0.0f;
+	isAccelarating = false;
 	getModel();
+}
+
+void kart::notAccelerating() {
+	isAccelarating = false;
+}
+
+void kart::accelerating() {
+	isAccelarating = true;
 }
 
 float*  kart::getModelVertices() {
@@ -18,6 +27,8 @@ GLuint kart::getModelsize() {
 }
 
 void kart::accelerate() {
+	accelerating();
+	isReverse = false;
 	if (speed == maxSpeed) {
 		speed = 100;
 	}
@@ -27,6 +38,8 @@ void kart::accelerate() {
 }
 
 void kart::deaccelerate() {
+	accelerating();
+	isReverse = true;
 	if (speed == -maxSpeed) {
 		speed = -100;
 	}
@@ -40,10 +53,19 @@ float kart::getSpeed() {
 }
 
 void kart::update() {
-	if (speed < 0)
-		speed += 0.05;
-	else if(speed > 0)
-		speed -= 0.05;
+	if (!isAccelarating) {
+		if (speed < 0)
+			speed += 0.1;
+		else if (speed > 0)
+			speed -= 0.1;
+	}
+	else {
+		if (!isReverse) {
+			accelerate();
+		}
+		else
+			deaccelerate();
+	}
 }
 
 void kart::getModel() {

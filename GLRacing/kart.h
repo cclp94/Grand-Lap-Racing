@@ -15,10 +15,14 @@ public:
 	void deaccelerate();
 	float* getModelVertices();
 	GLuint getModelsize();
+	void notAccelerating();
+	void accelerating();
 private:
 	float maxSpeed;
 	float speed;
 	vector <GLfloat> vertices;
 	float acceleration;
 	void getModel();
+	bool isAccelarating;
+	bool isReverse;
 };
