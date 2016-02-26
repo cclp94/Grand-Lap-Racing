@@ -2,27 +2,28 @@
 
 #include <iostream>
 #include <vector>
-#include <GLFW\glfw3.h>
+
+#include "Model.h"
 
 using namespace std;
 
-class kart {
+class kart : public Model{
 public:
 	kart();
 	float getSpeed();
 	void update();
 	void accelerate();
 	void deaccelerate();
-	float* getModelVertices();
-	GLuint getModelsize();
 	void notAccelerating();
 	void accelerating();
+	void  draw(GLuint color_id);
+	glm::vec3  getColor();
 private:
 	float maxSpeed;
 	float speed;
-	vector <GLfloat> vertices;
 	float acceleration;
 	void getModel();
 	bool isAccelarating;
 	bool isReverse;
+	glm::vec3 color;
 };

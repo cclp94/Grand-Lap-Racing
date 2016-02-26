@@ -15,6 +15,8 @@
 #include <vector>
 #include <cctype>
 
+#include "Model.h"
+#include "Plane.h"
 #include "kart.h"
 #include "Shader.h"
 
@@ -27,10 +29,13 @@ GLuint shader_program = 0;
 GLuint view_matrix_id = 0;
 GLuint model_matrix_id = 0;
 GLuint proj_matrix_id = 0;
+GLuint vertex_color_id;
 
 glm::mat4 proj_matrix;
 glm::mat4 view_matrix;
 glm::mat4 model_matrix;
+
+glm::vec3 vertex_color;
 
 
 //Camera
@@ -41,7 +46,7 @@ glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 GLuint VBO, VAO, EBO;
 
 GLfloat point_size = 3.0f;
-kart Kart;
+kart *Kart;
 
 bool initialize();
 bool cleanUp();
@@ -52,32 +57,11 @@ void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, i
 
 int main() {
 	initialize();
+	Plane plane;
+	Kart = new kart();
 
 	///Load the shaders
 	shader_program = loadShaders("vertexShader1.vs", "fragmentShader1.fs");
-
-	// This will identify our vertex buffer
-	GLuint vertexbuffer;
-
-	// Generate 1 buffer, put the resulting identifier in vertexbuffer
-	glGenBuffers(1, &vertexbuffer);
-
-	// The following commands will talk about our 'vertexbuffer' buffer
-	glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
-
-	// Give our vertices to OpenGL.
-	glBufferData(GL_ARRAY_BUFFER, Kart.getModelsize(), Kart.getModelVertices(), GL_STATIC_DRAW);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GL_FLOAT)*indices.size(), &indices[0], GL_STATIC_DRAW);
-	glVertexAttribPointer(
-		0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-		3,                  // size
-		GL_FLOAT,           // type
-		GL_FALSE,           // normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-		);
-	glEnableVertexAttribArray(0);
-	glBindVertexArray(0);
 
 
 
@@ -89,27 +73,30 @@ int main() {
 
 		glUseProgram(shader_program);
 
-
 		view_matrix = glm::lookAt(cameraPos, glm::vec3(0.0, 0.0, 0.0), cameraUp);
 
 
 		proj_matrix = glm::perspective(45.0f, (GLfloat)800 / (GLfloat)600, 0.1f, 100.0f);
+		glm::mat4 savedModel = model_matrix;
 
+		model_matrix = glm::mat4();
 
+		glm::vec3 color = plane.getColor();
+
+		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
+		plane.draw(vertex_color_id);
+
+		model_matrix = savedModel;
 		//Pass the values of the three matrices to the shaders
 		glUniformMatrix4fv(proj_matrix_id, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		glUniformMatrix4fv(view_matrix_id, 1, GL_FALSE, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
 
-		glBindVertexArray(VAO);
-
-		Kart.update();
-
-		model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -Kart.getSpeed()));
-		// Draw the triangle
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		glBindVertexArray(0);
+		
+		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
+		Kart->update();
+		model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -Kart->getSpeed()));
+		Kart->draw(vertex_color_id);
 
 		// update other events like input handling
 		glfwPollEvents();
@@ -204,15 +191,17 @@ GLuint loadShaders(std::string vertex_shader_path, std::string fragment_shader_p
 	model_matrix_id = glGetUniformLocation(ProgramID, "model_matrix");
 	proj_matrix_id = glGetUniformLocation(ProgramID, "proj_matrix");
 
+	vertex_color_id = glGetUniformLocation(ProgramID, "vertex_color");
+
 	return ProgramID;
 }
 
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (key == GLFW_KEY_S) {
-		Kart.deaccelerate();
+		Kart->deaccelerate();
 	}
 	if (key == GLFW_KEY_W) {
-		Kart.accelerate();
+		Kart->accelerate();
 	}
 	if (key == GLFW_KEY_A) {
 		model_matrix = glm::rotate(model_matrix, 0.05f, glm::vec3(0.0, 1.0, 0.0));
@@ -222,6 +211,6 @@ void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, i
 	}
 
 	if ((key == GLFW_KEY_S || key == GLFW_KEY_W) && action == GLFW_RELEASE) {
-		Kart.notAccelerating();
+		Kart->notAccelerating();
 	}
 }

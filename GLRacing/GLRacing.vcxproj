@@ -124,10 +124,14 @@
   <ItemGroup>
     <ClCompile Include="kart.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="kart.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="Shader.h" />
   </ItemGroup>
   <ItemGroup>
