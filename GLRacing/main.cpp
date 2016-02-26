@@ -22,6 +22,8 @@
 
 using namespace std;
 
+GLuint width = 800, height = 600;
+
 GLFWwindow* window = 0x00;
 
 GLuint shader_program = 0;
@@ -37,9 +39,8 @@ glm::mat4 model_matrix;
 
 glm::vec3 vertex_color;
 
-
 //Camera
-glm::vec3 cameraPos = glm::vec3(0.0f, 0.5f, 3.0f);
+glm::vec3 cameraPos = glm::vec3(0.0f, 1.5f, 3.0f);
 glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
 glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
@@ -53,17 +54,15 @@ bool cleanUp();
 GLuint loadShaders(std::string vertex_shader_path, std::string fragment_shader_path);
 
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 
 
 int main() {
 	initialize();
 	Plane plane;
 	Kart = new kart();
-
 	///Load the shaders
 	shader_program = loadShaders("vertexShader1.vs", "fragmentShader1.fs");
-
-
 
 	while (!glfwWindowShouldClose(window)) {
 		// wipe the drawing surface clear
@@ -74,9 +73,7 @@ int main() {
 		glUseProgram(shader_program);
 
 		view_matrix = glm::lookAt(cameraPos, glm::vec3(0.0, 0.0, 0.0), cameraUp);
-
-
-		proj_matrix = glm::perspective(45.0f, (GLfloat)800 / (GLfloat)600, 0.1f, 100.0f);
+		proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 		glm::mat4 savedModel = model_matrix;
 
 		model_matrix = glm::mat4();
@@ -103,10 +100,8 @@ int main() {
 		// put the stuff we've been drawing onto the display
 		glfwSwapBuffers(window);
 	}
-
 	cleanUp();
 	return 0;
-
 }
 
 
@@ -119,7 +114,15 @@ bool initialize() {
 
 	/// Create a window of size 640x480 and with title "Lecture 2: First Triangle"
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
-	window = glfwCreateWindow(800, 600, "Grand Lap Racing", NULL, NULL);
+
+	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+	glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+	window = glfwCreateWindow(mode->width, mode->height, "Grand Lap Racing", NULL, NULL);
+
 	if (!window) {
 		fprintf(stderr, "ERROR: could not open window with GLFW3\n");
 		glfwTerminate();
@@ -132,6 +135,9 @@ bool initialize() {
 
 	//Event Callbacks
 	glfwSetKeyCallback(window, keyPressedCallback);
+
+	//Window Resize
+	glfwSetWindowSizeCallback(window, windowResizeCallback);
 
 	/// Initialize GLEW extension handler
 	glewExperimental = GL_TRUE;	///Needed to get the latest version of OpenGL
@@ -213,4 +219,11 @@ void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, i
 	if ((key == GLFW_KEY_S || key == GLFW_KEY_W) && action == GLFW_RELEASE) {
 		Kart->notAccelerating();
 	}
+}
+
+void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight) {
+	width = newWidth;
+	height = newHeight;
+	glViewport(0, 0, width, height);
+
 }

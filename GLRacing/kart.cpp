@@ -5,7 +5,7 @@
 kart::kart() : Model(){
 	color = glm::vec3(1.0, 0.1, 0.2);
 	maxSpeed = 100.0f;
-	acceleration = 0.2f;
+	acceleration = 0.05f;
 	speed = 0.0f;
 	isAccelarating = false;
 	getModel();
