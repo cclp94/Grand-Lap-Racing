@@ -63,7 +63,7 @@ int main() {
 	Kart = new kart();
 	///Load the shaders
 	shader_program = loadShaders("vertexShader1.vs", "fragmentShader1.fs");
-
+	
 	while (!glfwWindowShouldClose(window)) {
 		// wipe the drawing surface clear
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -72,7 +72,7 @@ int main() {
 
 		glUseProgram(shader_program);
 
-		view_matrix = glm::lookAt(cameraPos, glm::vec3(0.0, 0.0, 0.0), cameraUp);
+		
 		proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 		glm::mat4 savedModel = model_matrix;
 
@@ -86,13 +86,13 @@ int main() {
 		model_matrix = savedModel;
 		//Pass the values of the three matrices to the shaders
 		glUniformMatrix4fv(proj_matrix_id, 1, GL_FALSE, glm::value_ptr(proj_matrix));
-		glUniformMatrix4fv(view_matrix_id, 1, GL_FALSE, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
-
 		
 		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
 		Kart->update();
-		model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -Kart->getSpeed()));
+		model_matrix = Kart->move() * model_matrix;
+		view_matrix = Kart->getCameraView(view_matrix);
+		glUniformMatrix4fv(view_matrix_id, 1, GL_FALSE, glm::value_ptr(view_matrix));
+
 		Kart->draw(vertex_color_id);
 
 		// update other events like input handling
@@ -205,20 +205,23 @@ GLuint loadShaders(std::string vertex_shader_path, std::string fragment_shader_p
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (key == GLFW_KEY_S) {
 		Kart->deaccelerate();
-	}
-	if (key == GLFW_KEY_W) {
+	} else if (key == GLFW_KEY_W) {
 		Kart->accelerate();
-	}
-	if (key == GLFW_KEY_A) {
-		model_matrix = glm::rotate(model_matrix, 0.05f, glm::vec3(0.0, 1.0, 0.0));
-	}
-	if(key == GLFW_KEY_D){
-		model_matrix = glm::rotate(model_matrix, -0.05f, glm::vec3(0.0, 1.0, 0.0));
+	}else if (key == GLFW_KEY_A) {
+		model_matrix = Kart->turn(0.05) * model_matrix;
+	}else if(key == GLFW_KEY_D){
+		model_matrix = Kart->turn(-0.05) * model_matrix;
+	}else if (key == GLFW_KEY_ESCAPE) {
+		glfwWindowShouldClose(window);
+		cleanUp();
+		exit(1);
 	}
 
 	if ((key == GLFW_KEY_S || key == GLFW_KEY_W) && action == GLFW_RELEASE) {
 		Kart->notAccelerating();
 	}
+
+	
 }
 
 void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight) {
