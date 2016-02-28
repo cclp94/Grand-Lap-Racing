@@ -23,21 +23,15 @@ kart::kart() : Model(){
 
 glm::mat4 kart::move(glm::mat4 model_matrix) {
 	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -getSpeed()));
-	glm::mat4 trans = glm::translate(glm::mat4(), glm::vec3(0.0, 0.0, -getSpeed()));
-	position = trans * position;
-	camera->cameraPos = glm::vec3(trans * glm::vec4(camera->cameraPos, 1.0));
+	position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
+	camera->cameraPos = glm::vec3(position.x, position.y + 1, position.z + 3.0);
 	return model_matrix;
 }
 
 glm::mat4 kart::turn(float angle, glm::mat4 model_matrix) {
 	model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
-
-	//position = glm::rotate(position, angle, glm::vec3(0.0, 1.0, 0.0));
-	//trans = glm::translate(trans, glm::vec3(0.0, 0.0, 0.0));
-	//trans = glm::translate(trans, glm::vec3(position));
-
-	
-	//camera->cameraPos = glm::vec3(-position.x, position.y + 1, position.z + 3.0);
+	position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
+	camera->cameraPos = glm::vec3(position.x, position.y + 1, position.z + 3.0);
 	return model_matrix;
 }
 
