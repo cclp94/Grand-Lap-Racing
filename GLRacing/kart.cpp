@@ -21,22 +21,28 @@ kart::kart() : Model(){
 	camera->cameraPos = glm::vec3(position.x, position.y + 1, position.z + 3.0);
 }
 
-glm::mat4 kart::move() {
+glm::mat4 kart::move(glm::mat4 model_matrix) {
+	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -getSpeed()));
 	glm::mat4 trans = glm::translate(glm::mat4(), glm::vec3(0.0, 0.0, -getSpeed()));
 	position = trans * position;
 	camera->cameraPos = glm::vec3(trans * glm::vec4(camera->cameraPos, 1.0));
-	return trans;
+	return model_matrix;
 }
 
-glm::mat4 kart::turn(float angle) {
-	glm::mat4 trans = glm::rotate(glm::mat4(), angle, glm::vec3(0.0, 1.0, 0.0));
-	position = trans * position;
-	camera->cameraPos = glm::vec3(trans * glm::vec4(camera->cameraPos, 1.0));
-	return trans;
+glm::mat4 kart::turn(float angle, glm::mat4 model_matrix) {
+	model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
+
+	//position = glm::rotate(position, angle, glm::vec3(0.0, 1.0, 0.0));
+	//trans = glm::translate(trans, glm::vec3(0.0, 0.0, 0.0));
+	//trans = glm::translate(trans, glm::vec3(position));
+
+	
+	//camera->cameraPos = glm::vec3(-position.x, position.y + 1, position.z + 3.0);
+	return model_matrix;
 }
 
-glm::mat4 kart::getCameraView(glm::mat4 view_matrix) {
-	view_matrix = glm::lookAt(camera->cameraPos,glm::vec3(position),camera->cameraUp);
+glm::mat4 kart::getCameraView() {
+	glm::mat4 view_matrix = glm::lookAt(camera->cameraPos,glm::vec3(position),camera->cameraUp);
 	return view_matrix;
 }
 

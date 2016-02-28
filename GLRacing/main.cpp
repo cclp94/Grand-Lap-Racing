@@ -89,8 +89,8 @@ int main() {
 		
 		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
 		Kart->update();
-		model_matrix = Kart->move() * model_matrix;
-		view_matrix = Kart->getCameraView(view_matrix);
+		model_matrix = Kart->move(model_matrix);
+		view_matrix = Kart->getCameraView();
 		glUniformMatrix4fv(view_matrix_id, 1, GL_FALSE, glm::value_ptr(view_matrix));
 
 		Kart->draw(vertex_color_id);
@@ -208,9 +208,9 @@ void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, i
 	} else if (key == GLFW_KEY_W) {
 		Kart->accelerate();
 	}else if (key == GLFW_KEY_A) {
-		model_matrix = Kart->turn(0.05) * model_matrix;
+		model_matrix = Kart->turn(0.05, model_matrix);
 	}else if(key == GLFW_KEY_D){
-		model_matrix = Kart->turn(-0.05) * model_matrix;
+		model_matrix = Kart->turn(-0.05, model_matrix) ;
 	}else if (key == GLFW_KEY_ESCAPE) {
 		glfwWindowShouldClose(window);
 		cleanUp();
