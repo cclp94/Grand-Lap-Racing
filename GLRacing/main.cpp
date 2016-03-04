@@ -39,12 +39,6 @@ glm::mat4 model_matrix;
 
 glm::vec3 vertex_color;
 
-//Camera
-glm::vec3 cameraPos = glm::vec3(0.0f, 1.5f, 3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-GLuint VBO, VAO, EBO;
 
 GLfloat point_size = 3.0f;
 kart *Kart;
@@ -161,10 +155,6 @@ destoys application at closure
 */
 bool cleanUp() {
 	glDisableVertexAttribArray(0);
-	//Properly de-allocate all resources once they've outlived their purpose
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
 
 	// Close GL context and any other GLFW resources
 	glfwTerminate();
