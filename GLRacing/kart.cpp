@@ -11,7 +11,7 @@ kart::~kart() {
 kart::kart() : Model(){
 	color = glm::vec3(1.0, 0.1, 0.2);
 	position = glm::vec4(0.0, 0.0, 0.0, 1.0);
-	maxSpeed = 50.0f;
+	maxSpeed = 10.0f;
 	acceleration = 0.03f;
 	speed = 0.0f;
 	isAccelarating = false;
