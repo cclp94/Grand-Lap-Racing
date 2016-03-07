@@ -110,12 +110,12 @@ void kart::getModel() {
 
 		vertices.push_back(0.5);	vertices.push_back(0.5);	vertices.push_back(0.5);
 		vertices.push_back(-0.5f);	vertices.push_back(0.5);	vertices.push_back(0.5);
-		vertices.push_back(0.5);	vertices.push_back(0.5);	vertices.push_back(-0.5f);
-		vertices.push_back(-0.5f);	vertices.push_back(0.5);	vertices.push_back(-0.5f);
+		vertices.push_back(0.3);	vertices.push_back(0.3);	vertices.push_back(-0.5f);
+		vertices.push_back(-0.3f);	vertices.push_back(0.3);	vertices.push_back(-0.5f);
 		vertices.push_back(0.5);	vertices.push_back(0.0f);	vertices.push_back(0.5);
 		vertices.push_back(-0.5f);	vertices.push_back(0.0f);	vertices.push_back(0.5);
-		vertices.push_back(-0.5f);	vertices.push_back(0.0f);	vertices.push_back(-0.5f);
-		vertices.push_back(0.5);	vertices.push_back(0.0f);	vertices.push_back(-0.5f);
+		vertices.push_back(-0.3f);	vertices.push_back(0.1f);	vertices.push_back(-0.5f);
+		vertices.push_back(0.3);	vertices.push_back(0.1f);	vertices.push_back(-0.5f);
 
 
 		indices.push_back(3); indices.push_back(2);indices.push_back(6);

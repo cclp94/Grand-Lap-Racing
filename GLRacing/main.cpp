@@ -18,6 +18,7 @@
 #include "Model.h"
 #include "Plane.h"
 #include "kart.h"
+#include "Road.h"
 #include "Shader.h"
 
 using namespace std;
@@ -54,7 +55,9 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 int main() {
 	initialize();
 	Plane plane;
+	Road road;
 	Kart = new kart();
+	//model_matrix = glm::translate(model_matrix, glm::vec3(-50.0, 0.0, 0.0));
 	///Load the shaders
 	shader_program = loadShaders("vertexShader1.vs", "fragmentShader1.fs");
 	
@@ -76,7 +79,7 @@ int main() {
 
 		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
 		plane.draw(vertex_color_id);
-
+		road.draw(vertex_color_id);
 		model_matrix = savedModel;
 		//Pass the values of the three matrices to the shaders
 		glUniformMatrix4fv(proj_matrix_id, 1, GL_FALSE, glm::value_ptr(proj_matrix));
