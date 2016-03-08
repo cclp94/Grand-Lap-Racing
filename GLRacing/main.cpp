@@ -57,7 +57,7 @@ int main() {
 	Plane plane;
 	Road road;
 	Kart = new kart();
-	//model_matrix = glm::translate(model_matrix, glm::vec3(-50.0, 0.0, 0.0));
+	model_matrix = glm::translate(model_matrix, glm::vec3(-50.0, 0.0, 0.0));
 	///Load the shaders
 	shader_program = loadShaders("vertexShader1.vs", "fragmentShader1.fs");
 	

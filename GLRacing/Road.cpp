@@ -15,7 +15,7 @@ Road::~Road()
 }
 
 void Road::getModel() {
-	float y = 0.00011;
+	float y = 0.000000000011;
 	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.0);
 	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.5);
 	vertices.push_back(-0.2); vertices.push_back(y); vertices.push_back(0.8);
@@ -42,7 +42,7 @@ void Road::getModel() {
 		glm::vec3 p2 = 0.5f * (p1 - glm::vec3(vertices[i * 3 - 3], vertices[i * 3 - 2], vertices[i * 3 - 1]));
 		glm::vec3 p3 = 0.5f * (glm::vec3(vertices[i * 3 + 6], vertices[i * 3 + 7], vertices[i * 3 + 8]) - p0);
 		// Get spline
-		subdivide(0, 1, 0.02, p0, p1, p2, p3);
+		subdivide(0, 1, 0.01, p0, p1, p2, p3);
 	}
 	vertices = spline;
 	spline.clear();
@@ -58,25 +58,25 @@ void Road::getModel() {
 		// sure that we do not exceed limits of path[i] array.
 		if (i < vertices.size() - 1)
 		{
-			// Normal calculation: nx = by - ay, ny = -(bx - ax)
-			normal = glm::vec3(
-				-(path2.z - path.z), 0.0f, path2.x - path.x
-				);
+			normal = glm::cross(path2 - path, glm::vec3(0.0, 1.0, 0.0));
+			normal = glm::normalize(normal);
 		}
 
 		// Store left extrusion (calculated normal + point position
-		glm::vec3 p = normal + path;
+		glm::vec3 p = glm::vec3(glm::translate(glm::mat4(), normal/20) *
+			glm::vec4(path, 1.0));
 		spline.push_back(p.x); spline.push_back(p.y); spline.push_back(p.z);
 		// Store right extrusion (flipped calculated normal + point position)
-		p = -normal + path;
+		p = glm::vec3(glm::translate(glm::mat4(), -normal/20) *
+			glm::vec4(path, 1.0));
 		spline.push_back(p.x); spline.push_back(p.y); spline.push_back(p.z);
 	}
 	vertices = spline;
 
-	//for (int i = 0; i < vertices.size(); i++)
-	//{
-	//	vertices[i] *= 100;
-	//}
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		vertices[i] *= 100;
+	}
 
 }
 

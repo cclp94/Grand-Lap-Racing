@@ -11,7 +11,7 @@ kart::~kart() {
 kart::kart() : Model(){
 	color = glm::vec3(1.0, 0.1, 0.2);
 	position = glm::vec4(0.0, 0.0, 0.0, 1.0);
-	maxSpeed = 10.0f;
+	maxSpeed = 3.0f;
 	acceleration = 0.03f;
 	speed = 0.0f;
 	isAccelarating = false;
@@ -23,15 +23,23 @@ kart::kart() : Model(){
 
 glm::mat4 kart::move(glm::mat4 model_matrix) {
 	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -getSpeed()));
+	glm::vec4 previousPos = position;
 	position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
-	camera->cameraPos = glm::vec3(position.x, position.y + 1, position.z + 3.0);
+	glm::mat4 trans = glm::translate(glm::mat4(),
+		glm::vec3(position.x - previousPos.x, position.y - previousPos.y, position.z - previousPos.z));
+		camera->cameraPos = glm::vec3(trans * glm::vec4(camera->cameraPos, 1.0));
+		camera->cameraPos = camera->cameraPos + glm::vec3(3 * glm::sin(camera->theta)/2, 0, 0);
+		camera->theta = 0;
+
 	return model_matrix;
 }
 
 glm::mat4 kart::turn(float angle, glm::mat4 model_matrix) {
-	model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
-	position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
-	camera->cameraPos = glm::vec3(position.x, position.y + 1, position.z + 3.0);
+	if (speed > 0) {
+		model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
+		position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
+		camera->theta = angle;
+	}
 	return model_matrix;
 }
 
@@ -82,6 +90,8 @@ void kart::update() {
 		else if (speed > 0) {
 			speed -= 0.1;
 		}
+		if (speed < 0.1 && speed > -0.1)
+			speed = 0;
 	}
 	else {
 		if (!isReverse) {

@@ -30,14 +30,14 @@ void Plane::draw(GLuint color_id) {
 
 void Plane::getModel() {
 
-	vertices.push_back(11.5);	vertices.push_back(-0.01);	vertices.push_back(100.5);
-	vertices.push_back(-11.0f);	vertices.push_back(-0.01);	vertices.push_back(-100.5);
-	vertices.push_back(11.5);	vertices.push_back(-0.01);	vertices.push_back(100.0f);
-	vertices.push_back(-11.0f);	vertices.push_back(-0.01);	vertices.push_back(100.0f);
-	vertices.push_back(11.5);	vertices.push_back(-0.03f);	vertices.push_back(-100.5);
-	vertices.push_back(-11.0f);	vertices.push_back(-0.03f);	vertices.push_back(-100.5);
-	vertices.push_back(-11.0f);	vertices.push_back(-0.03f);	vertices.push_back(100.0f);
-	vertices.push_back(11.5);	vertices.push_back(-0.03f);	vertices.push_back(100.0f);
+	vertices.push_back(11.5);	vertices.push_back(-0.001);	vertices.push_back(100.5);
+	vertices.push_back(-11.0f);	vertices.push_back(-0.001);	vertices.push_back(-100.5);
+	vertices.push_back(11.5);	vertices.push_back(-0.001);	vertices.push_back(100.0f);
+	vertices.push_back(-11.0f);	vertices.push_back(-0.001);	vertices.push_back(100.0f);
+	vertices.push_back(11.5);	vertices.push_back(-0.001f);	vertices.push_back(-100.5);
+	vertices.push_back(-11.0f);	vertices.push_back(-0.001f);	vertices.push_back(-100.5);
+	vertices.push_back(-11.0f);	vertices.push_back(-0.001f);	vertices.push_back(100.0f);
+	vertices.push_back(11.5);	vertices.push_back(-0.001f);	vertices.push_back(100.0f);
 
 
 	indices.push_back(3); indices.push_back(2); indices.push_back(6);

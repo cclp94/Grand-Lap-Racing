@@ -25,7 +25,6 @@ public:
 	void  draw(GLuint color_id);
 	glm::vec3  getColor();
 	glm::mat4 getCameraView();
-	void rotateCamera(float angle);
 	glm::mat4 move(glm::mat4 model_matrix);
 	glm::mat4 turn(float angle, glm::mat4 model_matrix);
 private:

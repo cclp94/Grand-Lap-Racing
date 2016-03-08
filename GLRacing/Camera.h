@@ -16,6 +16,7 @@ private:
 	glm::vec3 cameraPos;
 	glm::vec3 cameraFront;
 	glm::vec3 cameraUp;
+	GLfloat theta, phi;
 	friend class kart;
 	
 };
