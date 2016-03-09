@@ -25,11 +25,7 @@ glm::mat4 kart::move(glm::mat4 model_matrix) {
 	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -getSpeed()));
 	glm::vec4 previousPos = position;
 	position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
-	glm::mat4 trans = glm::translate(glm::mat4(),
-		glm::vec3(position.x - previousPos.x, position.y - previousPos.y, position.z - previousPos.z));
-		camera->cameraPos = glm::vec3(trans * glm::vec4(camera->cameraPos, 1.0));
-		camera->cameraPos = camera->cameraPos + glm::vec3(3 * glm::sin(camera->theta)/2, 0, 0);
-		camera->theta = 0;
+	camera->cameraPos = glm::vec3(model_matrix * glm::vec4(0.0f, 1.0f, 3.0f, 1.0f));
 
 	return model_matrix;
 }
@@ -37,8 +33,6 @@ glm::mat4 kart::move(glm::mat4 model_matrix) {
 glm::mat4 kart::turn(float angle, glm::mat4 model_matrix) {
 	if (speed > 0) {
 		model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
-		position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
-		camera->theta = angle;
 	}
 	return model_matrix;
 }
