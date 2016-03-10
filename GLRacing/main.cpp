@@ -64,7 +64,7 @@ int main() {
 	while (!glfwWindowShouldClose(window)) {
 		// wipe the drawing surface clear
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.1f, 0.2f, 0.2f, 1.0f);
+		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 		glPointSize(point_size);
 
 		glUseProgram(shader_program);
