@@ -4,10 +4,9 @@ class Road :
 	public Model
 {
 public:
-	Road();
+	Road(Shader *s);
 	~Road();
-	void draw(GLuint color_id);
-	glm::vec3 getColor();
+	void draw();
 private:
 	void getModel();
 	glm::vec3 color;

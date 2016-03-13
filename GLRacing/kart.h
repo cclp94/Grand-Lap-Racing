@@ -14,7 +14,7 @@ using namespace std;
 
 class kart : public Model{
 public:
-	kart();
+	kart(Shader *s);
 	~kart();
 	float getSpeed();
 	void update();
@@ -22,11 +22,11 @@ public:
 	void deaccelerate();
 	void notAccelerating();
 	void accelerating();
-	void  draw(GLuint color_id);
+	void  draw();
 	glm::vec3  getColor();
 	glm::mat4 getCameraView();
-	glm::mat4 move(glm::mat4 model_matrix);
-	glm::mat4 turn(float angle, glm::mat4 model_matrix);
+	void move();
+	void turn(float angle);
 private:
 	float maxSpeed;
 	float speed;

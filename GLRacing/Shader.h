@@ -13,15 +13,17 @@ using namespace std;
 class Shader
 {
 public:
-	Shader(string fileName, int type);
-	GLuint getShaderId();
-	static GLuint makeProgram(GLuint vShader, GLuint fShader);
+	Shader(string vertexFileName, string fragmentFileName);
+	GLuint getUniform(const GLchar* name);
+	void use();
+	void unuse();
 	~Shader();
+	GLuint programID;
 private:
-	void getCode(string fileName);
-	void compileShader();
+	string getCode(string fileName);
+	void checkStatus(GLuint shaderID);
+	void makeProgram(GLuint vShader, GLuint fShader);
 
-	GLuint shaderId;
-	string shaderCode;
+	
 };
 

@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <vector>
 #include <cctype>
-
 #include "Model.h"
 #include "Plane.h"
 #include "kart.h"
@@ -27,18 +26,9 @@ GLuint width = 800, height = 600;
 
 GLFWwindow* window = 0x00;
 
-GLuint shader_program = 0;
 
-GLuint view_matrix_id = 0;
-GLuint model_matrix_id = 0;
-GLuint proj_matrix_id = 0;
-GLuint vertex_color_id;
-
-glm::mat4 proj_matrix;
 glm::mat4 view_matrix;
-glm::mat4 model_matrix;
-
-glm::vec3 vertex_color;
+glm::mat4 proj_matrix;
 
 
 GLfloat point_size = 3.0f;
@@ -46,7 +36,6 @@ kart *Kart;
 
 bool initialize();
 bool cleanUp();
-GLuint loadShaders(std::string vertex_shader_path, std::string fragment_shader_path);
 
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
@@ -54,49 +43,49 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 
 int main() {
 	initialize();
-	Plane plane;
-	Road road;
-	Kart = new kart();
-	model_matrix = glm::translate(model_matrix, glm::vec3(-50.0, 0.0, 0.0));
-	///Load the shaders
-	shader_program = loadShaders("vertexShader1.vs", "fragmentShader1.fs");
+	Shader *mainShader = new Shader("vertexShader1.vs", "fragmentShader1.fs");
+	Shader *terrainShader = new Shader("terrainVertexShader.vs", "fragmentShader1.fs");
+
+
+	//The three variables below hold the id of each of the variables in the shader
+	//If you read the vertex shader file you'll see that the same variable names are used.
+
+	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+
 	
+
+	mainShader->use();
+	glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	terrainShader->use();
+	glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+
+	Plane plane(terrainShader);
+	Road road(mainShader);
+	Kart = new kart(mainShader);
+
 	while (!glfwWindowShouldClose(window)) {
 		// wipe the drawing surface clear
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 		glPointSize(point_size);
 
-		glUseProgram(shader_program);
-
-		
-		proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
-		glm::mat4 savedModel = model_matrix;
-
-		model_matrix = glm::mat4();
-
-		glm::vec3 color = plane.getColor();
-
-		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
-		plane.draw(vertex_color_id);
-		road.draw(vertex_color_id);
-		model_matrix = savedModel;
-		//Pass the values of the three matrices to the shaders
-		glUniformMatrix4fv(proj_matrix_id, 1, GL_FALSE, glm::value_ptr(proj_matrix));
-		
-		glUniformMatrix4fv(model_matrix_id, 1, GL_FALSE, glm::value_ptr(model_matrix));
-		Kart->update();
-		model_matrix = Kart->move(model_matrix);
 		view_matrix = Kart->getCameraView();
-		glUniformMatrix4fv(view_matrix_id, 1, GL_FALSE, glm::value_ptr(view_matrix));
 
-		Kart->draw(vertex_color_id);
+		terrainShader->use();
+		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 
+		plane.draw();
+
+		mainShader->use();
+		road.draw();
+		Kart->draw();
+	
 		// update other events like input handling
 		glfwPollEvents();
 		// put the stuff we've been drawing onto the display
 		glfwSwapBuffers(window);
 	}
+	delete mainShader, terrainShader;
 	cleanUp();
 	return 0;
 }
@@ -165,45 +154,15 @@ bool cleanUp() {
 	return true;
 }
 
-/*
-Load shaders from given files and creates them
-*/
-GLuint loadShaders(std::string vertex_shader_path, std::string fragment_shader_path) {
-	Shader *shader = new Shader(vertex_shader_path, 0);
-	// Create the shaders
-	GLuint VertexShaderID = shader->getShaderId();
-	delete shader;
-	shader = new Shader(fragment_shader_path, 1);
-	GLuint FragmentShaderID = shader->getShaderId();
-
-	
-	GLuint ProgramID = glCreateProgram();
-	ProgramID = shader->makeProgram(VertexShaderID, FragmentShaderID);
-
-	delete shader;
-	glDeleteShader(VertexShaderID);
-	glDeleteShader(FragmentShaderID);
-
-	//The three variables below hold the id of each of the variables in the shader
-	//If you read the vertex shader file you'll see that the same variable names are used.
-	view_matrix_id = glGetUniformLocation(ProgramID, "view_matrix");
-	model_matrix_id = glGetUniformLocation(ProgramID, "model_matrix");
-	proj_matrix_id = glGetUniformLocation(ProgramID, "proj_matrix");
-
-	vertex_color_id = glGetUniformLocation(ProgramID, "vertex_color");
-
-	return ProgramID;
-}
-
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (key == GLFW_KEY_S) {
 		Kart->deaccelerate();
 	} else if (key == GLFW_KEY_W) {
 		Kart->accelerate();
 	}else if (key == GLFW_KEY_A) {
-		model_matrix = Kart->turn(0.05, model_matrix);
+		Kart->turn(0.05);
 	}else if(key == GLFW_KEY_D){
-		model_matrix = Kart->turn(-0.05, model_matrix) ;
+		Kart->turn(-0.05) ;
 	}else if (key == GLFW_KEY_ESCAPE) {
 		glfwWindowShouldClose(window);
 		cleanUp();
@@ -221,5 +180,7 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight) {
 	width = newWidth;
 	height = newHeight;
 	glViewport(0, 0, width, height);
+
+	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
 
 }

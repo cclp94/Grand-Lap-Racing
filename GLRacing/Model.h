@@ -7,20 +7,29 @@
 
 #include <glm\ext.hpp>
 
+#include "Shader.h";
+
 using namespace std;
 
 class Model {
 public:
 	virtual float* getModelVertices();
 	virtual  GLuint getModelsize();
-	Model();
+	Model(Shader *shader);
 	virtual ~Model();
 	vector <GLfloat> vertices;
 	vector <GLuint> indices;
-	virtual void draw(GLuint color_id) = 0;
+	virtual void draw() = 0;
 
 protected:
-	GLuint VAO, VBO, EBO;
+	GLuint VAO, VBO, EBO, Texture;
+
+	Shader *shaderProgram;
+	glm::mat4 view_matrix, model_matrix;
+	glm::vec3 vertex_color;
+
+	int texture_width, texture_height, channels;
+	GLubyte* pData;
 	virtual void setupMesh();
 
 };

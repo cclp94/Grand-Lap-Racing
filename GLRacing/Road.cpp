@@ -2,7 +2,7 @@
 
 
 
-Road::Road() : Model()
+Road::Road(Shader *s) : Model(s)
 {
 		color = glm::vec3(0.3, 0.3, 0.3);
 		getModel();
@@ -80,11 +80,12 @@ void Road::getModel() {
 
 }
 
-void Road::draw(GLuint color_id) {
+void Road::draw() {
+
 	glBindVertexArray(VAO);
 
-	glUniform3f(color_id, color.x, color.y, color.z);
-
+	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
+	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, vertices.size() /3);
 
 	glBindVertexArray(0);

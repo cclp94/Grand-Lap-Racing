@@ -37,13 +37,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Road.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\models</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="kart.h">
-      <Filter>Source Files\models</Filter>
-    </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -59,9 +56,24 @@
     <ClInclude Include="Road.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SOIL.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
     <None Include="vertexShader1.vs" />
+    <None Include="terrainVertexShader.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="terrain.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="5046_05_02.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

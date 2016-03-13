@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -142,10 +142,16 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SOIL.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
+    <None Include="terrainVertexShader.vs" />
     <None Include="vertexShader1.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="5046_05_02.jpg" />
+    <Image Include="terrain.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

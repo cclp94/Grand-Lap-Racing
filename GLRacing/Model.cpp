@@ -1,9 +1,9 @@
 #include "Model.h"
 
 
-
-Model::Model()
+Model::Model(Shader *shader)
 {
+	shaderProgram = shader;
 }
 
 

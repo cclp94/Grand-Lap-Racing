@@ -8,8 +8,8 @@ kart::~kart() {
 
 
 
-kart::kart() : Model(){
-	color = glm::vec3(1.0, 0.1, 0.2);
+kart::kart(Shader *s) : Model(s){
+	color = glm::vec3(0.3, 0.1, 0.2);
 	position = glm::vec4(0.0, 0.0, 0.0, 1.0);
 	maxSpeed = 3.0f;
 	acceleration = 0.03f;
@@ -19,26 +19,27 @@ kart::kart() : Model(){
 	setupMesh();
 	camera = new Camera();
 	camera->cameraPos = glm::vec3(position.x, position.y + 1, position.z + 3.0);
+
+	model_matrix = glm::translate(model_matrix, glm::vec3(-50.0, 0.0, 0.0));
 }
 
-glm::mat4 kart::move(glm::mat4 model_matrix) {
+void kart::move() {
 	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, 0.0, -getSpeed()));
 	glm::vec4 previousPos = position;
 	position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
 	camera->cameraPos = glm::vec3(model_matrix * glm::vec4(0.0f, 1.0f, 3.0f, 1.0f));
 
-	return model_matrix;
+	update();
 }
 
-glm::mat4 kart::turn(float angle, glm::mat4 model_matrix) {
+void kart::turn(float angle) {
 	if (speed > 0) {
 		model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
 	}
-	return model_matrix;
 }
 
 glm::mat4 kart::getCameraView() {
-	glm::mat4 view_matrix = glm::lookAt(camera->cameraPos,glm::vec3(position),camera->cameraUp);
+	view_matrix = glm::lookAt(camera->cameraPos,glm::vec3(position),camera->cameraUp);
 	return view_matrix;
 }
 
@@ -100,15 +101,20 @@ glm::vec3 kart::getColor() {
 	return color;
 }
 
-void kart::draw(GLuint color_id) {
+void kart::draw() {
+	move();
+
 	glBindVertexArray(VAO);
+	glUniformMatrix4fv(shaderProgram->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 
-	glUniform3f(color_id, color.x, color.y, color.z);
-
+	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
+	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
+	glUniformMatrix4fv(shaderProgram->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 	glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 }
+
 
 void kart::getModel() {
 

@@ -2,23 +2,40 @@
 
 
 
-Shader::Shader(string fileName, int type)
+Shader::Shader(string vertexFileName, string fragmentFileName)
 {
-	switch (type) {
-	case 0:
-		shaderId = glCreateShader(GL_VERTEX_SHADER);
-		break;
-	case 1:
-		shaderId = glCreateShader(GL_FRAGMENT_SHADER);
-	}
+	GLuint vShaderId = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 
-	getCode(fileName);
-	compileShader();
+	string vShaderCode = getCode(vertexFileName);
+	string fShaderCode = getCode(fragmentFileName);
+
+	//Compile Vertex Shader
+	char const * sourcePointer = vShaderCode.c_str();
+	glShaderSource(vShaderId, 1, &sourcePointer, nullptr);
+	glCompileShader(vShaderId);
+
+	checkStatus(vShaderId);
+
+	//Compile Fragment Shader
+	sourcePointer = fShaderCode.c_str();
+	glShaderSource(fShaderId, 1, &sourcePointer, nullptr);
+	glCompileShader(fShaderId);
+
+	checkStatus(fShaderId);
+
+	//Create Program
+	makeProgram(vShaderId, fShaderId);
+
+	//Delete Shaders
+	glDeleteShader(vShaderId);
+	glDeleteShader(fShaderId);
 
 }
 
-void Shader::getCode(string fileName) {
+string Shader::getCode(string fileName) {
 	// Read the Vertex Shader code from the file
+	string shaderCode;
 	std::ifstream shaderStream(fileName, std::ios::in);
 	if (shaderStream.is_open()) {
 		std::string Line = "";
@@ -32,61 +49,55 @@ void Shader::getCode(string fileName) {
 		getchar();
 		exit(-1);
 	}
+	return shaderCode;
 }
 
-void Shader::compileShader() {
+void Shader::checkStatus(GLuint shaderID) {
 	GLint Result = GL_FALSE;
 	int InfoLogLength;
 
-	char const * sourcePointer = shaderCode.c_str();
-	glShaderSource(shaderId, 1, &sourcePointer, nullptr);
-	glCompileShader(shaderId);
-
 	// Check Vertex Shader
-	glGetShaderiv(shaderId, GL_COMPILE_STATUS, &Result);
-	glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &Result);
+	glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
 	if (InfoLogLength > 0) {
 		std::vector<char> shaderErrorMessage(InfoLogLength + 1);
-		glGetShaderInfoLog(shaderId, InfoLogLength, nullptr, &shaderErrorMessage[0]);
+		glGetShaderInfoLog(shaderID, InfoLogLength, nullptr, &shaderErrorMessage[0]);
 		printf("%s\n", &shaderErrorMessage[0]);
 	}
 }
+
+GLuint Shader::getUniform(const GLchar* name) {
+	return glGetUniformLocation(programID, name);
+
+}
+
+void Shader::use() {
+	glUseProgram(programID);
+}
+void Shader::unuse() {
+	glUseProgram(0);
+}
+
 
 
 Shader::~Shader()
 {
 }
 
-GLuint Shader::getShaderId() {
-	return shaderId;
-}
-
-GLuint Shader::makeProgram(GLuint vShader, GLuint fShader) {
+void Shader::makeProgram(GLuint vShader, GLuint fShader) {
 	GLint Result;
 	GLint InfoLogLength;
 
 
 	// Link the program
 	printf("Linking program\n");
-	GLuint ProgramID = glCreateProgram();
-	glAttachShader(ProgramID, vShader);
-	glAttachShader(ProgramID, fShader);
+	programID = glCreateProgram();
+	glAttachShader(programID, vShader);
+	glAttachShader(programID, fShader);
 
-	glBindAttribLocation(ProgramID, 0, "in_Position");
+	glBindAttribLocation(programID, 0, "in_Position");
 
-	//appearing in the vertex shader.
-	glBindAttribLocation(ProgramID, 1, "in_Color");
+	glLinkProgram(programID);
 
-	glLinkProgram(ProgramID);
-
-	// Check the program
-	glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-	glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-	if (InfoLogLength > 0) {
-		std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
-		glGetProgramInfoLog(ProgramID, InfoLogLength, nullptr, &ProgramErrorMessage[0]);
-		printf("%s\n", &ProgramErrorMessage[0]);
-	}
-
-	return ProgramID;
+	checkStatus(programID);
 }
