@@ -16,8 +16,8 @@ private:
 	void getModel();
 	glm::vec3 color;
 	void setupMesh();
-	const static int TERRAIN_WIDTH = 20;
-	const static int TERRAIN_DEPTH = 20;
+	const static int TERRAIN_WIDTH = 1000;
+	const static int TERRAIN_DEPTH = 1000;
 	glm::vec2 HALF_TERRAIN_SIZE;
 };
 

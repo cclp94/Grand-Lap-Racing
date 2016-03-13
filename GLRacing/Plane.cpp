@@ -34,8 +34,8 @@ void Plane::draw() {
 
 	glUniform1i(shaderProgram->getUniform("heightMapTexture"), 0);
 	glUniform2i(shaderProgram->getUniform("HALF_TERRAIN_SIZE"), TERRAIN_WIDTH >> 1, TERRAIN_DEPTH >> 1);
-	glUniform1f(shaderProgram->getUniform("scale"), 2.0);
-	glUniform1f(shaderProgram->getUniform("half_scale"), 1);
+	glUniform1f(shaderProgram->getUniform("scale"), 10);
+	glUniform1f(shaderProgram->getUniform("half_scale"), 6);
 
 	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
@@ -48,21 +48,23 @@ void Plane::draw() {
 
 void Plane::getModel() {
 
-	pData = SOIL_load_image("5046_05_02.jpg", &texture_width, &texture_height, &channels, SOIL_LOAD_L);
+	pData = SOIL_load_image("terrain2.tga", &texture_width, &texture_height, &channels, SOIL_LOAD_L);
+
+
 	//vertically flip the image data
-	for (int j = 0; j * 2 < texture_height; ++j)
-	{
-		int index1 = j * texture_width;
-		int index2 = (texture_height - 1 - j) * texture_width;
-		for (int i = texture_width; i > 0; --i)
-		{
-			GLubyte temp = pData[index1];
-			pData[index1] = pData[index2];
-			pData[index2] = temp;
-			++index1;
-			++index2;
-		}
-	}
+	//for (int j = 0; j * 2 < texture_height; ++j)
+	//{
+	//	int index1 = j * texture_width;
+	//	int index2 = (texture_height - 1 - j) * texture_width;
+	//	for (int i = texture_width; i > 0; --i)
+	//	{
+	//		GLubyte temp = pData[index1];
+	//		pData[index1] = pData[index2];
+	//		pData[index2] = temp;
+	//		++index1;
+	//		++index2;
+	//	}
+	//}
 	glGenTextures(1, &Texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, Texture);
@@ -74,25 +76,27 @@ void Plane::getModel() {
 	SOIL_free_image_data(pData);
 
 
-	for (int j = 0; j<TERRAIN_DEPTH; j++) {
-		for (int i = 0; i<TERRAIN_WIDTH; i++) {
+	for (int j = 0; j<TERRAIN_DEPTH; j+=2) {
+		for (int i = 0; i<TERRAIN_WIDTH; i+=2) {
 			vertices.push_back((float(i) / (TERRAIN_WIDTH - 1)));
-			vertices.push_back(0.0);
+			vertices.push_back(-0.0001);
 			vertices.push_back(float(j) / (TERRAIN_DEPTH - 1));
 		}
 	}
 
-	int totalPoints = TERRAIN_DEPTH * TERRAIN_WIDTH;
-	for (int i = 0; i < TERRAIN_DEPTH; i++)
+	int totalPoints = vertices.size()/3;
+	int depth = (TERRAIN_DEPTH / 2);
+	int width = (TERRAIN_WIDTH / 2);
+	for (int i = 0; i < depth -1; i++)
 	{
-		for (int j = 0; j < TERRAIN_WIDTH - 1; j++)
+		for (int j = 0; j < width -1; j++)
 		{
-			indices.push_back(((TERRAIN_DEPTH*i) + j) % totalPoints);
-			indices.push_back(((TERRAIN_DEPTH*i) + j + 1) % totalPoints);
-			indices.push_back(((TERRAIN_DEPTH*i) + j + TERRAIN_DEPTH) % totalPoints);
-			indices.push_back(((TERRAIN_DEPTH*i) + j + 1) % totalPoints);
-			indices.push_back(((TERRAIN_DEPTH*i) + j + TERRAIN_DEPTH + 1) % totalPoints);
-			indices.push_back(((TERRAIN_DEPTH*i) + j + TERRAIN_DEPTH) % totalPoints);
+			indices.push_back(((depth*i) + j) % totalPoints);
+			indices.push_back(((depth*i) + j + 1) % totalPoints);
+			indices.push_back(((depth*i) + j + depth) % totalPoints);
+			indices.push_back(((depth*i) + j + 1) % totalPoints);
+			indices.push_back(((depth*i) + j + depth + 1) % totalPoints);
+			indices.push_back(((depth*i) + j + depth) % totalPoints);
 		}
 	}
 

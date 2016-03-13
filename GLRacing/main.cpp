@@ -50,7 +50,7 @@ int main() {
 	//The three variables below hold the id of each of the variables in the shader
 	//If you read the vertex shader file you'll see that the same variable names are used.
 
-	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 100.0f);
+	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 200.0f);
 
 	
 

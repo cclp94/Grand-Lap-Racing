@@ -15,7 +15,7 @@ Road::~Road()
 }
 
 void Road::getModel() {
-	float y = 0.000000000011;
+	float y = -0.001;
 	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.0);
 	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.5);
 	vertices.push_back(-0.2); vertices.push_back(y); vertices.push_back(0.8);
@@ -67,7 +67,7 @@ void Road::getModel() {
 			glm::vec4(path, 1.0));
 		spline.push_back(p.x); spline.push_back(p.y); spline.push_back(p.z);
 		// Store right extrusion (flipped calculated normal + point position)
-		p = glm::vec3(glm::translate(glm::mat4(), -normal/20) *
+		p = glm::vec3(glm::translate(glm::mat4(), -normal/400) *
 			glm::vec4(path, 1.0));
 		spline.push_back(p.x); spline.push_back(p.y); spline.push_back(p.z);
 	}
@@ -75,7 +75,7 @@ void Road::getModel() {
 
 	for (int i = 0; i < vertices.size(); i++)
 	{
-		vertices[i] *= 100;
+		vertices[i] *= 500;
 	}
 
 }

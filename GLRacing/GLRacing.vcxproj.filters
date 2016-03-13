@@ -75,5 +75,12 @@
     <Image Include="5046_05_02.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
+    <Image Include="terrain2.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="terrain2.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="terrain2.tga" />
   </ItemGroup>
 </Project>

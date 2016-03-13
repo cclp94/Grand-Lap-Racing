@@ -16,5 +16,5 @@ void main () {
 	vec2 pos  = (in_Position.xz*2.0-1)*HALF_TERRAIN_SIZE;
 	gl_Position = CTM*vec4(pos.x, height, pos.y, 1);
 
-	out_Color = vertex_color + vec3(height);
+	out_Color = vertex_color + vec3(height/4);
 }

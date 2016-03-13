@@ -11,8 +11,8 @@ kart::~kart() {
 kart::kart(Shader *s) : Model(s){
 	color = glm::vec3(0.3, 0.1, 0.2);
 	position = glm::vec4(0.0, 0.0, 0.0, 1.0);
-	maxSpeed = 3.0f;
-	acceleration = 0.03f;
+	maxSpeed = 1.0f;
+	acceleration = 0.05f;
 	speed = 0.0f;
 	isAccelarating = false;
 	getModel();
@@ -20,7 +20,7 @@ kart::kart(Shader *s) : Model(s){
 	camera = new Camera();
 	camera->cameraPos = glm::vec3(position.x, position.y + 1, position.z + 3.0);
 
-	model_matrix = glm::translate(model_matrix, glm::vec3(-50.0, 0.0, 0.0));
+	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 0.0, 0.0));
 }
 
 void kart::move() {
