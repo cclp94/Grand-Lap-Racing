@@ -27,7 +27,7 @@ protected:
 	Shader *shaderProgram;
 	glm::mat4 view_matrix, model_matrix;
 	glm::vec3 vertex_color;
-
+	glm::vec3 color;
 	int texture_width, texture_height, channels;
 	GLubyte* pData;
 	virtual void setupMesh();

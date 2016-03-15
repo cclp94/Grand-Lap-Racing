@@ -50,21 +50,6 @@ void Plane::getModel() {
 
 	pData = SOIL_load_image("terrain2.tga", &texture_width, &texture_height, &channels, SOIL_LOAD_L);
 
-
-	//vertically flip the image data
-	//for (int j = 0; j * 2 < texture_height; ++j)
-	//{
-	//	int index1 = j * texture_width;
-	//	int index2 = (texture_height - 1 - j) * texture_width;
-	//	for (int i = texture_width; i > 0; --i)
-	//	{
-	//		GLubyte temp = pData[index1];
-	//		pData[index1] = pData[index2];
-	//		pData[index2] = temp;
-	//		++index1;
-	//		++index2;
-	//	}
-	//}
 	glGenTextures(1, &Texture);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, Texture);

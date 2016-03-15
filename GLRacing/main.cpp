@@ -19,6 +19,7 @@
 #include "kart.h"
 #include "Road.h"
 #include "Shader.h"
+#include "Barrier.h"
 
 using namespace std;
 
@@ -61,6 +62,8 @@ int main() {
 
 	Plane plane(terrainShader);
 	Road road(mainShader);
+	Barrier barrier1(mainShader, Barrier::OUTTER);
+	Barrier barrier2(mainShader, Barrier::INNER);
 	Kart = new kart(mainShader);
 
 	while (!glfwWindowShouldClose(window)) {
@@ -78,6 +81,8 @@ int main() {
 
 		mainShader->use();
 		road.draw();
+		barrier1.draw();
+		barrier2.draw();
 		Kart->draw();
 	
 		// update other events like input handling

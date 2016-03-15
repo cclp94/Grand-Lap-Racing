@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Barrier.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="kart.cpp" />
     <ClCompile Include="main.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Barrier.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="kart.h" />
     <ClInclude Include="Model.h" />
@@ -143,6 +145,7 @@
     <ClInclude Include="Road.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SOIL.h" />
+    <ClInclude Include="SplineFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
