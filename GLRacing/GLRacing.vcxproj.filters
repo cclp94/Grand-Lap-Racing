@@ -42,6 +42,9 @@
     <ClCompile Include="Barrier.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -71,11 +74,18 @@
     <ClInclude Include="Barrier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
     <None Include="vertexShader1.vs" />
     <None Include="terrainVertexShader.vs" />
+    <None Include="lightFragShader.fs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="terrain.bmp">
@@ -91,5 +101,6 @@
       <Filter>Source Files\Resource Files</Filter>
     </Image>
     <Image Include="terrain2.tga" />
+    <Image Include="TerrainNormalMap.tga" />
   </ItemGroup>
 </Project>

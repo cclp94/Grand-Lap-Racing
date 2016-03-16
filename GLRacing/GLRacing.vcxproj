@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Barrier.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="kart.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -139,7 +140,9 @@
   <ItemGroup>
     <ClInclude Include="Barrier.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="kart.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Road.h" />
@@ -149,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
+    <None Include="lightFragShader.fs" />
     <None Include="terrainVertexShader.vs" />
     <None Include="vertexShader1.vs" />
   </ItemGroup>
@@ -158,6 +162,7 @@
     <Image Include="terrain2.bmp" />
     <Image Include="terrain2.jpg" />
     <Image Include="terrain2.tga" />
+    <Image Include="TerrainNormalMap.tga" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

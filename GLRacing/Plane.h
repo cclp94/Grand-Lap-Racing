@@ -19,5 +19,6 @@ private:
 	const static int TERRAIN_WIDTH = 1000;
 	const static int TERRAIN_DEPTH = 1000;
 	glm::vec2 HALF_TERRAIN_SIZE;
+	GLuint NormalMap;
 };
 

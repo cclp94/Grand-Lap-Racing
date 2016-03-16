@@ -20,6 +20,7 @@
 #include "Road.h"
 #include "Shader.h"
 #include "Barrier.h"
+#include "DirectionalLight.h"
 
 using namespace std;
 
@@ -44,46 +45,74 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 
 int main() {
 	initialize();
-	Shader *mainShader = new Shader("vertexShader1.vs", "fragmentShader1.fs");
-	Shader *terrainShader = new Shader("terrainVertexShader.vs", "fragmentShader1.fs");
+	//Light
+	DirectionalLight light(glm::vec3(1000.0, 1000.0, 0.0), glm::vec3(0.7, 0.7, 0.7), glm::vec3(0.7, 0.7, 0.7), glm::vec3(0.7, 0.7, 0.7));
 
+	//Set Shaders
+	Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
+	Shader *terrainShader = new Shader("terrainVertexShader.vs", "lightFragShader.fs");
 
-	//The three variables below hold the id of each of the variables in the shader
-	//If you read the vertex shader file you'll see that the same variable names are used.
-
+	// Perspective Projection
 	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 200.0f);
 
 	
-
+	// Projectiion Matrix and light
 	mainShader->use();
 	glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+
+	glm::vec3 lightProperty = light.getDirection();
+	glUniform4f(mainShader->getUniform("light.direction"),lightProperty.x, lightProperty.y,lightProperty.z, 1.0);
+	lightProperty = light.getAmbientColor();
+	glUniform4f(mainShader->getUniform("light.ambient"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
+	lightProperty = light.getDiffuseColor();
+	glUniform4f(mainShader->getUniform("light.diffuse"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
+	lightProperty = light.getSpecularColor();
+	glUniform4f(mainShader->getUniform("light.specular"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
+
+
 	terrainShader->use();
 	glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	lightProperty = light.getDirection();
+	glUniform4f(terrainShader->getUniform("light.direction"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
+	lightProperty = light.getAmbientColor();
+	glUniform4f(terrainShader->getUniform("light.ambient"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
+	lightProperty = light.getDiffuseColor();
+	glUniform4f(terrainShader->getUniform("light.diffuse"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
+	lightProperty = light.getSpecularColor();
+	glUniform4f(terrainShader->getUniform("light.specular"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
 
+
+
+	// Objects in scene
 	Plane plane(terrainShader);
 	Road road(mainShader);
 	Barrier barrier1(mainShader, Barrier::OUTTER);
 	Barrier barrier2(mainShader, Barrier::INNER);
 	Kart = new kart(mainShader);
 
+	// Game Loop
 	while (!glfwWindowShouldClose(window)) {
 		// wipe the drawing surface clear
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 		glPointSize(point_size);
 
-		view_matrix = Kart->getCameraView();
+		view_matrix = Kart->getCameraView(); // Get Camera View Matrix
+		glm::vec3 viewPos = Kart->getCameraPosition();
 
 		terrainShader->use();
+		// Apply view Matrix in secondary shader programs
+		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
-
 		plane.draw();
 
+		// Main Shader Program
 		mainShader->use();
+		Kart->draw();
 		road.draw();
 		barrier1.draw();
 		barrier2.draw();
-		Kart->draw();
+		
 	
 		// update other events like input handling
 		glfwPollEvents();
@@ -143,6 +172,8 @@ bool initialize() {
 	/// Enable the depth test i.e. draw a pixel if it's closer to the viewer
 	glEnable(GL_DEPTH_TEST); /// Enable depth-testing
 	glDepthFunc(GL_LESS);	/// The type of testing i.e. a smaller value as "closer"
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 
 	return true;
 }

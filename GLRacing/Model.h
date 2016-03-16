@@ -8,6 +8,7 @@
 #include <glm\ext.hpp>
 
 #include "Shader.h";
+#include "Material.h"
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
 	vector <GLfloat> vertices;
 	vector <GLuint> indices;
 	virtual void draw() = 0;
+	virtual glm::vec3 getNormal() { return glm::vec3(0.0, 1.0, 0.0); }
 
 protected:
 	GLuint VAO, VBO, EBO, Texture;
@@ -31,6 +33,7 @@ protected:
 	int texture_width, texture_height, channels;
 	GLubyte* pData;
 	virtual void setupMesh();
-
+	Material material;
+	void setMaterialUniform();
 };
 

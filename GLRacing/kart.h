@@ -25,6 +25,7 @@ public:
 	void  draw();
 	glm::vec3  getColor();
 	glm::mat4 getCameraView();
+	glm::vec3 getCameraPosition();
 	void move();
 	void turn(float angle);
 private:

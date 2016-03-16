@@ -49,3 +49,11 @@ float*  Model::getModelVertices() {
 GLuint Model::getModelsize() {
 	return sizeof(GLfloat) * vertices.size();
 }
+
+void Model::setMaterialUniform() {
+	glUniform4f(shaderProgram->getUniform("material.ambient"), material.ambient.x, material.ambient.y, material.ambient.z, material.ambient.w);
+	glUniform4f(shaderProgram->getUniform("material.diffuse"), material.diffuse.x, material.diffuse.y, material.diffuse.z, material.diffuse.w);
+	glUniform4f(shaderProgram->getUniform("material.specular"), material.specular.x, material.specular.y, material.specular.z, material.specular.w);
+	glUniform1f(shaderProgram->getUniform("material.shininess"), material.shininess);
+
+}

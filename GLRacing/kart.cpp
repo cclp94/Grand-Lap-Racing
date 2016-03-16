@@ -6,10 +6,18 @@ kart::~kart() {
 	delete camera;
 }
 
+glm::vec3 kart::getCameraPosition() {
+	return camera->cameraPos;
+}
+
 
 
 kart::kart(Shader *s) : Model(s){
 	color = glm::vec3(0.3, 0.1, 0.2);
+	material.ambient = glm::vec4(0.1745, 0.01175, 0.01175, 1.0);
+	material.diffuse = glm::vec4(0.61424, 0.04136, 0.04136,1.0);
+	material.specular = glm::vec4(0.727811, 0.626959, 0.626959, 1.0);
+	material.shininess = 76.8;
 	position = glm::vec4(0.0, 0.0, 0.0, 1.0);
 	maxSpeed = 1.0f;
 	acceleration = 0.05f;
@@ -110,6 +118,11 @@ void kart::draw() {
 	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	glUniformMatrix4fv(shaderProgram->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
+	glUniform3f(shaderProgram->getUniform("viewPos"), camera->cameraPos.x, camera->cameraPos.y, camera->cameraPos.z);
+	glm::vec3 normal = this->getNormal();
+	glUniform3f(shaderProgram->getUniform("normal"), normal.x, normal.y, normal.z);
+	this->setMaterialUniform();
+
 	glDrawElements(GL_TRIANGLE_STRIP, indices.size(), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);

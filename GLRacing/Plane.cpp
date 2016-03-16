@@ -6,6 +6,10 @@
 Plane::Plane(Shader *s) : Model(s)
 {
 	color = glm::vec3(0.2, 0.5, 0.2);
+	material.ambient = glm::vec4(color, 1.0);
+	material.diffuse = glm::vec4(0.5, 0.6, 0.2, 1.0);
+	material.specular = glm::vec4(0.7, 0.5, 0.2, 1.0);
+	material.shininess = 5;
 	getModel();
 	setupMesh();
 	HALF_TERRAIN_SIZE = glm::vec2(TERRAIN_WIDTH / 2, TERRAIN_DEPTH / 2);
@@ -25,20 +29,26 @@ void Plane::draw() {
 
 	glBindVertexArray(VAO);
 
+	glUniform1i(shaderProgram->getUniform("heightMapTexture"), 0);
 	glActiveTexture(GL_TEXTURE0);
-	
-	glUniform1i(shaderProgram->getUniform("heightMapTexture"), 0);
 	glBindTexture(GL_TEXTURE_2D, Texture);
+	
+
+	glUniform1i(shaderProgram->getUniform("normalMapTexture"), 1);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, NormalMap);
 
 
-
-	glUniform1i(shaderProgram->getUniform("heightMapTexture"), 0);
+	
 	glUniform2i(shaderProgram->getUniform("HALF_TERRAIN_SIZE"), TERRAIN_WIDTH >> 1, TERRAIN_DEPTH >> 1);
 	glUniform1f(shaderProgram->getUniform("scale"), 10);
 	glUniform1f(shaderProgram->getUniform("half_scale"), 6);
 
 	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
+
+	setMaterialUniform();
 	//glUniformMatrix4fv(shaderProgram->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_INT, 0);
@@ -84,29 +94,20 @@ void Plane::getModel() {
 			indices.push_back(((depth*i) + j + depth) % totalPoints);
 		}
 	}
+	//getNormal();
 
+	pData = SOIL_load_image("TerrainNormalMap.tga", &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
 
+	glGenTextures(1, &NormalMap);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, NormalMap);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, texture_width, texture_height, 0, GL_RED, GL_UNSIGNED_BYTE, pData);
+	SOIL_free_image_data(pData);
 
-	/*vertices.push_back(110.5);	vertices.push_back(-0.001);	vertices.push_back(100.5);
-	vertices.push_back(-110.0f);	vertices.push_back(-0.001);	vertices.push_back(-100.5);
-	vertices.push_back(110.5);	vertices.push_back(-0.001);	vertices.push_back(100.0f);
-	vertices.push_back(-110.0f);	vertices.push_back(-0.001);	vertices.push_back(100.0f);
-	vertices.push_back(110.5);	vertices.push_back(-0.001f);	vertices.push_back(-100.5);
-	vertices.push_back(-110.0f);	vertices.push_back(-0.001f);	vertices.push_back(-100.5);
-	vertices.push_back(-110.0f);	vertices.push_back(-0.001f);	vertices.push_back(100.0f);
-	vertices.push_back(110.5);	vertices.push_back(-0.001f);	vertices.push_back(100.0f);
-	
-	
-	indices.push_back(3); indices.push_back(2); indices.push_back(6);
-	indices.push_back(7); indices.push_back(4); indices.push_back(2); indices.push_back(0);
-	indices.push_back(3); indices.push_back(1); indices.push_back(6);
-	indices.push_back(5); indices.push_back(4); indices.push_back(1); indices.push_back(0);
-	
-	for (int i = 0; i < vertices.size(); i++)
-	{
-		vertices[i] *= 100;
-	}
-	*/
 }
 
 void Plane::setupMesh() {

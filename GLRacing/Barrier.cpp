@@ -7,8 +7,17 @@ Barrier::Barrier(Shader *s, int position) : Model(s)
 {
 	this->position = position;
 	color = glm::vec3(1.0, 1.0, 0.2);
+	material.ambient = glm::vec4(color, 1.0);
+	material.diffuse = glm::vec4(color, 1.0);
+	material.specular =glm::vec4( color, 1.0);
+	material.shininess = 4;
+	
 	getModel();
 	setupMesh();
+}
+
+glm::vec3 Barrier::getNormal() {
+	return glm::vec3(1.0, 0.0, 0.0);
 }
 
 
@@ -82,7 +91,10 @@ void Barrier::draw() {
 
 	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
-	//glDrawArrays(GL_POINTS, 0, vertices.size() / 3);
+	glm::vec3 normal = this->getNormal();
+	glUniform3f(shaderProgram->getUniform("Normal"), normal.x, normal.y, normal.z);
+	this->setMaterialUniform();
+
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);

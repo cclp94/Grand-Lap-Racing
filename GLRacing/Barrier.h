@@ -11,5 +11,6 @@ public:
 	int position;
 private:
 	void getModel();
+	glm::vec3 getNormal();
 };
 
