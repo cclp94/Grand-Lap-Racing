@@ -25,8 +25,8 @@ public:
 
 protected:
 	GLuint VAO, VBO, EBO, Texture;
-	vector<GLfloat> normals;
-	GLuint VBO2;
+	vector<GLfloat> normals, texCoords;
+	GLuint VBO2, TexVBO;
 
 	Shader *shaderProgram;
 	glm::mat4 view_matrix, model_matrix;

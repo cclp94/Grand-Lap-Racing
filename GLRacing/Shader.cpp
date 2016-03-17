@@ -96,6 +96,8 @@ void Shader::makeProgram(GLuint vShader, GLuint fShader) {
 	glAttachShader(programID, fShader);
 
 	glBindAttribLocation(programID, 0, "in_Position");
+	glBindAttribLocation(programID, 1, "normal");
+	glBindAttribLocation(programID, 2, "texCoord");
 
 	glLinkProgram(programID);
 

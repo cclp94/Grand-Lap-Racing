@@ -28,6 +28,7 @@ public:
 	glm::vec3 getCameraPosition();
 	void move();
 	void turn(float angle);
+	void depthDraw(Shader *s);
 private:
 	float maxSpeed;
 	float speed;

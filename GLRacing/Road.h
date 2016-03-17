@@ -7,6 +7,7 @@ public:
 	Road(Shader *s);
 	~Road();
 	void draw();
+	void depthDraw(Shader *s);
 private:
 	void getModel();
 };

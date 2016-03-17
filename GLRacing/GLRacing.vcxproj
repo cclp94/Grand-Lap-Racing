@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Barrier.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DepthMap.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="kart.cpp" />
     <ClCompile Include="main.cpp" />
@@ -140,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="Barrier.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="DepthMap.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="kart.h" />
     <ClInclude Include="Material.h" />
@@ -151,12 +153,17 @@
     <ClInclude Include="SplineFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="depthFShader.fs" />
+    <None Include="depthVShader.vs" />
     <None Include="fragmentShader1.fs" />
     <None Include="lightFragShader.fs" />
     <None Include="terrainVertexShader.vs" />
     <None Include="vertexShader1.vs" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="grass.jpg" />
+    <Image Include="opengl.jpg" />
+    <Image Include="road.jpg" />
     <Image Include="terrain.jpg" />
     <Image Include="terrain.png" />
     <Image Include="terrain2.tga" />

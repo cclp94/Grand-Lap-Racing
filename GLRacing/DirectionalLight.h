@@ -1,6 +1,7 @@
 #pragma once
 
-#include <glm/vec3.hpp>
+#include <glm/ext.hpp>
+#include "Shader.h"
 
 class DirectionalLight
 {
@@ -11,7 +12,10 @@ public:
 	glm::vec3 getAmbientColor();
 	glm::vec3 getDiffuseColor();
 	glm::vec3 getSpecularColor();
-
+	glm::mat4 getLightViewMatrix();
+	glm::mat4 getLightProjectionMatrix();
+	glm::mat4 getLightSpaceMatrix(int width, int height);
+	void setProperties(Shader *s);
 
 private:
 	glm::vec3 direction;

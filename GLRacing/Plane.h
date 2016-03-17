@@ -11,11 +11,11 @@ public:
 	~Plane();
 	void  draw();
 	glm::vec3  getColor();
+	void depthDraw(Shader *s);
 	
 private:
 	void getModel();
 	glm::vec3 color;
-	void setupMesh();
 	const static int TERRAIN_WIDTH = 400;
 	const static int TERRAIN_DEPTH = 400;
 	glm::vec2 HALF_TERRAIN_SIZE;

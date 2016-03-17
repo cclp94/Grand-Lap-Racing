@@ -14,7 +14,7 @@ Plane::Plane(Shader *s) : Model(s)
 	setupMesh();
 	
 	model_matrix = glm::translate(model_matrix, glm::vec3(-500, -1.0, -500.0));
-	model_matrix = glm::scale(model_matrix, glm::vec3(2.5));
+	model_matrix = glm::scale(model_matrix, glm::vec3(10));
 }
 
 
@@ -27,34 +27,24 @@ glm::vec3 Plane::getColor() {
 }
 
 void Plane::draw() {
-	
-
 	glBindVertexArray(VAO);
-
-	//glUniform1i(shaderProgram->getUniform("heightMapTexture"), 0);
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, Texture);
-	//
-	//
-	//glUniform1i(shaderProgram->getUniform("normalMapTexture"), 1);
-	//
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, NormalMap);
-	//
-	//
-	//
-	//glUniform2i(shaderProgram->getUniform("HALF_TERRAIN_SIZE"), TERRAIN_WIDTH >> 1, TERRAIN_DEPTH >> 1);
-	//glUniform1f(shaderProgram->getUniform("scale"), 10);
-	//glUniform1f(shaderProgram->getUniform("half_scale"), 6);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY_EXT);
+	glBindTexture(GL_TEXTURE_2D, Texture);
 
 	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 
 	setMaterialUniform();
-	//glUniformMatrix4fv(shaderProgram->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
 	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_INT, 0);
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glBindVertexArray(0);
+}
+
+void Plane::depthDraw(Shader *s) {
+	glBindVertexArray(VAO);
+	glUniformMatrix4fv(s->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
+	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
@@ -68,19 +58,9 @@ void Plane::getModel() {
 		for (int i = 0; i<texture_width; i++) {
 			vertices.push_back(float(i));
 			vertices.push_back((float)((((float) pData[i + (texture_width*j)])-128)/128)*2);
-			//cout << (float) pData[j] << " -> " << (((float)pData[j]) - 128) / 128 << endl;
 			vertices.push_back(float(j));
 		}
 	}
-	//for (int i = 0; i < texture_width*texture_height -1; i++)
-	//{
-	//	cout << (unsigned int) pData[i] << "\t" << (unsigned int)pData[i + 1] << "\t" << (unsigned int)pData[i + 2] << endl;
-	//	system("pause");
-	//}
-
-	//for (int i = 0; i < texture_height*texture_width; i++) {
-	//	cout << vertices[i] << " " << vertices[i + 1] << " " << vertices[i + 2] << endl;
-	//}
 
 	SOIL_free_image_data(pData);
 
@@ -127,34 +107,31 @@ void Plane::getModel() {
 		normals.push_back(normal.z);
 	}
 
-}
+	//Texture
+	pData = SOIL_load_image("grass.jpg", &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
 
-void Plane::setupMesh() {
+	if (pData == 0)
+		cerr << "SOIL loading error: '" << SOIL_last_result() << "' (" << "res_texture.png" << ")" << endl;
 
+	glGenTextures(1, &Texture);
+	glBindTexture(GL_TEXTURE_2D, Texture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
+	glGenerateMipmap(GL_TEXTURE_2D);
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
+	// Parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	SOIL_free_image_data(pData);
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
 
-
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	glGenBuffers(1, &VBO2);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-	if (!indices.empty()) {
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * indices.size(), &(indices[0]), GL_STATIC_DRAW);
+	for (int i = 0; i < vertices.size() / 12; i++)
+	{
+		texCoords.push_back(0.0); texCoords.push_back(0.0);
+		texCoords.push_back(1.0); texCoords.push_back(0.0);
+		texCoords.push_back(0.0); texCoords.push_back(1.0);
+		texCoords.push_back(1.0); texCoords.push_back(1.0);
 	}
-	
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * normals.size(), &normals[0], GL_STATIC_DRAW);
-
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(1);
-
-	glBindVertexArray(0);
 }

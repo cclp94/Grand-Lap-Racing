@@ -1,5 +1,5 @@
 #include "DirectionalLight.h"
-
+#include <glm\ext.hpp>
 
 
 DirectionalLight::DirectionalLight(glm::vec3 direc, glm::vec3 amb, glm::vec3 dif, glm::vec3 spec) :
@@ -10,6 +10,12 @@ DirectionalLight::DirectionalLight(glm::vec3 direc, glm::vec3 amb, glm::vec3 dif
 
 DirectionalLight::~DirectionalLight()
 {
+}
+
+glm::mat4 DirectionalLight::getLightSpaceMatrix(int width, int height) {
+	glm::mat4 view = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 200.0f);
+	glm::mat4 proj = glm::lookAt(direction, glm::vec3(0.0f), glm::vec3(1.0));
+	return proj * view;
 }
 
 glm::vec3 DirectionalLight::getDirection() {
@@ -24,5 +30,13 @@ glm::vec3 DirectionalLight::getDiffuseColor() {
 }
 glm::vec3 DirectionalLight::getSpecularColor() {
 	return specular;
+}
+
+void DirectionalLight::setProperties(Shader *s) {
+	s->use();
+	glUniform4f(s->getUniform("light.direction"), direction.x, direction.y, direction.z, 1.0);
+	glUniform4f(s->getUniform("light.ambient"), ambient.x, ambient.y, ambient.z, 1.0);
+	glUniform4f(s->getUniform("light.diffuse"), diffuse.x, diffuse.y, diffuse.z, 1.0);
+	glUniform4f(s->getUniform("light.specular"), specular.x, specular.y, specular.z, 1.0);
 }
 

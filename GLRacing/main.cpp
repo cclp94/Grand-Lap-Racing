@@ -21,6 +21,7 @@
 #include "Shader.h"
 #include "Barrier.h"
 #include "DirectionalLight.h"
+#include "DepthMap.h"
 
 using namespace std;
 
@@ -51,51 +52,73 @@ int main() {
 	//Set Shaders
 	Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
 	Shader *terrainShader = new Shader("terrainVertexShader.vs", "lightFragShader.fs");
+	Shader *depthShader = new Shader("depthVShader.vs", "depthFShader.fs");
 
 	// Perspective Projection
 	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 200.0f);
 
-	
+
 	// Projectiion Matrix and light
 	mainShader->use();
 	glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-
-	glm::vec3 lightProperty = light.getDirection();
-	glUniform4f(mainShader->getUniform("light.direction"),lightProperty.x, lightProperty.y,lightProperty.z, 1.0);
-	lightProperty = light.getAmbientColor();
-	glUniform4f(mainShader->getUniform("light.ambient"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
-	lightProperty = light.getDiffuseColor();
-	glUniform4f(mainShader->getUniform("light.diffuse"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
-	lightProperty = light.getSpecularColor();
-	glUniform4f(mainShader->getUniform("light.specular"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
-
+	light.setProperties(mainShader);
 
 	terrainShader->use();
 	glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-	lightProperty = light.getDirection();
-	glUniform4f(terrainShader->getUniform("light.direction"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
-	lightProperty = light.getAmbientColor();
-	glUniform4f(terrainShader->getUniform("light.ambient"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
-	lightProperty = light.getDiffuseColor();
-	glUniform4f(terrainShader->getUniform("light.diffuse"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
-	lightProperty = light.getSpecularColor();
-	glUniform4f(terrainShader->getUniform("light.specular"), lightProperty.x, lightProperty.y, lightProperty.z, 1.0);
-
-
+	light.setProperties(terrainShader);
+	
 
 	// Objects in scene
 	Plane plane(terrainShader);
-	Road road(mainShader);
+	Road road(terrainShader);
 	Barrier barrier1(terrainShader, Barrier::OUTTER);
 	Barrier barrier2(terrainShader, Barrier::INNER);
 	Kart = new kart(mainShader);
 
+	//Shadow Depth Map
+	DepthMap depthMap;
+
+	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+
+	//-------------------------------------------------------------
+
+
 	// Game Loop
 	while (!glfwWindowShouldClose(window)) {
+
+		// Depth Scene Rendering
+		glm::mat4 lightSpaceMatrix = light.getLightSpaceMatrix(width, height);
+
+		// 1. Render depth of scene to texture (from light's perspective)
+		// - Get light projection/view matrix.
+		// - render scene from light's point of view
+		
+		depthShader->use();
+		glUniformMatrix4fv(depthShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+		
+		
+		depthMap.bind();
+		//--------Render Depth Scene --------------
+		plane.depthDraw(depthShader);
+		Kart->depthDraw(depthShader);
+		road.depthDraw(depthShader);
+		barrier1.depthDraw(depthShader);
+		barrier2.depthDraw(depthShader);
+		//------------------------------------------
+		depthMap.unbind();
+
+
 		// wipe the drawing surface clear
+		glViewport(0, 0, width, height);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 		glPointSize(point_size);
+
+		// Projectiion Matrix and light
+		mainShader->use();
+		glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+		terrainShader->use();
+		glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 
 		view_matrix = Kart->getCameraView(); // Get Camera View Matrix
 		glm::vec3 viewPos = Kart->getCameraPosition();
@@ -104,14 +127,20 @@ int main() {
 		// Apply view Matrix in secondary shader programs
 		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
 		plane.draw();
+		barrier1.draw();
+		barrier2.draw();
+		road.draw();
 
 		// Main Shader Program
 		mainShader->use();
+		glUniformMatrix4fv(mainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		Kart->draw();
-		road.draw();
-		barrier1.draw();
-		barrier2.draw();
+		
+		
 		
 	
 		// update other events like input handling
@@ -132,7 +161,6 @@ bool initialize() {
 		return false;
 	}
 
-	/// Create a window of size 640x480 and with title "Lecture 2: First Triangle"
 	glfwWindowHint(GLFW_DOUBLEBUFFER, GL_TRUE);
 
 	const GLFWvidmode* mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
@@ -140,7 +168,8 @@ bool initialize() {
 	glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
 	glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
 	glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-
+	width = mode->width;
+	height = mode->height;
 	window = glfwCreateWindow(mode->width, mode->height, "Grand Lap Racing", NULL, NULL);
 
 	if (!window) {
