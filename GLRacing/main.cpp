@@ -46,7 +46,7 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 int main() {
 	initialize();
 	//Light
-	DirectionalLight light(glm::vec3(1000.0, 1000.0, 0.0), glm::vec3(0.7, 0.7, 0.7), glm::vec3(0.7, 0.7, 0.7), glm::vec3(0.7, 0.7, 0.7));
+	DirectionalLight light(glm::vec3(1000.0, 1000.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
 
 	//Set Shaders
 	Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
@@ -86,8 +86,8 @@ int main() {
 	// Objects in scene
 	Plane plane(terrainShader);
 	Road road(mainShader);
-	Barrier barrier1(mainShader, Barrier::OUTTER);
-	Barrier barrier2(mainShader, Barrier::INNER);
+	Barrier barrier1(terrainShader, Barrier::OUTTER);
+	Barrier barrier2(terrainShader, Barrier::INNER);
 	Kart = new kart(mainShader);
 
 	// Game Loop

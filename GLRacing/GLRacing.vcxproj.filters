@@ -88,19 +88,14 @@
     <None Include="lightFragShader.fs" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="terrain.bmp">
+    <Image Include="terrain2.tga">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="5046_05_02.jpg">
+    <Image Include="terrain.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="terrain2.bmp">
+    <Image Include="terrain.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="terrain2.jpg">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="terrain2.tga" />
-    <Image Include="TerrainNormalMap.tga" />
   </ItemGroup>
 </Project>

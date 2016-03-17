@@ -25,13 +25,15 @@ public:
 
 protected:
 	GLuint VAO, VBO, EBO, Texture;
+	vector<GLfloat> normals;
+	GLuint VBO2;
 
 	Shader *shaderProgram;
 	glm::mat4 view_matrix, model_matrix;
 	glm::vec3 vertex_color;
 	glm::vec3 color;
-	int texture_width, texture_height, channels;
-	GLubyte* pData;
+	int texture_width, texture_height, channels=1;
+	unsigned char* pData;
 	virtual void setupMesh();
 	Material material;
 	void setMaterialUniform();

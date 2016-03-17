@@ -157,12 +157,9 @@
     <None Include="vertexShader1.vs" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="5046_05_02.jpg" />
-    <Image Include="terrain.bmp" />
-    <Image Include="terrain2.bmp" />
-    <Image Include="terrain2.jpg" />
+    <Image Include="terrain.jpg" />
+    <Image Include="terrain.png" />
     <Image Include="terrain2.tga" />
-    <Image Include="TerrainNormalMap.tga" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,9 +16,10 @@ private:
 	void getModel();
 	glm::vec3 color;
 	void setupMesh();
-	const static int TERRAIN_WIDTH = 1000;
-	const static int TERRAIN_DEPTH = 1000;
+	const static int TERRAIN_WIDTH = 400;
+	const static int TERRAIN_DEPTH = 400;
 	glm::vec2 HALF_TERRAIN_SIZE;
-	GLuint NormalMap;
+	vector<GLfloat> normals;
+	GLuint VBO2;
 };
 

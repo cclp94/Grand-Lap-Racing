@@ -6,10 +6,10 @@
 Barrier::Barrier(Shader *s, int position) : Model(s)
 {
 	this->position = position;
-	color = glm::vec3(1.0, 1.0, 0.2);
+	color = glm::vec3(1.0, 0.2, 0.2);
 	material.ambient = glm::vec4(color, 1.0);
-	material.diffuse = glm::vec4(color, 1.0);
-	material.specular =glm::vec4( color, 1.0);
+	material.diffuse = glm::vec4(glm::vec3(0.7, 0.7, 0.7), 1.0);
+	material.specular =glm::vec4( glm::vec3(1.0, 0.8, 0.9), 1.0);
 	material.shininess = 4;
 	
 	getModel();
@@ -81,6 +81,32 @@ void Barrier::getModel() {
 			indices.push_back(((depth*i) + j + depth + 1) % totalPoints);
 			indices.push_back(((depth*i) + j + depth) % totalPoints);
 		}
+	}
+
+	for (int i = 0; i < indices.size(); i += 3)
+	{
+		int index = indices[i] * 3;
+		glm::vec3 v1 = glm::vec3(
+			vertices[index],
+			vertices[index + 1],
+			vertices[index + 2]);
+		index = indices[i + 1] * 3;
+		glm::vec3 v2 = glm::vec3(
+			vertices[index],
+			vertices[index + 1],
+			vertices[index + 2]);
+		index = indices[i + 2] * 3;
+		glm::vec3 v3 = glm::vec3(
+			vertices[index],
+			vertices[index + 1],
+			vertices[index + 2]);
+
+		glm::vec3 v1v2 = v2 - v1;
+		glm::vec3 v1v3 = v3 - v1;
+		glm::vec3 normal = glm::normalize(glm::cross(v1v2, v1v3));
+		normals.push_back(normal.x);
+		normals.push_back(normal.y);
+		normals.push_back(normal.z);
 	}
 
 }
