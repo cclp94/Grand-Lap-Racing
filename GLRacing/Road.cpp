@@ -41,15 +41,15 @@ void Road::getModel() {
 
 	//SplineFactory s;
 	vertices = SplineFactory::buildSpline(vertices);
-	vertices = SplineFactory::extrudeSpline(vertices, 50);
+	vertices = SplineFactory::extrudeSpline(vertices, 40);
 
-	pData = SOIL_load_image("road.jpg", &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
+	pData = SOIL_load_image("tunnel_road.jpg", &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
 
 	if (pData == 0)
 		cerr << "SOIL loading error: '" << SOIL_last_result() << "' (" << "res_texture.png" << ")" << endl;
 	
-	glGenTextures(1, &Texture);
-	glBindTexture(GL_TEXTURE_2D, Texture);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -79,7 +79,7 @@ void Road::draw() {
 	glBindVertexArray(VAO);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY_EXT);
-	glBindTexture(GL_TEXTURE_2D, Texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	//glUniform1i(GL_TEXTURE_2D, 1);
 
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));

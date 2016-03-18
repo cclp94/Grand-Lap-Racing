@@ -6,6 +6,11 @@
 #include <GL\glew.h>
 #include <glm\ext.hpp>
 #include <GLFW\glfw3.h>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+#include "Mesh.h"
+
 
 #include "Model.h"
 class Camera;
@@ -39,4 +44,11 @@ private:
 	glm::vec3 color;
 	Camera *camera;
 	glm::vec4 position;
+	
+	vector<Mesh> meshes;
+	void processNode(aiNode* node, const aiScene* scene);
+	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
+	vector<Texture> textures_loaded;
+	string meshDirectory;
 };

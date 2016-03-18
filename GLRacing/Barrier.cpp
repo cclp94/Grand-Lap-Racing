@@ -26,23 +26,23 @@ Barrier::~Barrier()
 }
 
 void Barrier::getModel() {
-	float y = -0.0001;
-	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.0);
-	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.5);
-	vertices.push_back(-0.2); vertices.push_back(y); vertices.push_back(0.8);
-	vertices.push_back(0.2); vertices.push_back(y); vertices.push_back(0.9);
-	vertices.push_back(0.5); vertices.push_back(y); vertices.push_back(0.7);
-	vertices.push_back(0.1); vertices.push_back(y); vertices.push_back(0.2);
-	vertices.push_back(0.2); vertices.push_back(y); vertices.push_back(0.0);
-	vertices.push_back(0.5); vertices.push_back(y); vertices.push_back(-0.3);
-	vertices.push_back(0.2); vertices.push_back(y); vertices.push_back(-0.5);
-	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(-0.7);
-	vertices.push_back(-0.7); vertices.push_back(y); vertices.push_back(-0.3);
-	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(-0.2);
-	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.0);
-	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.5);
-	vertices.push_back(-0.2); vertices.push_back(y); vertices.push_back(0.8);
-	vertices.push_back(0.2); vertices.push_back(y); vertices.push_back(0.9);
+	float y = -0.0001f;
+	vertices.push_back(-0.5f); vertices.push_back(y); vertices.push_back(0.0f);
+	vertices.push_back(-0.5f); vertices.push_back(y); vertices.push_back(0.5f);
+	vertices.push_back(-0.2f); vertices.push_back(y); vertices.push_back(0.8f);
+	vertices.push_back(0.2f); vertices.push_back(y); vertices.push_back(0.9f);
+	vertices.push_back(0.5f); vertices.push_back(y); vertices.push_back(0.7f);
+	vertices.push_back(0.1f); vertices.push_back(y); vertices.push_back(0.2f);
+	vertices.push_back(0.2f); vertices.push_back(y); vertices.push_back(0.0f);
+	vertices.push_back(0.5f); vertices.push_back(y); vertices.push_back(-0.3f);
+	vertices.push_back(0.2f); vertices.push_back(y); vertices.push_back(-0.5f);
+	vertices.push_back(-0.5f); vertices.push_back(y); vertices.push_back(-0.7f);
+	vertices.push_back(-0.7f); vertices.push_back(y); vertices.push_back(-0.3f);
+	vertices.push_back(-0.5f); vertices.push_back(y); vertices.push_back(-0.2f);
+	vertices.push_back(-0.5f); vertices.push_back(y); vertices.push_back(0.0f);
+	vertices.push_back(-0.5f); vertices.push_back(y); vertices.push_back(0.5f);
+	vertices.push_back(-0.2f); vertices.push_back(y); vertices.push_back(0.8f);
+	vertices.push_back(0.2f); vertices.push_back(y); vertices.push_back(0.9f);
 
 	SplineFactory s;
 	vertices = s.buildSpline(vertices);
@@ -115,8 +115,8 @@ void Barrier::getModel() {
 	if (pData == 0)
 		cerr << "SOIL loading error: '" << SOIL_last_result() << "' (" << "res_texture.png" << ")" << endl;
 
-	glGenTextures(1, &Texture);
-	glBindTexture(GL_TEXTURE_2D, Texture);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -132,15 +132,15 @@ void Barrier::getModel() {
 	{
 		
 		texCoords.push_back(0.0); texCoords.push_back(0.0);
-		texCoords.push_back(0.5); texCoords.push_back(0.0);
+		texCoords.push_back(1.0); texCoords.push_back(0.0);
 		
 
 	}
 
 	for (int i = vertices.size() / (6); i < vertices.size() / 3; i += 2)
 	{
-		texCoords.push_back(0.0); texCoords.push_back(0.5);
-		texCoords.push_back(0.5); texCoords.push_back(0.5);
+		texCoords.push_back(0.0); texCoords.push_back(1.0);
+		texCoords.push_back(1.0); texCoords.push_back(1.0);
 		
 	}
 
@@ -151,7 +151,7 @@ void Barrier::draw() {
 	glBindVertexArray(VAO);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY_EXT);
-	glBindTexture(GL_TEXTURE_2D, Texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	this->setMaterialUniform();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

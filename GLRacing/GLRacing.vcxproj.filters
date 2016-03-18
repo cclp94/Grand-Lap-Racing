@@ -86,6 +86,9 @@
     <ClInclude Include="DepthMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
@@ -94,6 +97,14 @@
     <None Include="lightFragShader.fs" />
     <None Include="depthVShader.vs" />
     <None Include="depthFShader.fs" />
+    <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
+    <None Include="Assets\Enzo%27s Car\enzo_car.mtl" />
+    <None Include="Assets\nanosuit\nanosuit.blend" />
+    <None Include="Assets\nanosuit\nanosuit.mtl" />
+    <None Include="Assets\Green Car\Wagon.mtl" />
+    <None Include="Assets\violet_car\violet_car.mtl" />
+    <None Include="Assets\car1\car1.mtl" />
+    <None Include="Assets\bridge\model.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="terrain2.tga">
@@ -114,5 +125,136 @@
     <Image Include="grass.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Enzo%27s Car\car.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enzo%27s Car\car_bump.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enzo%27s Car\inner.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enzo%27s Car\inner_bump.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enzo%27s Car\misc.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enzo%27s Car\misc_bump.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enzo%27s Car\windshield.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\arm_dif.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\arm_showroom_ddn.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\arm_showroom_spec.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\body_dif.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\body_showroom_ddn.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\body_showroom_spec.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\glass_ddn.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\glass_dif.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\hand_dif.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\hand_showroom_ddn.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\hand_showroom_spec.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\helmet_diff.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\helmet_showroom_ddn.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\helmet_showroom_spec.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\leg_dif.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\leg_showroom_ddn.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\nanosuit\leg_showroom_spec.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Green Car\Wagon-tex.tex.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\violet_car\t0001_0.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\car1\t0147_0.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\car1\t0147_1.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\car1\t0147_2.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\car1\t0147_3.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\car1\t0147_4.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\car1\t0166_0.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\car1\t0166_1.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\car1\t0166_2.bmp">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\bridge\0.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\bridge\1.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\bridge\2.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\bridge\3.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\bridge\4.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="tunnel_road.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Enzo%27s Car\info.txt" />
+    <Text Include="Assets\nanosuit\LICENSE.txt" />
+    <Text Include="Assets\nanosuit\nanosuit.obj" />
+    <Text Include="Assets\Enzo%27s Car\enzo_car.obj" />
+    <Text Include="Assets\Green Car\Wagon.obj" />
+    <Text Include="Assets\violet_car\info.txt" />
+    <Text Include="Assets\violet_car\violet_car.obj" />
+    <Text Include="Assets\car1\car1.obj" />
+    <Text Include="Assets\bridge\model.obj" />
   </ItemGroup>
 </Project>

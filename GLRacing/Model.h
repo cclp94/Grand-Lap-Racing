@@ -24,7 +24,7 @@ public:
 	virtual glm::vec3 getNormal() { return glm::vec3(0.0, 1.0, 0.0); }
 
 protected:
-	GLuint VAO, VBO, EBO, Texture;
+	GLuint VAO, VBO, EBO, texture;
 	vector<GLfloat> normals, texCoords;
 	GLuint VBO2, TexVBO;
 

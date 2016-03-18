@@ -47,7 +47,7 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 int main() {
 	initialize();
 	//Light
-	DirectionalLight light(glm::vec3(1000.0, 60.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
+	DirectionalLight light(glm::vec3(-1000.0, 1060.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
 
 	//Set Shaders
 	Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
@@ -73,7 +73,7 @@ int main() {
 	Road road(terrainShader);
 	Barrier barrier1(terrainShader, Barrier::OUTTER);
 	Barrier barrier2(terrainShader, Barrier::INNER);
-	Kart = new kart(mainShader);
+	Kart = new kart(terrainShader);
 
 	//Shadow Depth Map
 	DepthMap depthMap;
@@ -134,11 +134,12 @@ int main() {
 		barrier1.draw();
 		barrier2.draw();
 		road.draw();
+		Kart->draw();
 
 		// Main Shader Program
 		mainShader->use();
 		glUniformMatrix4fv(mainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
-		Kart->draw();
+		
 		
 		
 		

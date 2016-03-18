@@ -49,7 +49,7 @@ void main () {
 
 	vec3 color = texture(diffuseTexture, TextCoord).rgb;
 
-	vec3 lightDir = normalize(FragPos - light.direction);
+	vec3 lightDir = -normalize(FragPos - light.direction);
 
 
 	// Ambient

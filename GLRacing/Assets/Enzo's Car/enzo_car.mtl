@@ -1,0 +1,182 @@
+# Blender MTL File: 'enzo_car.blend'
+# Material Count: 15
+
+newmtl bayomat0
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd car.png
+map_Ka car_bump.png
+map_Disp car_bump.png
+map_Ke car_bump.png
+
+newmtl bayomat1
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd car.png
+map_Ka car_bump.png
+map_Disp car_bump.png
+map_Ke car_bump.png
+
+newmtl bayomat10
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Ka inner_bump.png
+map_Disp inner_bump.png
+map_Kd inner.png
+map_Ke inner_bump.png
+
+newmtl bayomat10_inner.png
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd inner.png
+map_Ka inner_bump.png
+map_Disp inner_bump.png
+map_Ke inner_bump.png
+
+newmtl bayomat11
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd windshield.png
+
+newmtl bayomat14
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd inner.png
+map_Ka inner_bump.png
+map_Disp inner_bump.png
+map_Ke inner_bump.png
+
+newmtl bayomat15
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd car.png
+
+newmtl bayomat2
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd inner.png
+map_Ka inner_bump.png
+map_Disp inner_bump.png
+map_Ke inner_bump.png
+
+newmtl bayomat3
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd inner.png
+map_Ka inner_bump.png
+map_Disp inner_bump.png
+map_Ke inner_bump.png
+
+newmtl bayomat4
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd inner.png
+map_Ka inner_bump.png
+map_Disp inner_bump.png
+map_Ke inner_bump.png
+
+newmtl bayomat5
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd inner.png
+map_Ka inner_bump.png
+map_Disp inner_bump.png
+map_Ke inner_bump.png
+
+newmtl bayomat6
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd car.png
+
+newmtl bayomat7
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd inner.png
+
+newmtl bayomat8
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd car.png
+
+newmtl bayomat9
+Ns -1.960784
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd misc.png
+map_Ka misc_bump.png
+map_Disp misc_bump.png
+map_Ke misc_bump.png

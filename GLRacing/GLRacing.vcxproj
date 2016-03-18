@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;SOIL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;SOIL.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -145,6 +145,7 @@
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="kart.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Road.h" />
@@ -153,6 +154,14 @@
     <ClInclude Include="SplineFactory.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\bridge\model.mtl" />
+    <None Include="Assets\car1\car1.mtl" />
+    <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
+    <None Include="Assets\Enzo%27s Car\enzo_car.mtl" />
+    <None Include="Assets\Green Car\Wagon.mtl" />
+    <None Include="Assets\nanosuit\nanosuit.blend" />
+    <None Include="Assets\nanosuit\nanosuit.mtl" />
+    <None Include="Assets\violet_car\violet_car.mtl" />
     <None Include="depthFShader.fs" />
     <None Include="depthVShader.vs" />
     <None Include="fragmentShader1.fs" />
@@ -161,12 +170,86 @@
     <None Include="vertexShader1.vs" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Assets\bridge\0.png" />
+    <Image Include="Assets\bridge\1.png" />
+    <Image Include="Assets\bridge\2.png" />
+    <Image Include="Assets\bridge\3.png" />
+    <Image Include="Assets\bridge\4.png" />
+    <Image Include="Assets\car1\t0147_0.bmp" />
+    <Image Include="Assets\car1\t0147_1.bmp" />
+    <Image Include="Assets\car1\t0147_2.bmp" />
+    <Image Include="Assets\car1\t0147_3.bmp" />
+    <Image Include="Assets\car1\t0147_4.bmp" />
+    <Image Include="Assets\car1\t0166_0.bmp" />
+    <Image Include="Assets\car1\t0166_1.bmp" />
+    <Image Include="Assets\car1\t0166_2.bmp" />
+    <Image Include="Assets\Enzo%27s Car\car.png" />
+    <Image Include="Assets\Enzo%27s Car\car_bump.png" />
+    <Image Include="Assets\Enzo%27s Car\inner.png" />
+    <Image Include="Assets\Enzo%27s Car\inner_bump.png" />
+    <Image Include="Assets\Enzo%27s Car\misc.png" />
+    <Image Include="Assets\Enzo%27s Car\misc_bump.png" />
+    <Image Include="Assets\Enzo%27s Car\windshield.png" />
+    <Image Include="Assets\Green Car\Wagon-tex.tex.png" />
+    <Image Include="Assets\nanosuit\arm_dif.png" />
+    <Image Include="Assets\nanosuit\arm_showroom_ddn.png" />
+    <Image Include="Assets\nanosuit\arm_showroom_spec.png" />
+    <Image Include="Assets\nanosuit\body_dif.png" />
+    <Image Include="Assets\nanosuit\body_showroom_ddn.png" />
+    <Image Include="Assets\nanosuit\body_showroom_spec.png" />
+    <Image Include="Assets\nanosuit\glass_ddn.png" />
+    <Image Include="Assets\nanosuit\glass_dif.png" />
+    <Image Include="Assets\nanosuit\hand_dif.png" />
+    <Image Include="Assets\nanosuit\hand_showroom_ddn.png" />
+    <Image Include="Assets\nanosuit\hand_showroom_spec.png" />
+    <Image Include="Assets\nanosuit\helmet_diff.png" />
+    <Image Include="Assets\nanosuit\helmet_showroom_ddn.png" />
+    <Image Include="Assets\nanosuit\helmet_showroom_spec.png" />
+    <Image Include="Assets\nanosuit\leg_dif.png" />
+    <Image Include="Assets\nanosuit\leg_showroom_ddn.png" />
+    <Image Include="Assets\nanosuit\leg_showroom_spec.png" />
+    <Image Include="Assets\violet_car\t0001_0.png" />
     <Image Include="grass.jpg" />
     <Image Include="opengl.jpg" />
     <Image Include="road.jpg" />
     <Image Include="terrain.jpg" />
     <Image Include="terrain.png" />
     <Image Include="terrain2.tga" />
+    <Image Include="tunnel_road.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Enzo%27s Car\info.txt" />
+    <Text Include="Assets\nanosuit\LICENSE.txt" />
+    <Text Include="Assets\violet_car\info.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Enzo%27s Car\enzo_car.obj">
+      <FileType>Text</FileType>
+    </Text>
+    <Text Include="Assets\nanosuit\nanosuit.obj">
+      <DeploymentContent>true</DeploymentContent>
+      <FileType>Text</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Green Car\Wagon.obj">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\violet_car\violet_car.obj">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\car1\car1.obj">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\bridge\model.obj">
+      <FileType>Document</FileType>
+    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

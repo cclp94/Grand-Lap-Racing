@@ -29,7 +29,7 @@ glm::vec3 Plane::getColor() {
 void Plane::draw() {
 	glBindVertexArray(VAO);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY_EXT);
-	glBindTexture(GL_TEXTURE_2D, Texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
@@ -111,8 +111,8 @@ void Plane::getModel() {
 	if (pData == 0)
 		cerr << "SOIL loading error: '" << SOIL_last_result() << "' (" << "res_texture.png" << ")" << endl;
 
-	glGenTextures(1, &Texture);
-	glBindTexture(GL_TEXTURE_2D, Texture);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
