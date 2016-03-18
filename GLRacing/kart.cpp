@@ -41,7 +41,7 @@ void kart::move() {
 }
 
 void kart::turn(float angle) {
-	if (speed > 0) {
+	if (speed != 0) {
 		model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
 	}
 }

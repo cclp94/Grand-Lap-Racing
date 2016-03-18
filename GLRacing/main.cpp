@@ -47,7 +47,7 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 int main() {
 	initialize();
 	//Light
-	DirectionalLight light(glm::vec3(1000.0, 1000.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
+	DirectionalLight light(glm::vec3(1000.0, 60.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
 
 	//Set Shaders
 	Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
@@ -203,7 +203,8 @@ bool initialize() {
 	glDepthFunc(GL_LESS);	/// The type of testing i.e. a smaller value as "closer"
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glEnable(GL_MULTISAMPLE);
 	return true;
 }
 

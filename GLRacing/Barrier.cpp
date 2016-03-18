@@ -6,7 +6,7 @@
 Barrier::Barrier(Shader *s, int position) : Model(s)
 {
 	this->position = position;
-	color = glm::vec3(1.0, 0.2, 0.2);
+	color = glm::vec3(1.0, 1.0, 1.0);
 	material.ambient = glm::vec4(color, 1.0);
 	material.diffuse = glm::vec4(glm::vec3(0.7, 0.7, 0.7), 1.0);
 	material.specular =glm::vec4( glm::vec3(1.0, 0.8, 0.9), 1.0);
@@ -60,7 +60,7 @@ void Barrier::getModel() {
 
 		glm::vec4 p = glm::vec4(mesh[i], mesh[i + 1], mesh[i + 2], 1.0);
 		glm::mat4 trans;
-		trans = glm::translate(trans, glm::vec3(0.0, 0.5, 0.0));
+		trans = glm::translate(trans, glm::vec3(0.0, 1.0, 0.0));
 		p = trans * p;
 		mesh.push_back(p.x); mesh.push_back(p.y); mesh.push_back(p.z);
 	}
@@ -121,19 +121,27 @@ void Barrier::getModel() {
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	SOIL_free_image_data(pData);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
 
-	for (int i = 0; i < vertices.size() / 12; i++)
+	for (int i = 0; i < vertices.size() / (6); i += 2)
 	{
+		
 		texCoords.push_back(0.0); texCoords.push_back(0.0);
-		texCoords.push_back(1.0); texCoords.push_back(0.0);
-		texCoords.push_back(0.0); texCoords.push_back(1.0);
-		texCoords.push_back(1.0); texCoords.push_back(1.0);
+		texCoords.push_back(0.5); texCoords.push_back(0.0);
+		
+
+	}
+
+	for (int i = vertices.size() / (6); i < vertices.size() / 3; i += 2)
+	{
+		texCoords.push_back(0.0); texCoords.push_back(0.5);
+		texCoords.push_back(0.5); texCoords.push_back(0.5);
+		
 	}
 
 }
@@ -146,7 +154,6 @@ void Barrier::draw() {
 	glBindTexture(GL_TEXTURE_2D, Texture);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	this->setMaterialUniform();
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 

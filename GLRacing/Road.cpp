@@ -6,10 +6,10 @@
 Road::Road(Shader *s) : Model(s)
 {
 		color = glm::vec3(0.3, 0.3, 0.3);
-		material.ambient = glm::vec4(0.6, 0.6, 0.6, 1.0);
-		material.diffuse = glm::vec4(0.0, 0.0, 0.0, 1.0);
+		material.ambient = glm::vec4(0.5, 0.5, 0.5, 1.0);
+		material.diffuse = glm::vec4(0.8, 0.8, 0.8, 1.0);
 		material.specular = glm::vec4(0.0, 0.0, 0.0, 1.0);
-		material.shininess = 0.001;
+		material.shininess = 1;
 		getModel();
 		setupMesh();
 		model_matrix = glm::scale(model_matrix, glm::vec3(500.00));

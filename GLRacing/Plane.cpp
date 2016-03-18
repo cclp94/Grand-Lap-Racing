@@ -13,7 +13,7 @@ Plane::Plane(Shader *s) : Model(s)
 	getModel();
 	setupMesh();
 	
-	model_matrix = glm::translate(model_matrix, glm::vec3(-500, -1.0, -500.0));
+	model_matrix = glm::translate(model_matrix, glm::vec3(-500, -1.0, -500));
 	model_matrix = glm::scale(model_matrix, glm::vec3(10));
 }
 
@@ -35,9 +35,7 @@ void Plane::draw() {
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 
 	setMaterialUniform();
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINES);
 	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_INT, 0);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glBindVertexArray(0);
 }
 
@@ -54,8 +52,8 @@ void Plane::getModel() {
 
 
 
-	for (int j = 0; j<texture_height; j++) {
-		for (int i = 0; i<texture_width; i++) {
+	for (int j = 0; j<texture_height-1; j++) {
+		for (int i = 0; i<texture_width-1; i++) {
 			vertices.push_back(float(i));
 			vertices.push_back((float)((((float) pData[i + (texture_width*j)])-128)/128)*2);
 			vertices.push_back(float(j));
@@ -65,18 +63,18 @@ void Plane::getModel() {
 	SOIL_free_image_data(pData);
 
 	int totalPoints = vertices.size()/3;
-	int depth = (texture_height) ;
-	int width = (texture_width);
-	for (int i = 0; i < depth -1; i++)
+	int depth = (texture_height-1) ;
+	int width = (texture_width-1);
+	for (int i = 0; i < depth-1; i++)
 	{
-		for (int j = 0; j < width -1; j++)
+		for (int j = 0; j < width-1; j++)
 		{
-			indices.push_back(((depth*i) + j) % totalPoints);
-			indices.push_back(((depth*i) + j + 1) % totalPoints);
-			indices.push_back(((depth*i) + j + depth) % totalPoints);
-			indices.push_back(((depth*i) + j + 1) % totalPoints);
-			indices.push_back(((depth*i) + j + depth + 1) % totalPoints);
-			indices.push_back(((depth*i) + j + depth) % totalPoints);
+			indices.push_back(((depth*i) + j) );
+			indices.push_back(((depth*i) + j + 1) );
+			indices.push_back(((depth*i) + j + depth));
+			indices.push_back(((depth*i) + j + 1) );
+			indices.push_back(((depth*i) + j + depth + 1));
+			indices.push_back(((depth*i) + j + depth));
 		}
 	}
 	//getNormal();
@@ -126,12 +124,22 @@ void Plane::getModel() {
 	SOIL_free_image_data(pData);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
 
-	for (int i = 0; i < vertices.size() / 12; i++)
+	for (int i = 0; i <= sqrt(vertices.size()/3); i++)
 	{
-		texCoords.push_back(0.0); texCoords.push_back(0.0);
-		texCoords.push_back(1.0); texCoords.push_back(0.0);
-		texCoords.push_back(0.0); texCoords.push_back(1.0);
-		texCoords.push_back(1.0); texCoords.push_back(1.0);
+		for (int j = 0; j <= sqrt(vertices.size()/3); j +=2)
+		{
+			texCoords.push_back(0.0); texCoords.push_back(0.0);
+			texCoords.push_back(1.0); texCoords.push_back(0.0);
+
+		}
+
+		for (int j = 0; j <= sqrt(vertices.size()/3); j +=2)
+		{
+			texCoords.push_back(0.0); texCoords.push_back(1.0);
+			texCoords.push_back(1.0); texCoords.push_back(1.0);
+
+		}
+
 	}
 
 }
