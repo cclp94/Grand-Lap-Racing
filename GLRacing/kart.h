@@ -10,6 +10,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include "Mesh.h"
+#include "ImportedModel.h"
 
 
 #include "Model.h"
@@ -17,7 +18,7 @@ class Camera;
 
 using namespace std;
 
-class kart : public Model{
+class kart : public ImportedModel{
 public:
 	kart(Shader *s);
 	~kart();
@@ -38,17 +39,9 @@ private:
 	float maxSpeed;
 	float speed;
 	float acceleration;
-	void getModel();
 	bool isAccelarating;
 	bool isReverse;
 	glm::vec3 color;
 	Camera *camera;
 	glm::vec4 position;
-	
-	vector<Mesh> meshes;
-	void processNode(aiNode* node, const aiScene* scene);
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
-	vector<Texture> textures_loaded;
-	string meshDirectory;
 };

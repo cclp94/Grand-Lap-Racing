@@ -10,10 +10,15 @@ using namespace std;
 
 class SplineFactory {
 
-	static void subdivide(vector<GLfloat> &spline, float u0, float u1, float angleThreshold,
-		glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3) {
-		float umid = (u0 + u1) / 2.0;
-
+	static void subdivide(vector<GLfloat> &spline, float u0, float u1, float angleThreshold, 
+	glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3) {
+	float umid = (u0 + u1) / 2.0;		// Get middle point
+	if (u0 == 0 && u1 == 1) {			// Force first recursion
+		subdivide(spline, u0, umid, angleThreshold, p0, p1, p2, p3);
+		subdivide(spline, umid, u1, angleThreshold, p0, p1, p2, p3);
+	}
+	else {
+		
 		glm::vec3 pInitial = drawSpline(u0, p0, p1, p2, p3);	// Get Spline point in u0
 		glm::vec3 pFinal = drawSpline(u1, p0, p1, p2, p3);		// Get Spline point in u1
 		glm::vec3 pMid = drawSpline(umid, p0, p1, p2, p3);		// Get Spline point in uMid
@@ -21,9 +26,9 @@ class SplineFactory {
 		glm::vec3 totalDistance = glm::normalize(pFinal - pInitial);	// Vector from p1 - p0
 		glm::vec3 midDistance = glm::normalize(pMid - pInitial);		// Vector from p0 to pMiddle
 
-		float distance = glm::distance(pInitial, pFinal);	// Angle to get curvature
+		float angle = glm::acos(glm::dot(midDistance, totalDistance));	// Angle to get curvature
 
-		if (distance > angleThreshold) {									// If angle is not 'curvy' enough
+		if (angle > angleThreshold) {									// If angle is not 'curvy' enough
 			subdivide(spline, u0, umid, angleThreshold, p0, p1, p2, p3);		// Recurse
 			subdivide(spline, umid, u1, angleThreshold, p0, p1, p2, p3);		// Recurse
 		}
@@ -31,11 +36,9 @@ class SplineFactory {
 			spline.push_back(pInitial.x);		// Put point in vector
 			spline.push_back(pInitial.y);		// Put point in vector
 			spline.push_back(pInitial.z);		// Put point in vector
-												//spline.push_back(pFinal.x);		// Put point in vector
-												//spline.push_back(pFinal.y);		// Put point in vector
-												//spline.push_back(pFinal.z);		// Put point in vector
 		}
 	}
+}
 
 	static glm::vec3 drawSpline(float u, glm::vec3 p0, glm::vec3 p1, glm::vec3 p2,
 		glm::vec3 p3) {
