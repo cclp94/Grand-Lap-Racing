@@ -3,14 +3,14 @@
 #include "SOIL.h"
 
 
-Road::Road(Shader *s) : Model(s)
+Road::Road(Shader *s, Plane *terrain) : Model(s)
 {
 		color = glm::vec3(0.3, 0.3, 0.3);
 		material.ambient = glm::vec4(0.5, 0.5, 0.5, 1.0);
 		material.diffuse = glm::vec4(0.8, 0.8, 0.8, 1.0);
 		material.specular = glm::vec4(0.0, 0.0, 0.0, 1.0);
 		material.shininess = 1;
-		getModel();
+		getModel(terrain);
 		setupMesh();
 		model_matrix = glm::scale(model_matrix, glm::vec3(500.00));
 }
@@ -20,7 +20,7 @@ Road::~Road()
 {
 }
 
-void Road::getModel() {
+void Road::getModel(Plane *terrain) {
 	float y = -0.001;
 	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.0);
 	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.5);
@@ -42,6 +42,7 @@ void Road::getModel() {
 	//SplineFactory s;
 	vertices = SplineFactory::buildSpline(vertices);
 	vertices = SplineFactory::extrudeSpline(vertices, 40);
+
 
 	pData = SOIL_load_image("tunnel_road.jpg", &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
 

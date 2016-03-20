@@ -65,9 +65,10 @@ Mesh ImportedModel::processMesh(aiMesh* mesh, const aiScene* scene)
 			vector.z = mesh->mNormals[i].z;
 		}
 		else {
-			vector.x = 0.0;
+			vector.x = 1.0;
 			vector.y = 0.0;
 			vector.z = 1.0;
+			vector = glm::normalize(vector);
 
 		}
 		vertex.Normal = vector;

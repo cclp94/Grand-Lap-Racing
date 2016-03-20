@@ -13,13 +13,50 @@ Plane::Plane(Shader *s) : Model(s)
 	getModel();
 	setupMesh();
 	
-	model_matrix = glm::translate(model_matrix, glm::vec3(-500, -1.0, -500));
-	model_matrix = glm::scale(model_matrix, glm::vec3(10));
+	model_matrix = glm::translate(model_matrix, glm::vec3(-offsetX, offsetY, -offsetZ));
+	model_matrix = glm::scale(model_matrix, glm::vec3(SCALE, SCALE*2, SCALE));
+}
+
+float Plane::getHeight(float modelX, float modelZ) {
+	float x = (modelX + offsetX) / SCALE, z = (modelZ + offsetZ) / SCALE;
+	pair<float, glm::vec3> result;
+	float gridSize = TERRAIN_WIDTH;
+	int gridX = (int)floor(x);
+	int gridZ = (int)floor(z);
+	if (gridX > TERRAIN_WIDTH || gridZ > TERRAIN_DEPTH ||
+		gridX < 0 || gridZ < 0) {
+		return 0.0;
+	}
+	float xCoord = x / gridSize;
+	float zCoord = z / gridSize;
+	float answer;
+	if (xCoord <= (1 - zCoord)) {
+		answer = findHeight(glm::vec3(0, heights[gridX][gridZ], 0), glm::vec3(1,
+				heights[gridX + 1][gridZ], 0), glm::vec3(0,
+					heights[gridX][gridZ + 1], 1), glm::vec2(xCoord, zCoord));
+	}
+	else {
+		answer = findHeight(glm::vec3(1, heights[gridX + 1][gridZ], 0), glm::vec3(1,
+				heights[gridX + 1][gridZ + 1], 1), glm::vec3(0,
+					heights[gridX][gridZ + 1], 1), glm::vec2(xCoord, zCoord));
+	}
+	result.first = answer*SCALE*2;
+
+	return result.first;
+}
+
+float Plane::findHeight(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos) {
+	float det = (p2.z - p3.z) * (p1.x - p3.x) + (p3.x - p2.x) * (p1.z - p3.z);
+	float l1 = ((p2.z - p3.z) * (pos.x - p3.x) + (p3.x - p2.x) * (pos.y - p3.z)) / det;
+	float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
+	float l3 = 1.0f - l1 - l2;
+	return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 }
 
 
 Plane::~Plane()
 {
+
 }
 
 glm::vec3 Plane::getColor() {
@@ -57,6 +94,7 @@ void Plane::getModel() {
 			vertices.push_back(float(i));
 			vertices.push_back((float)((((float) pData[i + (texture_width*j)])-128)/128)*2);
 			vertices.push_back(float(j));
+			heights[i][j] = (float)((((float)pData[i + (texture_width*j)]) - 128) / 128) * 2;
 		}
 	}
 

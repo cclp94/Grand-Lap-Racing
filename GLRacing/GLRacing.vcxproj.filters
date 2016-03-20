@@ -51,6 +51,15 @@
     <ClCompile Include="ImportedModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bridge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StartLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -95,6 +104,15 @@
     <ClInclude Include="ImportedModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Bridge.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StartLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
@@ -111,6 +129,13 @@
     <None Include="Assets\violet_car\violet_car.mtl" />
     <None Include="Assets\car1\car1.mtl" />
     <None Include="Assets\bridge\model.mtl" />
+    <None Include="Assets\Mushroom Bridge\mushroombridge.3ds" />
+    <None Include="Assets\Mushroom Bridge\mushroombridge.mtl" />
+    <None Include="Assets\bridge\bridge.obj.mtl" />
+    <None Include="Assets\bridge\bridge.mtl" />
+    <None Include="Assets\Lambo\Avent.mtl" />
+    <None Include="Assets\Lambo\Avent-inter.lwo" />
+    <None Include="Assets\Lambo\Avent-inter.lxo" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="terrain2.tga">
@@ -147,9 +172,6 @@
       <Filter>Source Files\Resource Files</Filter>
     </Image>
     <Image Include="Assets\Enzo%27s Car\misc_bump.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Enzo%27s Car\windshield.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
     <Image Include="Assets\nanosuit\arm_dif.png">
@@ -251,6 +273,87 @@
     <Image Include="tunnel_road.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Mushroom Bridge\mushMM13.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushMS02.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushMS16.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS00.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS01.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS03.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS04.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS05.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS06.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS07.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS08.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS09.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS10.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS11.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS12.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS14.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS15.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS17.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS18.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS19.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS20.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Mushroom Bridge\mushSS21.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\bridge\wood floor 2.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Enzo%27s Car\windshield.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Lambo\interior_lod0.tga" />
+    <Image Include="Assets\Lambo\Lamborghinilogo.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Lambo\lights.tga" />
+    <Image Include="Assets\Lambo\lights_lod0.tga" />
+    <Image Include="Assets\Lambo\nodamage.tga" />
+    <Image Include="Assets\Lambo\nodamage_lod0.tga" />
+    <Image Include="Assets\Lambo\plastic3_nrm.tga" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\info.txt" />
@@ -262,5 +365,8 @@
     <Text Include="Assets\violet_car\violet_car.obj" />
     <Text Include="Assets\car1\car1.obj" />
     <Text Include="Assets\bridge\model.obj" />
+    <Text Include="Assets\Mushroom Bridge\mushroombridge.obj" />
+    <Text Include="Assets\bridge\bridge.obj" />
+    <Text Include="Assets\Lambo\Avent.obj" />
   </ItemGroup>
 </Project>

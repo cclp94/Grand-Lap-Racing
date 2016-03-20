@@ -70,18 +70,15 @@ void Barrier::getModel() {
 	int totalPoints = vertices.size() / 3;
 	int depth = (totalPoints / 2);
 	int width = (totalPoints / 2);
-	for (int i = 0; i < depth - 1; i++)
-	{
 		for (int j = 0; j < width - 1; j++)
 		{
-			indices.push_back(((depth*i) + j) % totalPoints);
-			indices.push_back(((depth*i) + j + 1) % totalPoints);
-			indices.push_back(((depth*i) + j + depth) % totalPoints);
-			indices.push_back(((depth*i) + j + 1) % totalPoints);
-			indices.push_back(((depth*i) + j + depth + 1) % totalPoints);
-			indices.push_back(((depth*i) + j + depth) % totalPoints);
+			indices.push_back(( j) % totalPoints);
+			indices.push_back(( j + 1) % totalPoints);
+			indices.push_back(( j + depth) % totalPoints);
+			indices.push_back(( j + 1) % totalPoints);
+			indices.push_back(( j + depth + 1) % totalPoints);
+			indices.push_back(( j + depth) % totalPoints);
 		}
-	}
 
 	for (int i = 0; i < indices.size(); i += 3)
 	{

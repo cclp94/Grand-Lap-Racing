@@ -11,6 +11,7 @@
 #include <assimp/postprocess.h>
 #include "Mesh.h"
 #include "ImportedModel.h"
+#include "Plane.h"
 
 
 #include "Model.h"
@@ -32,7 +33,7 @@ public:
 	glm::vec3  getColor();
 	glm::mat4 getCameraView();
 	glm::vec3 getCameraPosition();
-	void move();
+	void move(Plane *terrain);
 	void turn(float angle);
 	void depthDraw(Shader *s);
 private:
@@ -44,4 +45,6 @@ private:
 	glm::vec3 color;
 	Camera *camera;
 	glm::vec4 position;
+	float currentHeight;
+	bool isInAir;
 };

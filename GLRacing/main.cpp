@@ -22,6 +22,9 @@
 #include "Barrier.h"
 #include "DirectionalLight.h"
 #include "DepthMap.h"
+#include "Bridge.h"
+#include "StartLine.h"
+#include "GameController.h"
 
 using namespace std;
 
@@ -47,7 +50,7 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 int main() {
 	initialize();
 	//Light
-	DirectionalLight light(glm::vec3(-1000.0, 1060.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
+	DirectionalLight light(glm::vec3(0.0, 1060.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
 
 	//Set Shaders
 	Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
@@ -55,7 +58,7 @@ int main() {
 	Shader *depthShader = new Shader("depthVShader.vs", "depthFShader.fs");
 
 	// Perspective Projection
-	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 200.0f);
+	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1500.0f);
 
 
 	// Projectiion Matrix and light
@@ -70,10 +73,14 @@ int main() {
 
 	// Objects in scene
 	Plane plane(terrainShader);
-	Road road(terrainShader);
+	Road road(terrainShader, &plane);
 	Barrier barrier1(terrainShader, Barrier::OUTTER);
 	Barrier barrier2(terrainShader, Barrier::INNER);
 	Kart = new kart(terrainShader);
+	Bridge bridge(terrainShader);
+	StartLine start(terrainShader);
+
+	GameController game(Kart, &start, 3);
 
 	//Shadow Depth Map
 	DepthMap depthMap;
@@ -85,7 +92,8 @@ int main() {
 
 	// Game Loop
 	while (!glfwWindowShouldClose(window)) {
-
+		game.update();
+		Kart->move(&plane);
 		// Depth Scene Rendering
 		glm::mat4 lightSpaceMatrix = light.getLightSpaceMatrix(width, height);
 
@@ -104,6 +112,8 @@ int main() {
 		road.depthDraw(depthShader);
 		barrier1.depthDraw(depthShader);
 		barrier2.depthDraw(depthShader);
+		bridge.depthDraw(depthShader);
+		start.depthDraw(depthShader);
 		//------------------------------------------
 		depthMap.unbind();
 
@@ -135,6 +145,8 @@ int main() {
 		barrier2.draw();
 		road.draw();
 		Kart->draw();
+		bridge.draw();
+		start.draw();
 
 		// Main Shader Program
 		mainShader->use();

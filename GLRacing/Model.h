@@ -22,6 +22,7 @@ public:
 	vector <GLuint> indices;
 	virtual void draw() = 0;
 	virtual glm::vec3 getNormal() { return glm::vec3(0.0, 1.0, 0.0); }
+	virtual glm::vec3 getPosition() { return glm::vec3(model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0)); }
 
 protected:
 	GLuint VAO, VBO, EBO, texture;

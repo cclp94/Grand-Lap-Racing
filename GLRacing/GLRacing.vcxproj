@@ -128,9 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Barrier.cpp" />
+    <ClCompile Include="Bridge.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DepthMap.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="GameController.cpp" />
     <ClCompile Include="ImportedModel.cpp" />
     <ClCompile Include="kart.cpp" />
     <ClCompile Include="main.cpp" />
@@ -138,12 +140,15 @@
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="StartLine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barrier.h" />
+    <ClInclude Include="Bridge.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="DepthMap.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="GameController.h" />
     <ClInclude Include="ImportedModel.h" />
     <ClInclude Include="kart.h" />
     <ClInclude Include="Material.h" />
@@ -154,13 +159,21 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SOIL.h" />
     <ClInclude Include="SplineFactory.h" />
+    <ClInclude Include="StartLine.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\bridge\bridge.mtl" />
+    <None Include="Assets\bridge\bridge.obj.mtl" />
     <None Include="Assets\bridge\model.mtl" />
     <None Include="Assets\car1\car1.mtl" />
     <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
     <None Include="Assets\Enzo%27s Car\enzo_car.mtl" />
     <None Include="Assets\Green Car\Wagon.mtl" />
+    <None Include="Assets\Lambo\Avent-inter.lwo" />
+    <None Include="Assets\Lambo\Avent-inter.lxo" />
+    <None Include="Assets\Lambo\Avent.mtl" />
+    <None Include="Assets\Mushroom Bridge\mushroombridge.3ds" />
+    <None Include="Assets\Mushroom Bridge\mushroombridge.mtl" />
     <None Include="Assets\nanosuit\nanosuit.blend" />
     <None Include="Assets\nanosuit\nanosuit.mtl" />
     <None Include="Assets\violet_car\violet_car.mtl" />
@@ -177,6 +190,7 @@
     <Image Include="Assets\bridge\2.png" />
     <Image Include="Assets\bridge\3.png" />
     <Image Include="Assets\bridge\4.png" />
+    <Image Include="Assets\bridge\wood floor 2.png" />
     <Image Include="Assets\car1\t0147_0.bmp" />
     <Image Include="Assets\car1\t0147_1.bmp" />
     <Image Include="Assets\car1\t0147_2.bmp" />
@@ -193,6 +207,35 @@
     <Image Include="Assets\Enzo%27s Car\misc_bump.png" />
     <Image Include="Assets\Enzo%27s Car\windshield.png" />
     <Image Include="Assets\Green Car\Wagon-tex.tex.png" />
+    <Image Include="Assets\Lambo\interior_lod0.tga" />
+    <Image Include="Assets\Lambo\Lamborghinilogo.jpg" />
+    <Image Include="Assets\Lambo\lights.tga" />
+    <Image Include="Assets\Lambo\lights_lod0.tga" />
+    <Image Include="Assets\Lambo\nodamage.tga" />
+    <Image Include="Assets\Lambo\nodamage_lod0.tga" />
+    <Image Include="Assets\Lambo\plastic3_nrm.tga" />
+    <Image Include="Assets\Mushroom Bridge\mushMM13.png" />
+    <Image Include="Assets\Mushroom Bridge\mushMS02.png" />
+    <Image Include="Assets\Mushroom Bridge\mushMS16.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS00.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS01.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS03.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS04.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS05.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS06.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS07.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS08.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS09.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS10.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS11.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS12.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS14.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS15.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS17.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS18.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS19.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS20.png" />
+    <Image Include="Assets\Mushroom Bridge\mushSS21.png" />
     <Image Include="Assets\nanosuit\arm_dif.png" />
     <Image Include="Assets\nanosuit\arm_showroom_ddn.png" />
     <Image Include="Assets\nanosuit\arm_showroom_spec.png" />
@@ -250,6 +293,21 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\bridge\model.obj">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Mushroom Bridge\mushroombridge.obj">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\bridge\bridge.obj">
+      <FileType>Document</FileType>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Lambo\Avent.obj">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>
