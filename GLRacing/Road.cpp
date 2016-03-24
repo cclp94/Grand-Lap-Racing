@@ -15,6 +15,55 @@ Road::Road(Shader *s, Plane *terrain) : Model(s)
 		model_matrix = glm::scale(model_matrix, glm::vec3(500.00));
 }
 
+bool Road::checkBound(float x, float z) {
+	float previousX, previousZ;
+	for (int i = 0; i < (vertices.size()/3)-1; i++)
+	{
+		int location = i * 3;
+		glm::vec4 position = model_matrix * glm::vec4(vertices[location], 0.0, vertices[location + 2], 1.0);
+		previousX = position.x;
+		previousZ = position.z;
+		
+		position = model_matrix * glm::vec4(vertices[location+3], 0.0, vertices[location + 5], 1.0);
+		float roadX = position.x;
+		float roadZ = position.z;
+
+		if (previousZ < z&& roadZ > z) {
+			if (previousX > x && roadX < x) {
+				return true;
+			}
+			else if (previousX < x && roadX > x) {
+				return true;
+			}
+		}
+		else if (previousZ > z && roadZ < z) {
+			if (previousX > x && roadX < x) {
+				return true;
+			}
+			else if (previousX < x && roadX > x) {
+				return true;
+			}
+		}
+		if (previousX > x && roadX < x) {
+			if (previousZ < z && roadZ > z) {
+				return true;
+			}else if (previousZ > z && roadZ < z) {
+				return true;
+			}
+		}
+		else if (previousX < x && roadX > x) {
+			if (previousZ < z && roadZ > z) {
+				return true;
+			}
+			else if (previousZ > z && roadZ < z) {
+				return true;
+			}
+		}
+
+	}
+	return false;
+}
+
 
 Road::~Road()
 {

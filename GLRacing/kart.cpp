@@ -1,6 +1,6 @@
 #include "kart.h"
 #include "Camera.h"
-#include "Bridge.h"
+
 
 kart::~kart() {
 	delete camera;
@@ -19,7 +19,7 @@ kart::kart(Shader *s) : ImportedModel(s){
 	material.specular = glm::vec4(1, 1, 1, 1.0);
 	material.shininess = 76.8;
 	position = glm::vec4(0.0, 0.0, 0.0, 1.0);
-	maxSpeed = 100.0f;
+	maxSpeed = 10.0f;
 	acceleration = 3.0f;
 	speed = 0.0f;
 	isAccelarating = false;
@@ -30,20 +30,51 @@ kart::kart(Shader *s) : ImportedModel(s){
 
 	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 5.0, 50.0));
 	model_matrix = glm::rotate(model_matrix,(float) glm::radians(180.0), glm::vec3(0.0, 1.0, 0.0));
+	model_matrix = glm::scale(model_matrix, glm::vec3(0.4));
+
+	position = model_matrix * position;
 }
 
-void kart::move(Plane *terrain) {
+void kart::move(Plane *terrain, Bridge *b, Road *r) {
+	pair<float, glm::vec3> heightAndNormal;
 	float height = terrain->getHeight(position.x, position.z);
+	float height2 = b->getHeight(position.x, position.z);
+	bool inBound = r->checkBound(position.x, position.z);
+	//cout << height2 << endl;
 	float yMove;
-	if (position.y <= height) {
-		isInAir = false;
-		yMove = height - position.y;
+	if (height < 0 && height2 < 0) {
+		yMove = 0;
 	}
 	else {
-		yMove = height - position.y;
+		if (height2 > height) {
+			if (height2 > 0) {
+				yMove = height2 - position.y;
+			}
+		}
+		else {
+			if (position.y <= height) {
+				isInAir = false;
+				yMove = height - position.y;
+			}
+			else {
+				yMove = height - position.y;
+			}
+		}
 	}
-	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, getSpeed()));
-	glm::vec4 previousPos = position;
+	//cout << inBound << endl;
+	float zMove;
+	//cout << inBound << endl;
+	if (!inBound){
+		//model_matrix = glm::rotate(model_matrix, glm::radians(-10.0f), glm::vec3(0.0, 1.0, 0.0));
+		zMove = getSpeed()/4;
+	}
+	else {
+		zMove = getSpeed();
+	}
+	
+	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, zMove));
+
+	previousPos = position;
 	position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
 	currentHeight = previousPos.y;
 	camera->cameraPos = glm::vec3(model_matrix * glm::vec4(0.0f, 5.0f, -15.0f, 1.0f));
@@ -134,5 +165,19 @@ void kart::depthDraw(Shader *s) {
 
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 		this->meshes[i].Draw(shaderProgram);
+}
+
+glm::mat4 kart::getCameraSky()
+{
+	GLfloat posz = camera->cameraPos.z / 1000.0f;
+	if (camera->cameraPos.z == 0)
+		posz = 0.1f;
+	GLfloat posx = camera->cameraPos.x / 1000.0f;
+	GLfloat posy = camera->cameraPos.y / 1000.0f;
+
+	GLfloat posx1 = position.x / 1000.0f;
+	GLfloat posy1 = position.y / 1000.0f;
+	GLfloat posz1 = position.z / 1000.0f;
+	return glm::lookAt(glm::vec3(posx, posy, posz), glm::vec3(posx1, posy1, posz1), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 

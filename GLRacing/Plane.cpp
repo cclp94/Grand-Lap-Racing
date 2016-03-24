@@ -7,14 +7,14 @@ Plane::Plane(Shader *s) : Model(s)
 {
 	color = glm::vec3(0.2, 0.5, 0.2);
 	material.ambient = glm::vec4(color, 1.0);
-	material.diffuse = glm::vec4(0.5, 0.6, 0.2, 1.0);
-	material.specular = glm::vec4(0.7, 0.5, 0.2, 1.0);
+	material.diffuse = glm::vec4(0.2, 0.6, 0.2, 1.0);
+	material.specular = glm::vec4(0.0, 0.0, 0.0, 1.0);
 	material.shininess = 1;
 	getModel();
 	setupMesh();
 	
 	model_matrix = glm::translate(model_matrix, glm::vec3(-offsetX, offsetY, -offsetZ));
-	model_matrix = glm::scale(model_matrix, glm::vec3(SCALE, SCALE*2, SCALE));
+	model_matrix = glm::scale(model_matrix, glm::vec3(SCALE, SCALE*3, SCALE));
 }
 
 float Plane::getHeight(float modelX, float modelZ) {
@@ -40,7 +40,7 @@ float Plane::getHeight(float modelX, float modelZ) {
 				heights[gridX + 1][gridZ + 1], 1), glm::vec3(0,
 					heights[gridX][gridZ + 1], 1), glm::vec2(xCoord, zCoord));
 	}
-	result.first = answer*SCALE*2;
+	result.first = answer*SCALE*3;
 
 	return result.first;
 }

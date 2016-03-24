@@ -60,6 +60,12 @@
     <ClCompile Include="GameController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Water.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -113,6 +119,12 @@
     <ClInclude Include="GameController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Water.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
@@ -136,18 +148,13 @@
     <None Include="Assets\Lambo\Avent.mtl" />
     <None Include="Assets\Lambo\Avent-inter.lwo" />
     <None Include="Assets\Lambo\Avent-inter.lxo" />
+    <None Include="waterFShader.fs" />
+    <None Include="waterVShader.vs" />
+    <None Include="skybox.fs" />
+    <None Include="skybox.vs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="terrain2.tga">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="terrain.jpg">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="terrain.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="road.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
     <Image Include="opengl.jpg">

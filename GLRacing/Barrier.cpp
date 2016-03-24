@@ -8,12 +8,13 @@ Barrier::Barrier(Shader *s, int position) : Model(s)
 	this->position = position;
 	color = glm::vec3(1.0, 1.0, 1.0);
 	material.ambient = glm::vec4(color, 1.0);
-	material.diffuse = glm::vec4(glm::vec3(0.7, 0.7, 0.7), 1.0);
-	material.specular =glm::vec4( glm::vec3(1.0, 0.8, 0.9), 1.0);
+	material.diffuse = glm::vec4(0.7, 0.7, 0.7, 1.0);
+	material.specular =glm::vec4( 0.0, 0.0, 0.1, 1.0);
 	material.shininess = 4;
 	
 	getModel();
 	setupMesh();
+	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, -0.5, 0.0));
 }
 
 glm::vec3 Barrier::getNormal() {

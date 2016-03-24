@@ -14,7 +14,12 @@ ImportedModel::~ImportedModel()
 void ImportedModel::getModel(string path) {
 
 	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	import.SetPropertyInteger(AI_CONFIG_PP_RVC_FLAGS, aiComponent_NORMALS);
+	const aiScene* scene = import.ReadFile(path, aiProcess_RemoveComponent | 
+		aiProcess_GenSmoothNormals | 
+		aiProcess_CalcTangentSpace |
+		aiProcess_Triangulate |
+		aiProcess_FlipUVs);
 
 	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
 	{

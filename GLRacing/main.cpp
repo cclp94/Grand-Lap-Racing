@@ -25,6 +25,8 @@
 #include "Bridge.h"
 #include "StartLine.h"
 #include "GameController.h"
+#include "Water.h"
+#include "skybox.h"
 
 using namespace std;
 
@@ -50,41 +52,50 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 int main() {
 	initialize();
 	//Light
-	DirectionalLight light(glm::vec3(0.0, 1060.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
+	DirectionalLight light(glm::vec3(250.0, 1000.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
 
 	//Set Shaders
-	Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
+	//Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
 	Shader *terrainShader = new Shader("terrainVertexShader.vs", "lightFragShader.fs");
 	Shader *depthShader = new Shader("depthVShader.vs", "depthFShader.fs");
+	Shader *waterShader = new Shader("waterVShader.vs", "waterFShader.fs");
+	Shader *skyShader = new Shader("skybox.vs", "skybox.fs");
 
 	// Perspective Projection
-	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1500.0f);
+	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 500.0f);
 
 
 	// Projectiion Matrix and light
-	mainShader->use();
-	glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-	light.setProperties(mainShader);
+	//mainShader->use();
+	//glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	//light.setProperties(mainShader);
 
 	terrainShader->use();
 	glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	light.setProperties(terrainShader);
+
+	waterShader->use();
+	glUniformMatrix4fv(waterShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 	
+	//SkyBox class
+	skybox skybox(skyShader);
 
 	// Objects in scene
+	Bridge bridge(terrainShader);
 	Plane plane(terrainShader);
 	Road road(terrainShader, &plane);
 	Barrier barrier1(terrainShader, Barrier::OUTTER);
 	Barrier barrier2(terrainShader, Barrier::INNER);
 	Kart = new kart(terrainShader);
-	Bridge bridge(terrainShader);
+	
 	StartLine start(terrainShader);
+	Water water(waterShader);
 
 	GameController game(Kart, &start, 3);
 
 	//Shadow Depth Map
 	DepthMap depthMap;
-
+	
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	//-------------------------------------------------------------
@@ -93,7 +104,7 @@ int main() {
 	// Game Loop
 	while (!glfwWindowShouldClose(window)) {
 		game.update();
-		Kart->move(&plane);
+		
 		// Depth Scene Rendering
 		glm::mat4 lightSpaceMatrix = light.getLightSpaceMatrix(width, height);
 
@@ -114,6 +125,7 @@ int main() {
 		barrier2.depthDraw(depthShader);
 		bridge.depthDraw(depthShader);
 		start.depthDraw(depthShader);
+		water.depthDraw(depthShader);
 		//------------------------------------------
 		depthMap.unbind();
 
@@ -124,12 +136,25 @@ int main() {
 		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 		glPointSize(point_size);
 
+		//Draw background
+		skyShader->use();
+
+		glm::mat4 view = Kart->getCameraSky();
+		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+		skybox.draw();
+
+
+
 		// Projectiion Matrix and light
-		mainShader->use();
-		glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+		//mainShader->use();
+		//glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		terrainShader->use();
 		glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-
+		waterShader->use();
+		glUniformMatrix4fv(waterShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+		
+		
 		view_matrix = Kart->getCameraView(); // Get Camera View Matrix
 		glm::vec3 viewPos = Kart->getCameraPosition();
 
@@ -149,9 +174,9 @@ int main() {
 		start.draw();
 
 		// Main Shader Program
-		mainShader->use();
-		glUniformMatrix4fv(mainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
-		
+		waterShader->use();
+		glUniformMatrix4fv(waterShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
+		water.draw();
 		
 		
 		
@@ -160,8 +185,9 @@ int main() {
 		glfwPollEvents();
 		// put the stuff we've been drawing onto the display
 		glfwSwapBuffers(window);
+		Kart->move(&plane, &bridge, &road);
 	}
-	delete mainShader, terrainShader;
+	delete terrainShader, waterShader, Kart, skyShader;
 	cleanUp();
 	return 0;
 }

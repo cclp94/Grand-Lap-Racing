@@ -10,5 +10,10 @@ public:
 	void depthDraw(Shader *s);
 	void  draw();
 	glm::vec4 position;
+	float getHeight(float modelX, float modelY);
+
+private:
+	float collisionRadius;
+	glm::vec4 collisionCenter;
 };
 

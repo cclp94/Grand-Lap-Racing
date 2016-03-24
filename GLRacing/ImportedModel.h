@@ -13,12 +13,13 @@ public:
 protected:
 	void getModel(string path);
 	vector<Mesh> meshes;
+	virtual void processNode(aiNode* node, const aiScene* scene);
+	virtual Mesh processMesh(aiMesh* mesh, const aiScene* scene);
+	virtual vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
+	 vector<Texture> textures_loaded;
+	string meshDirectory;
 private:
 	
-	void processNode(aiNode* node, const aiScene* scene);
-	Mesh processMesh(aiMesh* mesh, const aiScene* scene);
-	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
-	vector<Texture> textures_loaded;
-	string meshDirectory;
+	
 };
 

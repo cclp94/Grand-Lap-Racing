@@ -11,31 +11,52 @@ using namespace std;
 class SplineFactory {
 
 	static void subdivide(vector<GLfloat> &spline, float u0, float u1, float angleThreshold, 
-	glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3) {
+	glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, bool curv) {
 	float umid = (u0 + u1) / 2.0;		// Get middle point
-	if (u0 == 0 && u1 == 1) {			// Force first recursion
-		subdivide(spline, u0, umid, angleThreshold, p0, p1, p2, p3);
-		subdivide(spline, umid, u1, angleThreshold, p0, p1, p2, p3);
+	glm::vec3 pInitial = drawSpline(u0, p0, p1, p2, p3);	// Get Spline point in u0
+	glm::vec3 pFinal = drawSpline(u1, p0, p1, p2, p3);		// Get Spline point in u1
+	glm::vec3 pMid = drawSpline(umid, p0, p1, p2, p3);		// Get Spline point in uMid
+	if(curv){
+		if (u0 == 0 && u1 == 1) {			// Force first recursion
+			subdivide(spline, u0, umid, angleThreshold, p0, p1, p2, p3, curv);
+			subdivide(spline, umid, u1, angleThreshold, p0, p1, p2, p3, curv);
+		}
+		else {
+
+			
+
+			glm::vec3 totalDistance = glm::normalize(pFinal - pInitial);	// Vector from p1 - p0
+			glm::vec3 midDistance = glm::normalize(pMid - pInitial);		// Vector from p0 to pMiddle
+
+			float angle = glm::acos(glm::dot(midDistance, totalDistance));	// Angle to get curvature
+
+			if (angle > angleThreshold) {									// If angle is not 'curvy' enough
+				subdivide(spline, u0, umid, angleThreshold, p0, p1, p2, p3, curv);		// Recurse
+				subdivide(spline, umid, u1, angleThreshold, p0, p1, p2, p3, curv);		// Recurse
+			}
+			else {
+				spline.push_back(pInitial.x);		// Put point in vector
+				spline.push_back(pInitial.y);		// Put point in vector
+				spline.push_back(pInitial.z);		// Put point in vector
+			}
+		}
 	}
 	else {
-		
-		glm::vec3 pInitial = drawSpline(u0, p0, p1, p2, p3);	// Get Spline point in u0
-		glm::vec3 pFinal = drawSpline(u1, p0, p1, p2, p3);		// Get Spline point in u1
-		glm::vec3 pMid = drawSpline(umid, p0, p1, p2, p3);		// Get Spline point in uMid
-
 		glm::vec3 totalDistance = glm::normalize(pFinal - pInitial);	// Vector from p1 - p0
 		glm::vec3 midDistance = glm::normalize(pMid - pInitial);		// Vector from p0 to pMiddle
 
-		float angle = glm::acos(glm::dot(midDistance, totalDistance));	// Angle to get curvature
+		float distance = glm::distance(pInitial, pFinal);	// Angle to get curvature
 
-		if (angle > angleThreshold) {									// If angle is not 'curvy' enough
-			subdivide(spline, u0, umid, angleThreshold, p0, p1, p2, p3);		// Recurse
-			subdivide(spline, umid, u1, angleThreshold, p0, p1, p2, p3);		// Recurse
+		if (distance > angleThreshold) {									// If angle is not 'curvy' enough
+			subdivide(spline, u0, umid, angleThreshold, p0, p1, p2, p3, curv);		// Recurse
+			subdivide(spline, umid, u1, angleThreshold, p0, p1, p2, p3, curv);		// Recurse
+
 		}
 		else {
 			spline.push_back(pInitial.x);		// Put point in vector
 			spline.push_back(pInitial.y);		// Put point in vector
 			spline.push_back(pInitial.z);		// Put point in vector
+												
 		}
 	}
 }
@@ -74,7 +95,7 @@ public:
 			glm::vec3 p2 = 0.5f * (p1 - glm::vec3(vertices[i * 3 - 3], vertices[i * 3 - 2], vertices[i * 3 - 1]));
 			glm::vec3 p3 = 0.5f * (glm::vec3(vertices[i * 3 + 6], vertices[i * 3 + 7], vertices[i * 3 + 8]) - p0);
 			// Get spline
-			subdivide(spline, 0, 1, 0.02, p0, p1, p2, p3);
+			subdivide(spline, 0, 1, 0.02, p0, p1, p2, p3, false);
 		}
 		return spline;
 	}

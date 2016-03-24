@@ -140,7 +140,9 @@
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="Road.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="skybox.cpp" />
     <ClCompile Include="StartLine.cpp" />
+    <ClCompile Include="Water.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Barrier.h" />
@@ -157,9 +159,11 @@
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Road.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="skybox.h" />
     <ClInclude Include="SOIL.h" />
     <ClInclude Include="SplineFactory.h" />
     <ClInclude Include="StartLine.h" />
+    <ClInclude Include="Water.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\bridge\bridge.mtl" />
@@ -181,8 +185,12 @@
     <None Include="depthVShader.vs" />
     <None Include="fragmentShader1.fs" />
     <None Include="lightFragShader.fs" />
+    <None Include="skybox.fs" />
+    <None Include="skybox.vs" />
     <None Include="terrainVertexShader.vs" />
     <None Include="vertexShader1.vs" />
+    <None Include="waterFShader.fs" />
+    <None Include="waterVShader.vs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\bridge\0.png" />
@@ -256,9 +264,6 @@
     <Image Include="Assets\violet_car\t0001_0.png" />
     <Image Include="grass.jpg" />
     <Image Include="opengl.jpg" />
-    <Image Include="road.jpg" />
-    <Image Include="terrain.jpg" />
-    <Image Include="terrain.png" />
     <Image Include="terrain2.tga" />
     <Image Include="tunnel_road.jpg" />
   </ItemGroup>

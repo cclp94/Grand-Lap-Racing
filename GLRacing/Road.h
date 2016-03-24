@@ -9,6 +9,7 @@ public:
 	~Road();
 	void draw();
 	void depthDraw(Shader *s);
+	bool checkBound(float x, float z);
 private:
 	void getModel(Plane *terrain);
 };
