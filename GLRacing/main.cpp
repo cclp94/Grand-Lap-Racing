@@ -62,7 +62,7 @@ int main() {
 	Shader *skyShader = new Shader("skybox.vs", "skybox.fs");
 
 	// Perspective Projection
-	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 500.0f);
+	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1500.0f);
 
 
 	// Projectiion Matrix and light

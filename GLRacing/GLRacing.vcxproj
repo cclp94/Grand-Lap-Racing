@@ -181,6 +181,8 @@
     <None Include="Assets\nanosuit\nanosuit.blend" />
     <None Include="Assets\nanosuit\nanosuit.mtl" />
     <None Include="Assets\violet_car\violet_car.mtl" />
+    <None Include="debugQuad.vs" />
+    <None Include="degugQuad.fs" />
     <None Include="depthFShader.fs" />
     <None Include="depthVShader.vs" />
     <None Include="fragmentShader1.fs" />
@@ -198,7 +200,7 @@
     <Image Include="Assets\bridge\2.png" />
     <Image Include="Assets\bridge\3.png" />
     <Image Include="Assets\bridge\4.png" />
-    <Image Include="Assets\bridge\wood floor 2.png" />
+    <Image Include="Assets\bridge\rock 5.png" />
     <Image Include="Assets\car1\t0147_0.bmp" />
     <Image Include="Assets\car1\t0147_1.bmp" />
     <Image Include="Assets\car1\t0147_2.bmp" />
@@ -261,6 +263,7 @@
     <Image Include="Assets\nanosuit\leg_dif.png" />
     <Image Include="Assets\nanosuit\leg_showroom_ddn.png" />
     <Image Include="Assets\nanosuit\leg_showroom_spec.png" />
+    <Image Include="Assets\violet_car\rubberTex.jpg" />
     <Image Include="Assets\violet_car\t0001_0.png" />
     <Image Include="grass.jpg" />
     <Image Include="opengl.jpg" />

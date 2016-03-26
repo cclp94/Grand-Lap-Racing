@@ -47,7 +47,7 @@ void Barrier::getModel() {
 
 	SplineFactory s;
 	vertices = s.buildSpline(vertices);
-	vertices = s.extrudeSpline(vertices, 40);
+	vertices = s.extrudeSpline(vertices, 35);
 	vector <GLfloat> mesh;
 	for (int i = position, size = vertices.size(); i < size; i += 6)
 	{
@@ -129,17 +129,18 @@ void Barrier::getModel() {
 	for (int i = 0; i < vertices.size() / (6); i += 2)
 	{
 		
-		texCoords.push_back(0.0); texCoords.push_back(0.0);
-		texCoords.push_back(1.0); texCoords.push_back(0.0);
+		texCoords.push_back(0.0); texCoords.push_back(1.0);
+		texCoords.push_back(1.0); texCoords.push_back(1.0);
 		
 
 	}
 
 	for (int i = vertices.size() / (6); i < vertices.size() / 3; i += 2)
 	{
-		texCoords.push_back(0.0); texCoords.push_back(1.0);
-		texCoords.push_back(1.0); texCoords.push_back(1.0);
 		
+		
+		texCoords.push_back(0.0); texCoords.push_back(0.0);
+		texCoords.push_back(1.0); texCoords.push_back(0.0);
 	}
 
 }

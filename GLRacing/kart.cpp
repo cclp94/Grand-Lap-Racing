@@ -63,14 +63,16 @@ void kart::move(Plane *terrain, Bridge *b, Road *r) {
 	}
 	//cout << inBound << endl;
 	float zMove;
-	//cout << inBound << endl;
 	if (!inBound){
-		//model_matrix = glm::rotate(model_matrix, glm::radians(-10.0f), glm::vec3(0.0, 1.0, 0.0));
-		zMove = getSpeed()/4;
+		//model_matrix = glm::rotate(model_matrix, glm::radians(10.0f * inBound.second), glm::vec3(0.0, 1.0, 0.0));
+		if(speed < 0)
+			model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, 5.0));
+		else
+			model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, -3.0));
+
+		speed = 0;
 	}
-	else {
-		zMove = getSpeed();
-	}
+	zMove = getSpeed();
 	
 	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, zMove));
 

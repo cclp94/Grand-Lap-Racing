@@ -12,11 +12,11 @@ Bridge::Bridge(Shader *s) : ImportedModel(s)
 	getModel("Assets/bridge/bridge.obj ");
 	
 
-	model_matrix = glm::translate(model_matrix, glm::vec3(100.0, 3.2, -250.0));
+	model_matrix = glm::translate(model_matrix, glm::vec3(95.0, 3.2, -253.0));
 	//model_matrix = glm::scale(model_matrix, glm::vec3(0.2, 0.2, 0.2));
 	position = model_matrix * glm::vec4(0.0 ,0.0, 0.0, 1.0);
-	collisionRadius = 279.0f;
-	collisionCenter = model_matrix * glm::vec4(0, -275.28, 0.91, 1.0);
+	collisionRadius = 240.45f;
+	collisionCenter = model_matrix * glm::vec4(0, -236.5, 0, 1.0);
 
 	//cout << position.x << " " << position.y << " " << position.z << endl;
 	
@@ -52,6 +52,18 @@ void Bridge::depthDraw(Shader *s) {
 
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 		this->meshes[i].Draw(shaderProgram);
+}
+
+vector<Texture> Bridge::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
+{
+	vector<Texture> textures;
+		aiString str;
+		Texture texture;
+		texture.id = Mesh::TextureFromFile("rock 5.png", this->meshDirectory);
+		texture.type = typeName;
+		texture.path = str;
+		textures.push_back(texture);
+	return textures;
 }
 
 

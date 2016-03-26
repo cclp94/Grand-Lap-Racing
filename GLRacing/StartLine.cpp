@@ -33,3 +33,15 @@ void StartLine::depthDraw(Shader *s) {
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 		this->meshes[i].Draw(shaderProgram);
 }
+
+vector<Texture> StartLine::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
+{
+	vector<Texture> textures;
+	aiString str;
+	Texture texture;
+	texture.id = Mesh::TextureFromFile("rubberTex.jpg", this->meshDirectory);
+	texture.type = typeName;
+	texture.path = str;
+	textures.push_back(texture);
+	return textures;
+}

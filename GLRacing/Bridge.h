@@ -15,5 +15,6 @@ public:
 private:
 	float collisionRadius;
 	glm::vec4 collisionCenter;
+	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 };
 
