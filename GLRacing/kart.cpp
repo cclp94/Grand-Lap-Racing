@@ -33,13 +33,19 @@ kart::kart(Shader *s) : ImportedModel(s){
 	model_matrix = glm::scale(model_matrix, glm::vec3(0.4));
 
 	position = model_matrix * position;
+
+	collision = false;
+}
+
+void kart::setCollision(bool col) {
+	collision = col;
 }
 
 void kart::move(Plane *terrain, Bridge *b, Road *r) {
 	pair<float, glm::vec3> heightAndNormal;
 	float height = terrain->getHeight(position.x, position.z);
 	float height2 = b->getHeight(position.x, position.z);
-	bool inBound = r->checkBound(position.x, position.z);
+	
 	//cout << height2 << endl;
 	float yMove;
 	if (height < 0 && height2 < 0) {
@@ -63,14 +69,17 @@ void kart::move(Plane *terrain, Bridge *b, Road *r) {
 	}
 	//cout << inBound << endl;
 	float zMove;
-	if (!inBound){
-		//model_matrix = glm::rotate(model_matrix, glm::radians(10.0f * inBound.second), glm::vec3(0.0, 1.0, 0.0));
-		if(speed < 0)
-			model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, 5.0));
-		else
-			model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, -3.0));
+	if (collision) {
+		bool inBound = r->checkBound(position.x, position.z);
+		if (!inBound) {
+			//model_matrix = glm::rotate(model_matrix, glm::radians(10.0f * inBound.second), glm::vec3(0.0, 1.0, 0.0));
+			if (speed < 0)
+				model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, 5.0));
+			else
+				model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, -3.0));
 
-		speed = 0;
+			speed = 0;
+		}
 	}
 	zMove = getSpeed();
 	

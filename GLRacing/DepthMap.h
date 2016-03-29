@@ -12,7 +12,7 @@ public:
 	void unbind();
 	GLuint getId();
 private:
-	const static GLuint SHADOW_WIDTH = 1000, SHADOW_HEIGHT = 1000;
+	const static GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	GLuint FBO, depthMapId;
 };
 

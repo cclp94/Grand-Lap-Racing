@@ -60,6 +60,7 @@ int main() {
 	Shader *depthShader = new Shader("depthVShader.vs", "depthFShader.fs");
 	Shader *waterShader = new Shader("waterVShader.vs", "waterFShader.fs");
 	Shader *skyShader = new Shader("skybox.vs", "skybox.fs");
+	Shader *textShader = new Shader("textVShader.vs", "textFShader.fs");
 
 	// Perspective Projection
 	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1500.0f);
@@ -91,7 +92,7 @@ int main() {
 	StartLine start(terrainShader);
 	Water water(waterShader);
 
-	GameController game(Kart, &start, 3);
+	GameController game(textShader, Kart, &start, 3);
 
 	//Shadow Depth Map
 	DepthMap depthMap;
@@ -103,7 +104,7 @@ int main() {
 
 	// Game Loop
 	while (!glfwWindowShouldClose(window)) {
-		game.update();
+		
 		
 		// Depth Scene Rendering
 		glm::mat4 lightSpaceMatrix = light.getLightSpaceMatrix(width, height);
@@ -135,7 +136,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 		glPointSize(point_size);
-
+		
 		//Draw background
 		skyShader->use();
 
@@ -144,7 +145,7 @@ int main() {
 		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		skybox.draw();
 
-
+		
 
 		// Projectiion Matrix and light
 		//mainShader->use();
@@ -178,7 +179,7 @@ int main() {
 		glUniformMatrix4fv(waterShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		water.draw();
 		
-		
+		game.update(width, height);
 		
 	
 		// update other events like input handling
@@ -186,8 +187,9 @@ int main() {
 		// put the stuff we've been drawing onto the display
 		glfwSwapBuffers(window);
 		Kart->move(&plane, &bridge, &road);
+		
 	}
-	delete terrainShader, waterShader, Kart, skyShader;
+	delete textShader, terrainShader, waterShader, Kart, skyShader;
 	cleanUp();
 	return 0;
 }

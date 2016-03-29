@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;SOIL.lib;assimp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;SOIL.lib;assimp.lib;freetyped.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -148,6 +148,7 @@
     <ClInclude Include="Barrier.h" />
     <ClInclude Include="Bridge.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="DepthMap.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="GameController.h" />
@@ -190,6 +191,8 @@
     <None Include="skybox.fs" />
     <None Include="skybox.vs" />
     <None Include="terrainVertexShader.vs" />
+    <None Include="textFShader.fs" />
+    <None Include="textVShader.vs" />
     <None Include="vertexShader1.vs" />
     <None Include="waterFShader.fs" />
     <None Include="waterVShader.vs" />

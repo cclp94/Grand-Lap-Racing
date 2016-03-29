@@ -1,12 +1,15 @@
 #pragma once
 #include "Model.h"
+#include <iostream>
+#include <map>
+class Character;
 
 class GameController
 {
 public:
-	GameController(Model *character, Model *start, int laps);
+	GameController(Shader *s, Model *character, Model *start, int laps);
 	~GameController();
-	void update();
+	void update(int width, int height);
 
 private:
 	Model *character;
@@ -19,5 +22,11 @@ private:
 	double lapTime;
 	double startTime;
 	double finaltime;
+	std::map<GLchar, Character> Characters;
+	void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale,glm::vec3 color);
+	void setupRender();
+	GLuint VAO, VBO;
+	Shader *shader;
+
 };
 

@@ -125,6 +125,9 @@
     <ClInclude Include="skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="fragmentShader1.fs" />
@@ -154,6 +157,8 @@
     <None Include="skybox.vs" />
     <None Include="debugQuad.vs" />
     <None Include="degugQuad.fs" />
+    <None Include="textVShader.vs" />
+    <None Include="textFShader.fs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="terrain2.tga">

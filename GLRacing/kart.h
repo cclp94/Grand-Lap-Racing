@@ -38,6 +38,7 @@ public:
 	void turn(float angle);
 	void depthDraw(Shader *s);
 	glm::mat4 getCameraSky();
+	void setCollision(bool col);
 private:
 	float maxSpeed;
 	float speed;
@@ -50,4 +51,5 @@ private:
 	glm::vec4 position;
 	float currentHeight;
 	bool isInAir;
+	bool collision;
 };
