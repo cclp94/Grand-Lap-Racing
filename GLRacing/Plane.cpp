@@ -13,7 +13,7 @@ Plane::Plane(Shader *s) : Model(s)
 	getModel();
 	setupMesh();
 	
-	model_matrix = glm::translate(model_matrix, glm::vec3(-offsetX, offsetY, -offsetZ));
+	model_matrix = glm::translate(model_matrix, glm::vec3(-offsetX, -0.1, -offsetZ));
 	model_matrix = glm::scale(model_matrix, glm::vec3(SCALE, SCALE*3, SCALE));
 }
 

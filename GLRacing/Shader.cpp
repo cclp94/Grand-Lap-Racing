@@ -99,6 +99,9 @@ void Shader::makeProgram(GLuint vShader, GLuint fShader) {
 	glBindAttribLocation(programID, 1, "normal");
 	glBindAttribLocation(programID, 2, "texCoord");
 
+	glBindAttribLocation(programID, 4, "fragmentdepth");
+
+
 	glLinkProgram(programID);
 
 	checkStatus(programID);

@@ -27,6 +27,7 @@
 #include "GameController.h"
 #include "Water.h"
 #include "skybox.h"
+#include "Tree.h"
 
 using namespace std;
 
@@ -52,7 +53,7 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 int main() {
 	initialize();
 	//Light
-	DirectionalLight light(glm::vec3(250.0, 1000.0, 0.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
+	DirectionalLight light(glm::vec3(-0.2, 0.1, -0.2), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
 
 	//Set Shaders
 	//Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
@@ -63,7 +64,7 @@ int main() {
 	Shader *textShader = new Shader("textVShader.vs", "textFShader.fs");
 
 	// Perspective Projection
-	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1500.0f);
+	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
 
 
 	// Projectiion Matrix and light
@@ -88,6 +89,7 @@ int main() {
 	Barrier barrier1(terrainShader, Barrier::OUTTER);
 	Barrier barrier2(terrainShader, Barrier::INNER);
 	Kart = new kart(terrainShader);
+	Tree tree(terrainShader);
 	
 	StartLine start(terrainShader);
 	Water water(waterShader);
@@ -95,7 +97,7 @@ int main() {
 	GameController game(textShader, Kart, &start, 3);
 
 	//Shadow Depth Map
-	DepthMap depthMap;
+	DepthMap depthMap(width, height);
 	
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
@@ -117,7 +119,7 @@ int main() {
 		glUniformMatrix4fv(depthShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 		
 		
-		depthMap.bind();
+		depthMap.bind(width, height);
 		//--------Render Depth Scene --------------
 		plane.depthDraw(depthShader);
 		Kart->depthDraw(depthShader);
@@ -164,6 +166,8 @@ int main() {
 		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+		glUniformMatrix4fv(terrainShader->getUniform("shadowBias"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
 		plane.draw();
@@ -173,13 +177,15 @@ int main() {
 		Kart->draw();
 		bridge.draw();
 		start.draw();
+		tree.draw(Kart->getTurnAngle());
+		Kart->resetTurnAngle();
 
 		// Main Shader Program
 		waterShader->use();
 		glUniformMatrix4fv(waterShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		water.draw();
 		
-		game.update(width, height);
+		game.update(width, height);	
 		
 	
 		// update other events like input handling

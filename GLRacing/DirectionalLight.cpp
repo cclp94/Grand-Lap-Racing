@@ -14,8 +14,9 @@ DirectionalLight::~DirectionalLight()
 
 glm::mat4 DirectionalLight::getLightSpaceMatrix(int width, int height) {
 	GLfloat near_plane = 1.0f, far_plane = 7.5f;
-	glm::mat4 proj = glm::perspective(45.0f, (float)width / (float)height, 0.1f, 1000.0f);
-	glm::mat4  view = glm::lookAt(direction, glm::vec3(250.0, 0.0, 0.0f), glm::vec3(0.0, 1.0, 0.0));
+	glm::vec3 lightDir = glm::normalize(direction);
+	glm::mat4 proj = glm::ortho<float>(-500, 500, -500, 500, -700, 700);
+	glm::mat4  view = glm::lookAt(direction, glm::vec3(0.0, 0.0, 0.0f), glm::vec3(0.0, 1.0, 0.0));
 	return proj * view;
 }
 
@@ -35,9 +36,9 @@ glm::vec3 DirectionalLight::getSpecularColor() {
 
 void DirectionalLight::setProperties(Shader *s) {
 	s->use();
-	glUniform4f(s->getUniform("light.direction"), direction.x, direction.y, direction.z, 1.0);
-	glUniform4f(s->getUniform("light.ambient"), ambient.x, ambient.y, ambient.z, 1.0);
-	glUniform4f(s->getUniform("light.diffuse"), diffuse.x, diffuse.y, diffuse.z, 1.0);
-	glUniform4f(s->getUniform("light.specular"), specular.x, specular.y, specular.z, 1.0);
+	glUniform3f(s->getUniform("light.direction"), direction.x, direction.y, direction.z);
+	glUniform3f(s->getUniform("light.ambient"), ambient.x, ambient.y, ambient.z);
+	glUniform3f(s->getUniform("light.diffuse"), diffuse.x, diffuse.y, diffuse.z);
+	glUniform3f(s->getUniform("light.specular"), specular.x, specular.y, specular.z);
 }
 

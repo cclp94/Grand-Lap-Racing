@@ -12,7 +12,7 @@ Road::Road(Shader *s, Plane *terrain) : Model(s)
 		material.shininess = 1;
 		getModel(terrain);
 		setupMesh();
-		model_matrix = glm::scale(model_matrix, glm::vec3(500.00));
+		model_matrix = glm::scale(model_matrix, glm::vec3(500.00, 0.0, 500.00));
 }
 
 bool Road::checkBound(float x, float z) {
@@ -70,7 +70,7 @@ Road::~Road()
 }
 
 void Road::getModel(Plane *terrain) {
-	float y = -0.001;
+	float y = 0.3;
 	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.0);
 	vertices.push_back(-0.5); vertices.push_back(y); vertices.push_back(0.5);
 	vertices.push_back(-0.2); vertices.push_back(y); vertices.push_back(0.8);
@@ -130,7 +130,6 @@ void Road::draw() {
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY_EXT);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	//glUniform1i(GL_TEXTURE_2D, 1);
 
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	this->setMaterialUniform();

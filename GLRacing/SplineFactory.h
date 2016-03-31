@@ -95,7 +95,7 @@ public:
 			glm::vec3 p2 = 0.5f * (p1 - glm::vec3(vertices[i * 3 - 3], vertices[i * 3 - 2], vertices[i * 3 - 1]));
 			glm::vec3 p3 = 0.5f * (glm::vec3(vertices[i * 3 + 6], vertices[i * 3 + 7], vertices[i * 3 + 8]) - p0);
 			// Get spline
-			subdivide(spline, 0, 1, 0.02, p0, p1, p2, p3, false);
+			subdivide(spline, 0, 1, 0.05, p0, p1, p2, p3, false);
 		}
 		return spline;
 	}

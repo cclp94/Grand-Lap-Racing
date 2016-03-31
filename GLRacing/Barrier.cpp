@@ -14,7 +14,6 @@ Barrier::Barrier(Shader *s, int position) : Model(s)
 	
 	getModel();
 	setupMesh();
-	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, -0.5, 0.0));
 }
 
 glm::vec3 Barrier::getNormal() {

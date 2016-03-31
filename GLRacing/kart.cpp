@@ -10,6 +10,13 @@ glm::vec3 kart::getCameraPosition() {
 	return camera->cameraPos;
 }
 
+float kart::getTurnAngle() {
+	return turnAngle;
+}
+
+void kart::resetTurnAngle() {
+	turnAngle = 0.0;
+}
 
 
 kart::kart(Shader *s) : ImportedModel(s){
@@ -96,6 +103,7 @@ void kart::move(Plane *terrain, Bridge *b, Road *r) {
 
 void kart::turn(float angle) {
 	if (speed != 0) {
+		turnAngle = angle;
 		model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
 	}
 }

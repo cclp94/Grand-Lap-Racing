@@ -25,10 +25,10 @@ GameController::GameController(Shader *s, Model *character, Model *start, int la
 		std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
 
 	FT_Face face;
-	if (FT_New_Face(ft, "Assets/fonts/arial.ttf", 0, &face))
+	if (FT_New_Face(ft, "Assets/fonts/audimb.TTF", 0, &face))
 		std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 
-	FT_Set_Pixel_Sizes(face, 0, 48);
+	FT_Set_Pixel_Sizes(face, 0, 52);
 
 	if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
 		std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
@@ -188,14 +188,14 @@ void GameController::update(int width, int height) {
 		sprintf_s(secs, "%04.2f", time);
 		string formatedTime = string(min)+ ":" + string(secs);
 		RenderText(formatedTime,
-			25.0f, 25.0f, 1.0f,
-			glm::vec3(0.5, 0.8f, 0.2f));
+			width - 300.0f, height - 100, 1.0f,
+			glm::vec3(6.0, 0.0f, 0.0f));
 	}
 	else {
 		if (finaltime == 0) {
 			RenderText("00:00.00",
-				25.0f, 25.0f, 1.0f,
-				glm::vec3(0.5, 0.8f, 0.2f));
+				width - 300.0f, height - 100, 1.0f,
+				glm::vec3(6.0, 0.0f, 0.0f));
 		}
 		else {
 			char min[5], secs[6];
@@ -203,8 +203,8 @@ void GameController::update(int width, int height) {
 			sprintf_s(secs, "%04.2f", time);
 			string formatedTime = string(min) + ":" + string(secs);
 			RenderText(formatedTime,
-				25.0f, 25.0f, 1.0f,
-				glm::vec3(0.5, 0.8f, 0.2f));
+				width - 300.0f, height - 100, 1.0f,
+				glm::vec3(6.0, 0.0f, 0.0f));
 		}
 	}
 }

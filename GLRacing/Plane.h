@@ -20,7 +20,7 @@ private:
 	const static int TERRAIN_WIDTH = 200;
 	const static int TERRAIN_DEPTH = 200;
 	const static int SCALE = 5;
-	const static int offsetX = 500, offsetZ = 500, offsetY = -1000;
+	const static int offsetX = 500, offsetZ = 500, offsetY = -0.1;
 	glm::vec2 HALF_TERRAIN_SIZE;
 	vector<GLfloat> normals;
 	GLuint VBO2;

@@ -16,6 +16,9 @@
     <Filter Include="Source Files\models">
       <UniqueIdentifier>{dead1db5-ce51-4364-97ec-fff7cf0fa96f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{80667922-4c4f-406e-8f9e-ae928c86fc69}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -65,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="Bridge.cpp">
       <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -128,14 +134,11 @@
     <ClInclude Include="Character.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragmentShader1.fs" />
-    <None Include="vertexShader1.vs" />
-    <None Include="terrainVertexShader.vs" />
-    <None Include="lightFragShader.fs" />
-    <None Include="depthVShader.vs" />
-    <None Include="depthFShader.fs" />
     <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
     <None Include="Assets\Enzo%27s Car\enzo_car.mtl" />
     <None Include="Assets\nanosuit\nanosuit.blend" />
@@ -151,14 +154,48 @@
     <None Include="Assets\Lambo\Avent.mtl" />
     <None Include="Assets\Lambo\Avent-inter.lwo" />
     <None Include="Assets\Lambo\Avent-inter.lxo" />
-    <None Include="waterFShader.fs" />
-    <None Include="waterVShader.vs" />
-    <None Include="skybox.fs" />
-    <None Include="skybox.vs" />
-    <None Include="debugQuad.vs" />
-    <None Include="degugQuad.fs" />
-    <None Include="textVShader.vs" />
-    <None Include="textFShader.fs" />
+    <None Include="debugQuad.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="degugQuad.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="depthFShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="depthVShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="fragmentShader1.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="lightFragShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="skybox.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="skybox.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="terrainVertexShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="textFShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="textVShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="vertexShader1.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="waterFShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="waterVShader.vs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="terrain2.tga">

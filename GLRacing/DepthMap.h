@@ -6,13 +6,15 @@
 class DepthMap
 {
 public:
-	DepthMap();
+	DepthMap(int width, int height);
 	~DepthMap();
-	void bind();
+	void bind(int width, int height);
 	void unbind();
 	GLuint getId();
+	glm::mat4 getBias();
 private:
-	const static GLuint SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 	GLuint FBO, depthMapId;
+	GLuint depthrenderbuffer;
+	glm::mat4 bias;
 };
 
