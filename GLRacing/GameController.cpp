@@ -4,7 +4,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H  
 
-#include "Character.h"
+#include "Textrendering\Character.h"
 #include <glm\gtc\matrix_transform.hpp>
 
 

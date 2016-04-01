@@ -127,77 +127,68 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Barrier.cpp" />
-    <ClCompile Include="Bridge.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="DepthMap.cpp" />
-    <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="Models\Barrier.cpp" />
+    <ClCompile Include="Models\Bridge.cpp" />
+    <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="DepthMap\DepthMap.cpp" />
+    <ClCompile Include="Light\DirectionalLight.cpp" />
     <ClCompile Include="GameController.cpp" />
-    <ClCompile Include="ImportedModel.cpp" />
-    <ClCompile Include="kart.cpp" />
+    <ClCompile Include="Models\ImportedModel.cpp" />
+    <ClCompile Include="Models\kart.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="Road.cpp" />
-    <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="skybox.cpp" />
-    <ClCompile Include="StartLine.cpp" />
-    <ClCompile Include="Tree.cpp" />
-    <ClCompile Include="Water.cpp" />
+    <ClCompile Include="Models\Model.cpp" />
+    <ClCompile Include="Models\Plane.cpp" />
+    <ClCompile Include="Models\Road.cpp" />
+    <ClCompile Include="Shaders\Shader.cpp" />
+    <ClCompile Include="Skybox\skybox.cpp" />
+    <ClCompile Include="Models\StartLine.cpp" />
+    <ClCompile Include="Models\Tree.cpp" />
+    <ClCompile Include="Water\Water.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Barrier.h" />
-    <ClInclude Include="Bridge.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Character.h" />
-    <ClInclude Include="DepthMap.h" />
-    <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Models\Barrier.h" />
+    <ClInclude Include="Models\Bridge.h" />
+    <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Textrendering\Character.h" />
+    <ClInclude Include="DepthMap\DepthMap.h" />
+    <ClInclude Include="Light\DirectionalLight.h" />
     <ClInclude Include="GameController.h" />
-    <ClInclude Include="ImportedModel.h" />
-    <ClInclude Include="kart.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="Road.h" />
-    <ClInclude Include="Shader.h" />
-    <ClInclude Include="skybox.h" />
+    <ClInclude Include="Models\ImportedModel.h" />
+    <ClInclude Include="Models\kart.h" />
+    <ClInclude Include="Models\Material.h" />
+    <ClInclude Include="Models\Mesh.h" />
+    <ClInclude Include="Models\Model.h" />
+    <ClInclude Include="Models\Plane.h" />
+    <ClInclude Include="Models\Road.h" />
+    <ClInclude Include="Shaders\Shader.h" />
+    <ClInclude Include="Skybox\skybox.h" />
     <ClInclude Include="SOIL.h" />
     <ClInclude Include="SplineFactory.h" />
-    <ClInclude Include="StartLine.h" />
-    <ClInclude Include="Tree.h" />
-    <ClInclude Include="Water.h" />
+    <ClInclude Include="Models\StartLine.h" />
+    <ClInclude Include="Models\Tree.h" />
+    <ClInclude Include="Water\Water.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\bridge\bridge.mtl" />
     <None Include="Assets\bridge\bridge.obj.mtl" />
     <None Include="Assets\bridge\model.mtl" />
-    <None Include="Assets\car1\car1.mtl" />
     <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
     <None Include="Assets\Enzo%27s Car\enzo_car.mtl" />
-    <None Include="Assets\Green Car\Wagon.mtl" />
-    <None Include="Assets\Lambo\Avent-inter.lwo" />
-    <None Include="Assets\Lambo\Avent-inter.lxo" />
-    <None Include="Assets\Lambo\Avent.mtl" />
-    <None Include="Assets\Mushroom Bridge\mushroombridge.3ds" />
-    <None Include="Assets\Mushroom Bridge\mushroombridge.mtl" />
-    <None Include="Assets\nanosuit\nanosuit.blend" />
-    <None Include="Assets\nanosuit\nanosuit.mtl" />
-    <None Include="Assets\violet_car\violet_car.mtl" />
-    <None Include="debugQuad.vs" />
-    <None Include="degugQuad.fs" />
-    <None Include="depthFShader.fs" />
-    <None Include="depthVShader.vs" />
-    <None Include="fragmentShader1.fs" />
-    <None Include="lightFragShader.fs" />
-    <None Include="skybox.fs" />
-    <None Include="skybox.vs" />
-    <None Include="terrainVertexShader.vs" />
-    <None Include="textFShader.fs" />
-    <None Include="textVShader.vs" />
-    <None Include="vertexShader1.vs" />
-    <None Include="waterFShader.fs" />
-    <None Include="waterVShader.vs" />
+    <None Include="Assets\Startline\violet_car.mtl" />
+    <None Include="Shaders\debugQuad.vs" />
+    <None Include="Shaders\degugQuad.fs" />
+    <None Include="Shaders\depthFShader.fs" />
+    <None Include="Shaders\depthVShader.vs" />
+    <None Include="Shaders\fragmentShader1.fs" />
+    <None Include="Shaders\lightFragShader.fs" />
+    <None Include="Shaders\skybox.fs" />
+    <None Include="Shaders\skybox.vs" />
+    <None Include="Shaders\terrainVertexShader.vs" />
+    <None Include="Shaders\textFShader.fs" />
+    <None Include="Shaders\textVShader.vs" />
+    <None Include="Shaders\vertexShader1.vs" />
+    <None Include="Shaders\waterFShader.fs" />
+    <None Include="Shaders\waterVShader.vs" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\bridge\0.png" />
@@ -207,14 +198,6 @@
     <Image Include="Assets\bridge\4.png" />
     <Image Include="Assets\bridge\brick.jpg" />
     <Image Include="Assets\bridge\rock 5.png" />
-    <Image Include="Assets\car1\t0147_0.bmp" />
-    <Image Include="Assets\car1\t0147_1.bmp" />
-    <Image Include="Assets\car1\t0147_2.bmp" />
-    <Image Include="Assets\car1\t0147_3.bmp" />
-    <Image Include="Assets\car1\t0147_4.bmp" />
-    <Image Include="Assets\car1\t0166_0.bmp" />
-    <Image Include="Assets\car1\t0166_1.bmp" />
-    <Image Include="Assets\car1\t0166_2.bmp" />
     <Image Include="Assets\Enzo%27s Car\car.png" />
     <Image Include="Assets\Enzo%27s Car\car_bump.png" />
     <Image Include="Assets\Enzo%27s Car\inner.png" />
@@ -222,101 +205,31 @@
     <Image Include="Assets\Enzo%27s Car\misc.png" />
     <Image Include="Assets\Enzo%27s Car\misc_bump.png" />
     <Image Include="Assets\Enzo%27s Car\windshield.png" />
-    <Image Include="Assets\Green Car\Wagon-tex.tex.png" />
-    <Image Include="Assets\Lambo\interior_lod0.tga" />
-    <Image Include="Assets\Lambo\Lamborghinilogo.jpg" />
-    <Image Include="Assets\Lambo\lights.tga" />
-    <Image Include="Assets\Lambo\lights_lod0.tga" />
-    <Image Include="Assets\Lambo\nodamage.tga" />
-    <Image Include="Assets\Lambo\nodamage_lod0.tga" />
-    <Image Include="Assets\Lambo\plastic3_nrm.tga" />
-    <Image Include="Assets\Mushroom Bridge\mushMM13.png" />
-    <Image Include="Assets\Mushroom Bridge\mushMS02.png" />
-    <Image Include="Assets\Mushroom Bridge\mushMS16.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS00.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS01.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS03.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS04.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS05.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS06.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS07.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS08.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS09.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS10.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS11.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS12.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS14.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS15.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS17.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS18.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS19.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS20.png" />
-    <Image Include="Assets\Mushroom Bridge\mushSS21.png" />
-    <Image Include="Assets\nanosuit\arm_dif.png" />
-    <Image Include="Assets\nanosuit\arm_showroom_ddn.png" />
-    <Image Include="Assets\nanosuit\arm_showroom_spec.png" />
-    <Image Include="Assets\nanosuit\body_dif.png" />
-    <Image Include="Assets\nanosuit\body_showroom_ddn.png" />
-    <Image Include="Assets\nanosuit\body_showroom_spec.png" />
-    <Image Include="Assets\nanosuit\glass_ddn.png" />
-    <Image Include="Assets\nanosuit\glass_dif.png" />
-    <Image Include="Assets\nanosuit\hand_dif.png" />
-    <Image Include="Assets\nanosuit\hand_showroom_ddn.png" />
-    <Image Include="Assets\nanosuit\hand_showroom_spec.png" />
-    <Image Include="Assets\nanosuit\helmet_diff.png" />
-    <Image Include="Assets\nanosuit\helmet_showroom_ddn.png" />
-    <Image Include="Assets\nanosuit\helmet_showroom_spec.png" />
-    <Image Include="Assets\nanosuit\leg_dif.png" />
-    <Image Include="Assets\nanosuit\leg_showroom_ddn.png" />
-    <Image Include="Assets\nanosuit\leg_showroom_spec.png" />
-    <Image Include="Assets\violet_car\rubberTex.jpg" />
-    <Image Include="Assets\violet_car\t0001_0.png" />
-    <Image Include="grass.jpg" />
-    <Image Include="opengl.png" />
-    <Image Include="terrain2.tga" />
-    <Image Include="tunnel_road.jpg" />
+    <Image Include="Assets\Startline\platic.jpg" />
+    <Image Include="Assets\Startline\rubberTex.jpg" />
+    <Image Include="Assets\Startline\t0001_0.png" />
+    <Image Include="Assets\Textures\grass.jpg" />
+    <Image Include="Assets\Textures\opengl.png" />
+    <Image Include="Assets\HeightMap\terrain2.tga" />
+    <Image Include="Assets\Textures\tree.png" />
+    <Image Include="Assets\Textures\tunnel_road.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\info.txt" />
-    <Text Include="Assets\nanosuit\LICENSE.txt" />
-    <Text Include="Assets\violet_car\info.txt" />
+    <Text Include="Assets\Startline\info.txt" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\enzo_car.obj">
       <FileType>Text</FileType>
     </Text>
-    <Text Include="Assets\nanosuit\nanosuit.obj">
-      <DeploymentContent>true</DeploymentContent>
-      <FileType>Text</FileType>
-    </Text>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Assets\Green Car\Wagon.obj">
-      <FileType>Document</FileType>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Assets\violet_car\violet_car.obj">
-      <FileType>Document</FileType>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Assets\car1\car1.obj">
+    <Text Include="Assets\Startline\violet_car.obj">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\bridge\model.obj">
-      <FileType>Document</FileType>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Assets\Mushroom Bridge\mushroombridge.obj">
-      <FileType>Document</FileType>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Assets\Lambo\Avent.obj">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>

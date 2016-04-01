@@ -1,5 +1,5 @@
 #pragma once
-#include "Model.h"
+#include "Models/Model.h"
 #include <iostream>
 #include <map>
 class Character;

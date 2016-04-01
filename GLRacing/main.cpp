@@ -14,20 +14,20 @@
 #include <algorithm>
 #include <vector>
 #include <cctype>
-#include "Model.h"
-#include "Plane.h"
-#include "kart.h"
-#include "Road.h"
-#include "Shader.h"
-#include "Barrier.h"
-#include "DirectionalLight.h"
-#include "DepthMap.h"
-#include "Bridge.h"
-#include "StartLine.h"
+#include "Models/Model.h"
+#include "Models/Plane.h"
+#include "Models/kart.h"
+#include "Models/Road.h"
+#include "Shaders/Shader.h"
+#include "Models/Barrier.h"
+#include "Light/DirectionalLight.h"
+#include "DepthMap/DepthMap.h"
+#include "Models/Bridge.h"
+#include "Models/StartLine.h"
 #include "GameController.h"
-#include "Water.h"
-#include "skybox.h"
-#include "Tree.h"
+#include "Water/Water.h"
+#include "Skybox/skybox.h"
+#include "Models/Tree.h"
 
 using namespace std;
 

@@ -24,186 +24,171 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="kart.cpp">
-      <Filter>Source Files\models</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files\models</Filter>
-    </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>Source Files\models</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Road.cpp">
-      <Filter>Source Files\models</Filter>
-    </ClCompile>
-    <ClCompile Include="Barrier.cpp">
-      <Filter>Source Files\models</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectionalLight.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DepthMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ImportedModel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StartLine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Water.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Bridge.cpp">
+    <ClCompile Include="Models\Barrier.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
-    <ClCompile Include="Tree.cpp">
+    <ClCompile Include="Models\Bridge.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\ImportedModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\kart.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\Model.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\Plane.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\Road.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\StartLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\Tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthMap\DepthMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shaders\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox\skybox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Light\DirectionalLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Water\Water.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Road.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SOIL.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="kart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SplineFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Barrier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DepthMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ImportedModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bridge.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StartLine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GameController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Water.h">
+    <ClInclude Include="Models\Barrier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="skybox.h">
+    <ClInclude Include="Models\Bridge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Character.h">
+    <ClInclude Include="Models\ImportedModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tree.h">
+    <ClInclude Include="Models\kart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\Model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\Plane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\Road.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\StartLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\Tree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthMap\DepthMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Textrendering\Character.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shaders\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox\skybox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Light\DirectionalLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Water\Water.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
     <None Include="Assets\Enzo%27s Car\enzo_car.mtl" />
-    <None Include="Assets\nanosuit\nanosuit.blend" />
-    <None Include="Assets\nanosuit\nanosuit.mtl" />
-    <None Include="Assets\Green Car\Wagon.mtl" />
-    <None Include="Assets\violet_car\violet_car.mtl" />
-    <None Include="Assets\car1\car1.mtl" />
     <None Include="Assets\bridge\model.mtl" />
-    <None Include="Assets\Mushroom Bridge\mushroombridge.3ds" />
-    <None Include="Assets\Mushroom Bridge\mushroombridge.mtl" />
     <None Include="Assets\bridge\bridge.obj.mtl" />
     <None Include="Assets\bridge\bridge.mtl" />
-    <None Include="Assets\Lambo\Avent.mtl" />
-    <None Include="Assets\Lambo\Avent-inter.lwo" />
-    <None Include="Assets\Lambo\Avent-inter.lxo" />
-    <None Include="debugQuad.vs">
+    <None Include="Shaders\debugQuad.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="degugQuad.fs">
+    <None Include="Shaders\degugQuad.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="depthFShader.fs">
+    <None Include="Shaders\depthFShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="depthVShader.vs">
+    <None Include="Shaders\depthVShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="fragmentShader1.fs">
+    <None Include="Shaders\lightFragShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="lightFragShader.fs">
+    <None Include="Shaders\terrainVertexShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="skybox.fs">
+    <None Include="Shaders\textFShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="skybox.vs">
+    <None Include="Shaders\textVShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="terrainVertexShader.vs">
+    <None Include="Shaders\vertexShader1.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="textFShader.fs">
+    <None Include="Shaders\waterFShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="textVShader.vs">
+    <None Include="Shaders\waterVShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="vertexShader1.vs">
+    <None Include="Shaders\skybox.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="waterFShader.fs">
+    <None Include="Shaders\skybox.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="waterVShader.vs">
+    <None Include="Shaders\fragmentShader1.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="Assets\Startline\violet_car.mtl" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="terrain2.tga">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="grass.jpg">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
     <Image Include="Assets\Enzo%27s Car\car.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
@@ -222,87 +207,6 @@
     <Image Include="Assets\Enzo%27s Car\misc_bump.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="Assets\nanosuit\arm_dif.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\arm_showroom_ddn.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\arm_showroom_spec.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\body_dif.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\body_showroom_ddn.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\body_showroom_spec.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\glass_ddn.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\glass_dif.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\hand_dif.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\hand_showroom_ddn.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\hand_showroom_spec.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\helmet_diff.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\helmet_showroom_ddn.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\helmet_showroom_spec.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\leg_dif.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\leg_showroom_ddn.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\nanosuit\leg_showroom_spec.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Green Car\Wagon-tex.tex.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\violet_car\t0001_0.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\car1\t0147_0.bmp">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\car1\t0147_1.bmp">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\car1\t0147_2.bmp">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\car1\t0147_3.bmp">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\car1\t0147_4.bmp">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\car1\t0166_0.bmp">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\car1\t0166_1.bmp">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\car1\t0166_2.bmp">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
     <Image Include="Assets\bridge\0.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
@@ -318,112 +222,46 @@
     <Image Include="Assets\bridge\4.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="tunnel_road.jpg">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushMM13.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushMS02.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushMS16.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS00.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS01.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS03.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS04.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS05.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS06.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS07.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS08.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS09.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS10.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS11.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS12.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS14.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS15.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS17.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS18.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS19.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS20.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Mushroom Bridge\mushSS21.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
     <Image Include="Assets\Enzo%27s Car\windshield.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="Assets\Lambo\interior_lod0.tga" />
-    <Image Include="Assets\Lambo\Lamborghinilogo.jpg">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\Lambo\lights.tga" />
-    <Image Include="Assets\Lambo\lights_lod0.tga" />
-    <Image Include="Assets\Lambo\nodamage.tga" />
-    <Image Include="Assets\Lambo\nodamage_lod0.tga" />
-    <Image Include="Assets\Lambo\plastic3_nrm.tga" />
     <Image Include="Assets\bridge\rock 5.png">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
-    <Image Include="Assets\violet_car\rubberTex.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
     <Image Include="Assets\bridge\brick.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="opengl.png">
+    <Image Include="Assets\Startline\rubberTex.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Startline\t0001_0.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Startline\platic.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\tunnel_road.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\tree.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\opengl.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\grass.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\HeightMap\terrain2.tga">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\info.txt" />
-    <Text Include="Assets\nanosuit\LICENSE.txt" />
-    <Text Include="Assets\nanosuit\nanosuit.obj" />
     <Text Include="Assets\Enzo%27s Car\enzo_car.obj" />
-    <Text Include="Assets\Green Car\Wagon.obj" />
-    <Text Include="Assets\violet_car\info.txt" />
-    <Text Include="Assets\violet_car\violet_car.obj" />
-    <Text Include="Assets\car1\car1.obj" />
     <Text Include="Assets\bridge\model.obj" />
-    <Text Include="Assets\Mushroom Bridge\mushroombridge.obj" />
-    <Text Include="Assets\Lambo\Avent.obj" />
     <Text Include="Assets\bridge\bridge.obj" />
+    <Text Include="Assets\Startline\info.txt" />
+    <Text Include="Assets\Startline\violet_car.obj" />
   </ItemGroup>
 </Project>
