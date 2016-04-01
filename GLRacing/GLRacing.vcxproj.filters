@@ -201,9 +201,6 @@
     <Image Include="terrain2.tga">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="opengl.jpg">
-      <Filter>Source Files\Resource Files</Filter>
-    </Image>
     <Image Include="grass.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
@@ -408,6 +405,12 @@
     <Image Include="Assets\violet_car\rubberTex.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
+    <Image Include="Assets\bridge\brick.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="opengl.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\info.txt" />
@@ -420,7 +423,7 @@
     <Text Include="Assets\car1\car1.obj" />
     <Text Include="Assets\bridge\model.obj" />
     <Text Include="Assets\Mushroom Bridge\mushroombridge.obj" />
-    <Text Include="Assets\bridge\bridge.obj" />
     <Text Include="Assets\Lambo\Avent.obj" />
+    <Text Include="Assets\bridge\bridge.obj" />
   </ItemGroup>
 </Project>

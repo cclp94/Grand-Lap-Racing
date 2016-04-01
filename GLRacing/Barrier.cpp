@@ -107,29 +107,29 @@ void Barrier::getModel() {
 	}
 
 	//Texture
-	pData = SOIL_load_image("opengl.jpg", &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
+	GLubyte *image = SOIL_load_image("opengl.png", &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
 
-	if (pData == 0)
+	if (image == 0)
 		cerr << "SOIL loading error: '" << SOIL_last_result() << "' (" << "res_texture.png" << ")" << endl;
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	SOIL_free_image_data(pData);
+	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
 
 	for (int i = 0; i < vertices.size() / (6); i += 2)
 	{
 		
-		texCoords.push_back(0.0); texCoords.push_back(1.0);
-		texCoords.push_back(1.0); texCoords.push_back(1.0);
+		texCoords.push_back(0.0); texCoords.push_back(0.0);
+		texCoords.push_back(1.0); texCoords.push_back(0.0);
 		
 
 	}
@@ -138,8 +138,8 @@ void Barrier::getModel() {
 	{
 		
 		
-		texCoords.push_back(0.0); texCoords.push_back(0.0);
-		texCoords.push_back(1.0); texCoords.push_back(0.0);
+		texCoords.push_back(0.0); texCoords.push_back(1.0);
+		texCoords.push_back(1.0); texCoords.push_back(1.0);
 	}
 
 }

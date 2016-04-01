@@ -176,8 +176,9 @@ void GameController::update(int width, int height) {
 			}
 		}
 	}
+	double time = glfwGetTime() - startTime;
+
 	if (gameStarted) {
-		double time = glfwGetTime() - startTime;
 		seconds = (int)time;
 		if (seconds % 60 == 0 && seconds != 0) {
 			minutes++;

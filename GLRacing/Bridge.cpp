@@ -59,7 +59,7 @@ vector<Texture> Bridge::loadMaterialTextures(aiMaterial* mat, aiTextureType type
 	vector<Texture> textures;
 		aiString str;
 		Texture texture;
-		texture.id = Mesh::TextureFromFile("rock 5.png", this->meshDirectory);
+		texture.id = Mesh::TextureFromFile("brick.jpg", this->meshDirectory);
 		texture.type = typeName;
 		texture.path = str;
 		textures.push_back(texture);

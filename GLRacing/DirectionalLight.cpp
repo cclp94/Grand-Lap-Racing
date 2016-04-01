@@ -15,8 +15,8 @@ DirectionalLight::~DirectionalLight()
 glm::mat4 DirectionalLight::getLightSpaceMatrix(int width, int height) {
 	GLfloat near_plane = 1.0f, far_plane = 7.5f;
 	glm::vec3 lightDir = glm::normalize(direction);
-	glm::mat4 proj = glm::ortho<float>(-500, 500, -500, 500, -700, 700);
-	glm::mat4  view = glm::lookAt(direction, glm::vec3(0.0, 0.0, 0.0f), glm::vec3(0.0, 1.0, 0.0));
+	glm::mat4 proj = glm::ortho<float>(-500, 500, -500, 500, -1000, 1000);
+	glm::mat4  view = glm::lookAt(glm::vec3(0.0, 500, -500), glm::vec3(0.0, 0.0, 0.0f), glm::vec3(0.0, 1.0, 0.0));
 	return proj * view;
 }
 

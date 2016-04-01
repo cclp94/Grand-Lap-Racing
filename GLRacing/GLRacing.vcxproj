@@ -205,6 +205,7 @@
     <Image Include="Assets\bridge\2.png" />
     <Image Include="Assets\bridge\3.png" />
     <Image Include="Assets\bridge\4.png" />
+    <Image Include="Assets\bridge\brick.jpg" />
     <Image Include="Assets\bridge\rock 5.png" />
     <Image Include="Assets\car1\t0147_0.bmp" />
     <Image Include="Assets\car1\t0147_1.bmp" />
@@ -271,7 +272,7 @@
     <Image Include="Assets\violet_car\rubberTex.jpg" />
     <Image Include="Assets\violet_car\t0001_0.png" />
     <Image Include="grass.jpg" />
-    <Image Include="opengl.jpg" />
+    <Image Include="opengl.png" />
     <Image Include="terrain2.tga" />
     <Image Include="tunnel_road.jpg" />
   </ItemGroup>
@@ -315,12 +316,12 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Assets\bridge\bridge.obj">
+    <Text Include="Assets\Lambo\Avent.obj">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Assets\Lambo\Avent.obj">
+    <Text Include="Assets\bridge\bridge.obj">
       <FileType>Document</FileType>
     </Text>
   </ItemGroup>
