@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW\glfw3.h>
 #include <glm\ext.hpp>
+#include <irrKlang\irrKlang.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +29,7 @@
 #include "Water/Water.h"
 #include "Skybox/skybox.h"
 #include "Models/Tree.h"
+#include "Models\TestQuad.h"
 
 using namespace std;
 
@@ -43,8 +45,17 @@ glm::mat4 proj_matrix;
 GLfloat point_size = 3.0f;
 kart *Kart;
 
+
+
+
+
+
 bool initialize();
 bool cleanUp();
+void renderScene(vector<Model*> models);
+
+irrklang::ISoundEngine* engine;
+irrklang::ISoundEngine* music;
 
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
@@ -55,9 +66,13 @@ int main() {
 	//Light
 	DirectionalLight light(glm::vec3(0.0, 50000000, -50000000), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
 
+	//Sound
+	engine = irrklang::createIrrKlangDevice();
+	music = irrklang::createIrrKlangDevice();
+
 	//Set Shaders
 	//Shader *mainShader = new Shader("vertexShader1.vs", "lightFragShader.fs");
-	Shader *terrainShader = new Shader("terrainVertexShader.vs", "lightFragShader.fs");
+	Shader *terrainShader = new Shader("mainVShader.vs", "mainFShader.fs");
 	Shader *depthShader = new Shader("depthVShader.vs", "depthFShader.fs");
 	Shader *waterShader = new Shader("waterVShader.vs", "waterFShader.fs");
 	Shader *skyShader = new Shader("skybox.vs", "skybox.fs");
@@ -65,12 +80,6 @@ int main() {
 
 	// Perspective Projection
 	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
-
-
-	// Projectiion Matrix and light
-	//mainShader->use();
-	//glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-	//light.setProperties(mainShader);
 
 	terrainShader->use();
 	glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
@@ -83,21 +92,23 @@ int main() {
 	skybox skybox(skyShader);
 
 	// Objects in scene
-	Bridge bridge(terrainShader);
-	Plane plane(terrainShader);
-	Road road(terrainShader, &plane);
-	Barrier barrier1(terrainShader, Barrier::OUTTER);
-	Barrier barrier2(terrainShader, Barrier::INNER);
-	Kart = new kart(terrainShader);
-	Tree tree(terrainShader);
-	
-	StartLine start(terrainShader);
-	Water water(waterShader);
-
+	Bridge bridge(terrainShader);						
+	Plane plane(terrainShader);							
+	Road road(terrainShader, &plane);					
+	Barrier barrier1(terrainShader, Barrier::OUTTER);	
+	Barrier barrier2(terrainShader, Barrier::INNER);	
+	Kart = new kart(terrainShader);						
+	Tree tree(terrainShader);							
+	StartLine start(terrainShader);						
+	Water water(waterShader, width, height);
+	TestQuad quad(terrainShader, -255.0);
+	TestQuad quad2(terrainShader, -247.0);
 	GameController game(textShader, Kart, &start, 3);
 
 	//Shadow Depth Map
 	DepthMap depthMap(width, height);
+
+	music->play2D("Assets/Sounds/GLRacing.wav", true);
 	
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
@@ -161,13 +172,58 @@ int main() {
 		view_matrix = Kart->getCameraView(); // Get Camera View Matrix
 		glm::vec3 viewPos = Kart->getCameraPosition();
 
+		//---------------------------------WATER REFRACTION-----------------------------------
+		
+		
+		// Apply view Matrix in secondary shader programs
 		terrainShader->use();
+		water.bindRefractionFBO();
+		// Apply view Matrix in secondary shader programs
+		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
+		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+
+		plane.draw();
+		barrier1.draw();
+		barrier2.draw();
+		road.draw();
+		Kart->draw();
+		bridge.draw();
+		start.draw();
+		tree.draw();
+		
+		water.unBind(width, height);
+
+		//-----------------------------------WATER REFLECTION-------------------------
+		terrainShader->use();
+		water.bindReflectionFBO();
 		// Apply view Matrix in secondary shader programs
 		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 		glUniformMatrix4fv(terrainShader->getUniform("shadowBias"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
+		plane.draw();
+		barrier1.draw();
+		barrier2.draw();
+		road.draw();
+		Kart->draw();
+		bridge.draw();
+		start.draw();
+		tree.draw();
+		
+		water.unBind(width, height);
+
+		//---------------------------------------NORMAL RENDER-----------------------------------
+
+
+		terrainShader->use();
+		// Apply view Matrix in secondary shader programs
+		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
+		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
+		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+		glUniformMatrix4fv(terrainShader->getUniform("shadowBias"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
 		plane.draw();
@@ -177,7 +233,11 @@ int main() {
 		Kart->draw();
 		bridge.draw();
 		start.draw();
-		tree.draw(Kart->getTurnAngle());
+		tree.draw();
+		quad.setTexture(water.getRefractionTexture());
+		quad.draw();
+		quad2.setTexture(water.getReflectionTexture());
+		quad2.draw();
 		Kart->resetTurnAngle();
 
 		// Main Shader Program
@@ -193,11 +253,24 @@ int main() {
 		// put the stuff we've been drawing onto the display
 		glfwSwapBuffers(window);
 		Kart->move(&plane, &bridge, &road);
+		//if (Kart->isAccelarating) {
+		//	engine->play2D("Assets/Sounds/Shift Gears-SoundBible.com-786097341.wav", true);
+		//}
+		tree.setTurningAngle(Kart->getTurnAngle());
 		
 	}
+	music->drop();
+	engine->drop();
 	delete textShader, terrainShader, waterShader, Kart, skyShader;
 	cleanUp();
 	return 0;
+}
+
+void renderScene(vector<Model*> models) {
+	for (int i = 0; i < models.size(); i++)
+	{
+		models[i]->draw();
+	}
 }
 
 
@@ -250,8 +323,9 @@ bool initialize() {
 	glDepthFunc(GL_LESS);	/// The type of testing i.e. a smaller value as "closer"
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	glfwWindowHint(GLFW_SAMPLES, 4);
-	glEnable(GL_MULTISAMPLE);
+	//glfwWindowHint(GLFW_SAMPLES, 4);
+	//glEnable(GL_MULTISAMPLE);
+	glEnable(GL_CLIP_DISTANCE0);
 	return true;
 }
 

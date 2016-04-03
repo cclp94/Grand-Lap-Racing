@@ -9,6 +9,7 @@
 
 
 
+
 GameController::GameController(Shader *s, Model *character, Model *start, int laps)
 {
 	this->character = character;
@@ -79,6 +80,7 @@ GameController::GameController(Shader *s, Model *character, Model *start, int la
 	shader = s;
 
 	setupRender();
+	gameSounds = irrklang::createIrrKlangDevice();
 }
 
 void GameController::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
@@ -141,8 +143,8 @@ void GameController::update(int width, int height) {
 
 	
 	glm::vec3 currentPos = character->getPosition();
-	float zthresholdUp = lapPosition.z + threshold;
-	float zthresholdDown = lapPosition.z - threshold;
+	float zthresholdUp = lapPosition.z + threshold/2;
+	float zthresholdDown = lapPosition.z - threshold/2;
 	float xthresholdUp = lapPosition.x + threshold;
 	float xthresholdDown = lapPosition.x - threshold;
 	if (currentPos.z < zthresholdUp && currentPos.z > zthresholdDown) {
@@ -154,7 +156,7 @@ void GameController::update(int width, int height) {
 					currentLap = 0;
 
 					gameStarted = true;
-					cout << "Game Started!!" << endl;
+					gameSounds->play2D("Assets/Sounds/go.wav",false);
 				}
 				else {
 
@@ -169,6 +171,9 @@ void GameController::update(int width, int height) {
 							finaltime = currentTime - startTime;
 							cout << "Finished!! -- " << finaltime << endl;
 							//Save result in file
+						}
+						else {
+							gameSounds->play2D("Assets/Sounds/crowd.wav", false);
 						}
 					}
 

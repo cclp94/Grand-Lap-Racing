@@ -65,7 +65,6 @@ glm::vec3 Plane::getColor() {
 
 void Plane::draw() {
 	glBindVertexArray(VAO);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY_EXT);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
 	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);

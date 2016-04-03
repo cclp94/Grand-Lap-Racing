@@ -16,6 +16,8 @@
 #include "Road.h"
 
 #include "Model.h"
+#include <irrKlang\irrKlang.h>
+
 class Camera;
 
 using namespace std;
@@ -41,12 +43,13 @@ public:
 	void setCollision(bool col);
 	float getTurnAngle();
 	void resetTurnAngle();
+	bool isAccelarating;
 private:
 	float maxSpeed;
 	float speed;
 	glm::vec4 previousPos;
 	float acceleration;
-	bool isAccelarating;
+	
 	bool isReverse;
 	glm::vec3 color;
 	Camera *camera;
@@ -55,4 +58,6 @@ private:
 	bool isInAir;
 	bool collision;
 	float turnAngle;
+	irrklang::ISoundEngine* carSounds;
+	irrklang::ISound* accelerationSound;
 };

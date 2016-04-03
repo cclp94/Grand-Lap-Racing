@@ -4,6 +4,7 @@
 
 kart::~kart() {
 	delete camera;
+	carSounds->drop();
 }
 
 glm::vec3 kart::getCameraPosition() {
@@ -40,8 +41,9 @@ kart::kart(Shader *s) : ImportedModel(s){
 	model_matrix = glm::scale(model_matrix, glm::vec3(0.4));
 
 	position = model_matrix * position;
+	carSounds = irrklang::createIrrKlangDevice();
 
-	collision = false;
+	collision = true;
 }
 
 void kart::setCollision(bool col) {
@@ -85,6 +87,7 @@ void kart::move(Plane *terrain, Bridge *b, Road *r) {
 			else
 				model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, -3.0));
 
+			carSounds->play2D("Assets/Sounds/Car_crash.wav", false);
 			speed = 0;
 		}
 	}
@@ -149,6 +152,11 @@ float kart::getSpeed() {
 
 void kart::update() {
 	if (!isAccelarating) {
+		if (accelerationSound != NULL) {
+			if (!accelerationSound->getIsPaused()) {
+				accelerationSound->setIsPaused(true);
+			}
+		}
 		if (speed < 0) {
 			speed += 1;
 		}
@@ -159,6 +167,13 @@ void kart::update() {
 			speed = 0;
 	}
 	else {
+		if (accelerationSound == NULL) {
+			accelerationSound = carSounds->play2D("Assets/Sounds/Shift Gears-SoundBible.com-786097341.wav", true, false, true);
+			accelerationSound->setVolume(0.2);
+		}
+		else if (accelerationSound->getIsPaused()) {
+			accelerationSound->setIsPaused(false);
+		}
 		if (!isReverse) {
 			accelerate();
 		}

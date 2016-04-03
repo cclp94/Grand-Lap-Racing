@@ -2,6 +2,7 @@
 #include "Models/Model.h"
 #include <iostream>
 #include <map>
+#include <irrKlang\irrKlang.h>
 class Character;
 
 class GameController
@@ -27,6 +28,6 @@ private:
 	void setupRender();
 	GLuint VAO, VBO;
 	Shader *shader;
-
+	irrklang::ISoundEngine* gameSounds;
 };
 

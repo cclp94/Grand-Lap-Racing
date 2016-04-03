@@ -51,21 +51,8 @@ void Tree::getModel() {
 }
 
 
-void Tree::draw(float turnAngle) {
-
+void Tree::setTurningAngle(float turnAngle) {
 	model_matrix = glm::rotate(model_matrix, turnAngle, glm::vec3(0.0, 1.0, 0.0));
-
-	glBindVertexArray(VAO);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(shaderProgram->getUniform("diffuseTexture"), 0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-
-	glBindVertexArray(0);
 }
 
 void Tree::draw() {

@@ -84,7 +84,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;SOIL.lib;assimp.lib;freetyped.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32s.lib;SOIL.lib;assimp.lib;freetyped.lib;irrKlang.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -143,12 +143,14 @@
     <ClCompile Include="Skybox\skybox.cpp" />
     <ClCompile Include="Models\StartLine.cpp" />
     <ClCompile Include="Models\Tree.cpp" />
+    <ClCompile Include="Models\TestQuad.cpp" />
     <ClCompile Include="Water\Water.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Models\Barrier.h" />
     <ClInclude Include="Models\Bridge.h" />
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Models\TestQuad.h" />
     <ClInclude Include="Textrendering\Character.h" />
     <ClInclude Include="DepthMap\DepthMap.h" />
     <ClInclude Include="Light\DirectionalLight.h" />
@@ -175,18 +177,14 @@
     <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
     <None Include="Assets\Enzo%27s Car\enzo_car.mtl" />
     <None Include="Assets\Startline\violet_car.mtl" />
-    <None Include="Shaders\debugQuad.vs" />
-    <None Include="Shaders\degugQuad.fs" />
     <None Include="Shaders\depthFShader.fs" />
     <None Include="Shaders\depthVShader.vs" />
-    <None Include="Shaders\fragmentShader1.fs" />
-    <None Include="Shaders\lightFragShader.fs" />
+    <None Include="Shaders\MainFShader.fs" />
     <None Include="Shaders\skybox.fs" />
     <None Include="Shaders\skybox.vs" />
-    <None Include="Shaders\terrainVertexShader.vs" />
+    <None Include="Shaders\mainVShader.vs" />
     <None Include="Shaders\textFShader.fs" />
     <None Include="Shaders\textVShader.vs" />
-    <None Include="Shaders\vertexShader1.vs" />
     <None Include="Shaders\waterFShader.fs" />
     <None Include="Shaders\waterVShader.vs" />
   </ItemGroup>
@@ -237,6 +235,14 @@
     <Text Include="Assets\bridge\bridge.obj">
       <FileType>Document</FileType>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Sounds\Car_crash.wav" />
+    <Media Include="Assets\Sounds\complete.wav" />
+    <Media Include="Assets\Sounds\crowd.wav" />
+    <Media Include="Assets\Sounds\GLRacing.wav" />
+    <Media Include="Assets\Sounds\go.wav" />
+    <Media Include="Assets\Sounds\Shift Gears-SoundBible.com-786097341.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

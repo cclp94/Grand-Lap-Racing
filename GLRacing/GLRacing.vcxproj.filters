@@ -72,6 +72,9 @@
     <ClCompile Include="Water\Water.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Models\TestQuad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL.h">
@@ -137,6 +140,9 @@
     <ClInclude Include="Models\Material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Models\TestQuad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
@@ -144,31 +150,16 @@
     <None Include="Assets\bridge\model.mtl" />
     <None Include="Assets\bridge\bridge.obj.mtl" />
     <None Include="Assets\bridge\bridge.mtl" />
-    <None Include="Shaders\debugQuad.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="Shaders\degugQuad.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="Shaders\depthFShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="Shaders\depthVShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="Shaders\lightFragShader.fs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="Shaders\terrainVertexShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="Shaders\textFShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="Shaders\textVShader.vs">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="Shaders\vertexShader1.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="Shaders\waterFShader.fs">
@@ -183,10 +174,13 @@
     <None Include="Shaders\skybox.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="Shaders\fragmentShader1.fs">
+    <None Include="Assets\Startline\violet_car.mtl" />
+    <None Include="Shaders\mainVShader.vs">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="Assets\Startline\violet_car.mtl" />
+    <None Include="Shaders\MainFShader.fs">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Enzo%27s Car\car.png">
@@ -263,5 +257,25 @@
     <Text Include="Assets\bridge\bridge.obj" />
     <Text Include="Assets\Startline\info.txt" />
     <Text Include="Assets\Startline\violet_car.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Assets\Sounds\Car_crash.wav">
+      <Filter>Source Files\Resource Files</Filter>
+    </Media>
+    <Media Include="Assets\Sounds\GLRacing.wav">
+      <Filter>Source Files\Resource Files</Filter>
+    </Media>
+    <Media Include="Assets\Sounds\Shift Gears-SoundBible.com-786097341.wav">
+      <Filter>Source Files\Resource Files</Filter>
+    </Media>
+    <Media Include="Assets\Sounds\complete.wav">
+      <Filter>Source Files\Resource Files</Filter>
+    </Media>
+    <Media Include="Assets\Sounds\go.wav">
+      <Filter>Source Files\Resource Files</Filter>
+    </Media>
+    <Media Include="Assets\Sounds\crowd.wav">
+      <Filter>Source Files\Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>
