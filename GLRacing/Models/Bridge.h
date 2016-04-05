@@ -7,8 +7,6 @@ class Bridge :
 public:
 	Bridge(Shader *s);
 	~Bridge();
-	void depthDraw(Shader *s);
-	void  draw();
 	glm::vec4 position;
 	float getHeight(float modelX, float modelY);
 

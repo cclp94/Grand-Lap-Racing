@@ -93,5 +93,8 @@ void main () {
 	 float bias = 0.005;
 	        
     vec3 lighting = (ambient +   ((1.0 - shadow)*diffuse) + specular) * color;
-	 frag_colour = vec4(lighting, texture(texture_diffuse1, TextCoord).a);
+	vec4 texel = vec4(lighting, texture(texture_diffuse1, TextCoord).a);
+	if(texel.a < 0.5)
+		discard;
+	 frag_colour = texel;
 }

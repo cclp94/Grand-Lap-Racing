@@ -28,9 +28,9 @@
 #include "GameController.h"
 #include "Water/Water.h"
 #include "Skybox/skybox.h"
-#include "Models/Tree.h"
-#include "Models\TestQuad.h"
-#include "Water\WaterFrameBuffers.h"
+#include "Models/BillboardModel.h"
+#include "Models/TestQuad.h"
+#include "Water/WaterFrameBuffers.h"
 
 using namespace std;
 
@@ -101,7 +101,7 @@ int main() {
 	Barrier barrier1(terrainShader, Barrier::OUTTER);	
 	Barrier barrier2(terrainShader, Barrier::INNER);	
 	Kart = new kart(terrainShader);						
-	Tree tree(terrainShader);							
+	BillboardModel tree(terrainShader, glm::vec3(-220.0, -1, 0.0), glm::vec3(20), "tree.png");
 	StartLine start(terrainShader);						
 	Water water(waterShader);
 	TestQuad quad(terrainShader, -255.0);
@@ -281,12 +281,10 @@ int main() {
 		Kart->draw();
 		bridge.draw();
 		start.draw();
+		tree.setPosition(glm::vec3(-220.0, -1, 0.0), glm::vec3(20), Kart->getTurnAngle());
 		tree.draw();
-		quad.setTexture(waterBuffers.getRefractionTexture());
-		quad.draw();
-		quad2.setTexture(waterBuffers.getReflectionTexture());
-		quad2.draw();
-		Kart->resetTurnAngle();
+		tree.setPosition(glm::vec3(-200.0, -1, 0.0), glm::vec3(25), Kart->getTurnAngle());
+		tree.draw();
 
 		// Main Shader Program
 		waterShader->use();
@@ -318,7 +316,6 @@ int main() {
 		// put the stuff we've been drawing onto the display
 		glfwSwapBuffers(window);
 		Kart->move(&plane, &bridge, &road);
-		tree.setTurningAngle(Kart->getTurnAngle());
 		
 	}
 	music->drop();

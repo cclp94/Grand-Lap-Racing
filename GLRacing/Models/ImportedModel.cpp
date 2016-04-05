@@ -6,6 +6,26 @@ ImportedModel::ImportedModel(Shader *s) : Model(s)
 {
 }
 
+ImportedModel::ImportedModel(Shader *s, string objFile, glm::vec3 trans, glm::vec3 scale, float rot) : Model(s) {
+	getModel(objFile);
+	model_matrix = glm::translate(model_matrix, trans);
+	model_matrix = glm::scale(model_matrix, scale);
+	model_matrix = glm::rotate(model_matrix, rot, glm::vec3(0.0, 1.0, 0.0));
+}
+
+
+void ImportedModel::draw() {
+	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
+	//this->setMaterialUniform();
+	for (GLuint i = 0; i < this->meshes.size(); i++)
+		this->meshes[i].Draw(shaderProgram);
+}
+void ImportedModel::depthDraw(Shader *s) {
+	glUniformMatrix4fv(s->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
+
+	for (GLuint i = 0; i < this->meshes.size(); i++)
+		this->meshes[i].Draw(s);
+}
 
 ImportedModel::~ImportedModel()
 {

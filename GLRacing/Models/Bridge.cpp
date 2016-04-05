@@ -41,18 +41,6 @@ Bridge::~Bridge()
 {
 }
 
-void Bridge::draw() {
-	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
-	//this->setMaterialUniform();
-	for (GLuint i = 0; i < this->meshes.size(); i++)
-		this->meshes[i].Draw(shaderProgram);
-}
-void Bridge::depthDraw(Shader *s) {
-	glUniformMatrix4fv(s->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
-
-	for (GLuint i = 0; i < this->meshes.size(); i++)
-		this->meshes[i].Draw(shaderProgram);
-}
 
 vector<Texture> Bridge::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
 {

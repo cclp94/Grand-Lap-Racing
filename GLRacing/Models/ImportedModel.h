@@ -8,7 +8,10 @@ class ImportedModel :
 {
 public:
 	ImportedModel(Shader *s);
+	ImportedModel(Shader *s, string objFile, glm::vec3 trans, glm::vec3 scale, float rot);
 	~ImportedModel();
+	void draw();
+	void depthDraw(Shader *s);
 
 protected:
 	void getModel(string path);

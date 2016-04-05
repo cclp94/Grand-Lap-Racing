@@ -142,7 +142,7 @@
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Skybox\skybox.cpp" />
     <ClCompile Include="Models\StartLine.cpp" />
-    <ClCompile Include="Models\Tree.cpp" />
+    <ClCompile Include="Models\BillboardModel.cpp" />
     <ClCompile Include="Models\TestQuad.cpp" />
     <ClCompile Include="Water\WaterFrameBuffers.cpp" />
     <ClCompile Include="Water\Water.cpp" />
@@ -168,7 +168,7 @@
     <ClInclude Include="SOIL.h" />
     <ClInclude Include="SplineFactory.h" />
     <ClInclude Include="Models\StartLine.h" />
-    <ClInclude Include="Models\Tree.h" />
+    <ClInclude Include="Models\BillboardModel.h" />
     <ClInclude Include="Water\WaterFrameBuffers.h" />
     <ClInclude Include="Water\Water.h" />
   </ItemGroup>

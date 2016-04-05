@@ -116,7 +116,7 @@ void kart::move(Plane *terrain, Bridge *b, Road *r) {
 
 void kart::turn(float angle) {
 	if (speed != 0) {
-		turnAngle = angle;
+		turnAngle += angle;
 		model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
 	}
 }
@@ -144,6 +144,9 @@ void kart::accelerate() {
 	if (speed == maxSpeed) {
 		speed = maxSpeed;
 	}
+	else if(speed < 0){
+		speed += acceleration * 5;
+	}
 	else {
 		speed += acceleration;
 	}
@@ -155,8 +158,11 @@ void kart::deaccelerate() {
 	if (speed == -maxSpeed) {
 		speed = -maxSpeed;
 	}
+	else if(speed > 0){
+		speed -= acceleration * 5;		// Breaking faster than acceleration
+	}
 	else {
-		speed -= acceleration * 2;		// Breaking faster than acceleration
+		speed -= acceleration;
 	}
 }
 
