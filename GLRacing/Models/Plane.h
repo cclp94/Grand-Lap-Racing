@@ -23,9 +23,12 @@ private:
 	const static int offsetX = 500, offsetZ = 500, offsetY = -0.1;
 	glm::vec2 HALF_TERRAIN_SIZE;
 	vector<GLfloat> normals;
+	GLuint loadTextures(string filename);
 	GLuint VBO2;
 	GLfloat heights[TERRAIN_WIDTH][TERRAIN_DEPTH];
 	
 	float findHeight(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos);
+	GLuint terrainTex1, terrainTex2;
+
 };
 

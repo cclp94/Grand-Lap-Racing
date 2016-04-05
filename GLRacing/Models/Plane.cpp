@@ -15,6 +15,39 @@ Plane::Plane(Shader *s) : Model(s)
 	
 	model_matrix = glm::translate(model_matrix, glm::vec3(-offsetX, -0.1, -offsetZ));
 	model_matrix = glm::scale(model_matrix, glm::vec3(SCALE, SCALE*3, SCALE));
+
+	//Main texture
+	texture = loadTextures("Assets/Textures/grass.jpg");
+
+	//Underground texture
+	terrainTex1 = loadTextures("Assets/Textures/mud.jpg");
+
+	//Mountain texture
+	terrainTex2 = loadTextures("Assets/Textures/stone4.jpg");
+}
+
+GLuint Plane::loadTextures(string filename) {
+	//Main Texture
+	//Texture
+	pData = SOIL_load_image(filename.c_str(), &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
+
+	if (pData == 0)
+		cerr << "SOIL loading error: '" << SOIL_last_result() << "' (" << "res_texture.png" << ")" << endl;
+	GLuint tex;
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	// Parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	SOIL_free_image_data(pData);
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
+
+	return tex;
 }
 
 float Plane::getHeight(float modelX, float modelZ) {
@@ -67,12 +100,25 @@ void Plane::draw() {
 	glBindVertexArray(VAO);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-	glUniform3f(shaderProgram->getUniform("vertex_color"), color.x, color.y, color.z);
+	glUniform1i(shaderProgram->getUniform("terrain"), true);
+
+	//Textures
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(shaderProgram->getUniform("texture_diffuse1"), 0);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, terrainTex1);
+	glUniform1i(shaderProgram->getUniform("terrainTexture1"), 1);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, terrainTex2);
+	glUniform1i(shaderProgram->getUniform("terrainTexture2"), 2);
+
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 
 	setMaterialUniform();
 	glDrawElements(GL_TRIANGLES,indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+	glUniform1i(shaderProgram->getUniform("terrain"), false);
 }
 
 void Plane::depthDraw(Shader *s) {
@@ -141,25 +187,6 @@ void Plane::getModel() {
 		normals.push_back(normal.y);
 		normals.push_back(normal.z);
 	}
-
-	//Texture
-	pData = SOIL_load_image("Assets/Textures/grass.jpg", &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
-
-	if (pData == 0)
-		cerr << "SOIL loading error: '" << SOIL_last_result() << "' (" << "res_texture.png" << ")" << endl;
-
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	SOIL_free_image_data(pData);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
 
 	for (int i = 0; i <= sqrt(vertices.size()/3); i++)
 	{

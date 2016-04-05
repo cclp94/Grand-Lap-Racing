@@ -147,7 +147,9 @@ void Barrier::getModel() {
 void Barrier::draw() {
 
 	glBindVertexArray(VAO);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(shaderProgram->getUniform("texture_diffuse1"), 0);
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	this->setMaterialUniform();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);

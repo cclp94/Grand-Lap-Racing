@@ -212,6 +212,8 @@
     <Image Include="Assets\Textures\grass.jpg" />
     <Image Include="Assets\Textures\opengl.png" />
     <Image Include="Assets\HeightMap\terrain2.tga" />
+    <Image Include="Assets\Textures\sand.jpg" />
+    <Image Include="Assets\Textures\stone.jpg" />
     <Image Include="Assets\Textures\tree.png" />
     <Image Include="Assets\Textures\tunnel_road.jpg" />
   </ItemGroup>

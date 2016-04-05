@@ -15,9 +15,13 @@ struct Material {
  float shininess;
 };
 
-
-uniform sampler2D diffuseTexture;
+uniform bool terrain;
+uniform sampler2D texture_diffuse1;
 uniform sampler2D shadowMap;
+
+//Terrain
+uniform sampler2D terrainTexture1;
+uniform sampler2D terrainTexture2;
 
 uniform Material material;
 uniform Light light;
@@ -40,15 +44,33 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     float currentDepth = projCoords.z;
     // Check whether current frag pos is in shadow
 	float bias = 0.005;
-	float shadow = currentDepth - bias > closestDepth  ? 1.0 : 0.0;  
+	float shadow = currentDepth - bias > closestDepth  ? 0.5 : 0.0;  
 
     return shadow;
 }
 
 
 void main () {
+	vec3 color;
+	if(!terrain)
+		color = texture(texture_diffuse1, TextCoord).rgb;
+	else{
+		const float zone1 = -2.0;
+		const float zone2 = -1.0;
+		const float zone3 = 0.5;
+		const float zone4 = 4.0;
 
-	vec3 color = texture(diffuseTexture, TextCoord).rgb;
+		if(FragPos.y < zone1)
+			color = texture(terrainTexture1, TextCoord).rgb;
+		else if(FragPos.y > zone1 && FragPos.y < zone2 )
+			color = mix(texture(terrainTexture1, TextCoord), texture(texture_diffuse1, TextCoord), 0.5).rgb;
+		else if(FragPos.y > zone2 && FragPos.y < zone3 )
+			color = texture(texture_diffuse1, TextCoord).rgb;
+		else if(FragPos.y > zone3 && FragPos.y < zone4 )
+			color = mix(texture(texture_diffuse1, TextCoord), texture(terrainTexture2, TextCoord), (FragPos.y - zone3)/(zone4-zone3)).rgb;
+		else
+			color = texture(terrainTexture2, TextCoord).rgb;
+	}
 
 	vec3 lightDir = normalize(light.direction);
 
@@ -71,5 +93,5 @@ void main () {
 	 float bias = 0.005;
 	        
     vec3 lighting = (ambient +   ((1.0 - shadow)*diffuse) + specular) * color;
-	 frag_colour = vec4(lighting, texture(diffuseTexture, TextCoord).a);
+	 frag_colour = vec4(lighting, texture(texture_diffuse1, TextCoord).a);
 }

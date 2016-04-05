@@ -196,8 +196,9 @@ int main() {
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 		glUniformMatrix4fv(terrainShader->getUniform("shadowBias"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
-		glActiveTexture(GL_TEXTURE0);
+		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
+		glUniform1i(terrainShader->getUniform("shadowMap"), 1);
 		plane.draw();
 		barrier1.draw();
 		barrier2.draw();

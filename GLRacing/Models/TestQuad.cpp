@@ -43,7 +43,7 @@ void TestQuad::draw() {
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(shaderProgram->getUniform("diffuseTexture"), 0);
+	glUniform1i(shaderProgram->getUniform("texture_diffuse1"), 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 

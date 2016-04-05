@@ -41,5 +41,5 @@ void main () {
 
 
 	vec4 color = mix(reflectionColor, refractionColor, 0.8);
-	frag_color = mix(color, vec4(0.0, 0.1, 0.3,0.7), 0.1);
+	frag_color = mix(color, vec4(0.0, 0.1, 0.3,0.7), 0.2);
 }

@@ -128,8 +128,9 @@ void Road::draw() {
 
 	glBindVertexArray(VAO);
 
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY_EXT);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(shaderProgram->getUniform("texture_diffuse1"), 0);
 
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	this->setMaterialUniform();

@@ -258,6 +258,12 @@
     <Image Include="Assets\Textures\dudvmap.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Textures\sand.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\stone.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\info.txt" />
