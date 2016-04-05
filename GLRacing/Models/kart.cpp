@@ -36,18 +36,28 @@ kart::kart(Shader *s) : ImportedModel(s){
 	camera = new Camera();
 	camera->cameraPos = glm::vec3(position.x, position.y + 2, position.z + 5.0);
 
-	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 5.0, 50.0));
+	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 0.0, 50.0));
 	model_matrix = glm::rotate(model_matrix,(float) glm::radians(180.0), glm::vec3(0.0, 1.0, 0.0));
 	model_matrix = glm::scale(model_matrix, glm::vec3(0.4));
 
 	position = model_matrix * position;
 	carSounds = irrklang::createIrrKlangDevice();
 
-	collision = true;
+	collision = false;
 }
 
 void kart::setCollision(bool col) {
 	collision = col;
+}
+
+void kart::resetGame() {
+	speed = 0;
+	model_matrix = glm::mat4();
+	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 0.0, 50.0));
+	model_matrix = glm::rotate(model_matrix, (float)glm::radians(180.0), glm::vec3(0.0, 1.0, 0.0));
+	model_matrix = glm::scale(model_matrix, glm::vec3(0.4));
+
+	position = model_matrix * position;
 }
 
 void kart::move(Plane *terrain, Bridge *b, Road *r) {
@@ -114,6 +124,10 @@ void kart::turn(float angle) {
 glm::mat4 kart::getCameraView() {
 	view_matrix = glm::lookAt(camera->cameraPos,glm::vec3(position) ,camera->cameraUp);
 	return view_matrix;
+}
+
+glm::vec3 kart::getCurrentPosition() {
+	return glm::vec3(position);
 }
 
 void kart::notAccelerating() {

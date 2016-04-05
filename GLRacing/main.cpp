@@ -30,6 +30,7 @@
 #include "Skybox/skybox.h"
 #include "Models/Tree.h"
 #include "Models\TestQuad.h"
+#include "Water\WaterFrameBuffers.h"
 
 using namespace std;
 
@@ -44,8 +45,9 @@ glm::mat4 proj_matrix;
 
 GLfloat point_size = 3.0f;
 kart *Kart;
+GameController *game;
 
-
+vector <Model> sceneModels;
 
 
 
@@ -53,6 +55,7 @@ kart *Kart;
 bool initialize();
 bool cleanUp();
 void renderScene(vector<Model*> models);
+void cheater();
 
 irrklang::ISoundEngine* engine;
 irrklang::ISoundEngine* music;
@@ -100,20 +103,23 @@ int main() {
 	Kart = new kart(terrainShader);						
 	Tree tree(terrainShader);							
 	StartLine start(terrainShader);						
-	Water water(waterShader, width, height);
+	Water water(waterShader);
 	TestQuad quad(terrainShader, -255.0);
 	TestQuad quad2(terrainShader, -247.0);
-	GameController game(textShader, Kart, &start, 3);
+	game = new GameController(textShader, Kart, &start, 3);
 
 	//Shadow Depth Map
 	DepthMap depthMap(width, height);
+	WaterFrameBuffers waterBuffers(width, height);
+	waterBuffers.setClipHeight(water.getHeight());
 
 	music->play2D("Assets/Sounds/GLRacing.wav", true);
 	
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 
 	//-------------------------------------------------------------
-
+	float move = 0;
+	double currentTime = glfwGetTime();
 
 	// Game Loop
 	while (!glfwWindowShouldClose(window)) {
@@ -149,20 +155,12 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 		glPointSize(point_size);
-		
-		//Draw background
-		skyShader->use();
 
 		glm::mat4 view = Kart->getCameraSky();
-		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-		skybox.draw();
 
 		
 
 		// Projectiion Matrix and light
-		//mainShader->use();
-		//glUniformMatrix4fv(mainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		terrainShader->use();
 		glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		waterShader->use();
@@ -172,37 +170,76 @@ int main() {
 		view_matrix = Kart->getCameraView(); // Get Camera View Matrix
 		glm::vec3 viewPos = Kart->getCameraPosition();
 
+
 		//---------------------------------WATER REFRACTION-----------------------------------
-		
-		
-		// Apply view Matrix in secondary shader programs
-		terrainShader->use();
-		water.bindRefractionFBO();
-		// Apply view Matrix in secondary shader programs
-		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
-		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
-		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
+		waterBuffers.bindRefractionFBO();
 
-		plane.draw();
-		barrier1.draw();
-		barrier2.draw();
-		road.draw();
-		Kart->draw();
-		bridge.draw();
-		start.draw();
-		tree.draw();
-		
-		water.unBind(width, height);
+		////Draw background
+		//skyShader->use();
+		//glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		//glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+		//skybox.draw();
 
-		//-----------------------------------WATER REFLECTION-------------------------
+
 		terrainShader->use();
-		water.bindReflectionFBO();
+		proj_matrix = glm::perspective(45.0f,
+			(GLfloat)waterBuffers.REFRACTION_WIDTH / (GLfloat)waterBuffers.REFRACTION_HEIHGT,
+			0.1f, 1000.0f);
+
+		terrainShader->use();
+		glm::vec4 clipPlane = waterBuffers.getRefractionClipPlane();
+		glUniform4f(terrainShader->getUniform("plane"), clipPlane.x, clipPlane.y, clipPlane.z, clipPlane.w);
+		glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		// Apply view Matrix in secondary shader programs
 		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 		glUniformMatrix4fv(terrainShader->getUniform("shadowBias"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
+		plane.draw();
+		barrier1.draw();
+		barrier2.draw();
+		road.draw();
+		Kart->draw();
+		bridge.draw();
+		start.draw();
+		tree.draw();
+		quad.setTexture(waterBuffers.getRefractionTexture());
+		quad.draw();
+		quad2.setTexture(waterBuffers.getReflectionTexture());
+		quad2.draw();
+
+		waterBuffers.unBind(width, height);
+		
+		proj_matrix = glm::perspective(45.0f,
+			(GLfloat)waterBuffers.REFLECTION_WIDTH / (GLfloat)waterBuffers.REFLECTION_HEIGHT,
+			0.1f, 1000.0f);
+		waterBuffers.bindReflectionFBO();
+
+		//Draw background
+		skyShader->use();
+		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+		skybox.draw();
+		
+		//-----------------------------------WATER REFLECTION-------------------------
+		terrainShader->use();
+		//// Apply view Matrix in secondary shader programs
+		//Position camera under water
+		glm::vec3 underWaterViewPos = viewPos;
+		float distance = 2 * (viewPos.y - water.getHeight());
+		underWaterViewPos.y = distance;
+		glm::mat4 underWaterViewMatrix;// = glm::translate(view_matrix, glm::vec3(0.0, -20, 0.0));
+		glm::vec3 pos = Kart->getPosition();
+		underWaterViewMatrix = glm::lookAt(underWaterViewPos, glm::vec3(0.0, 0.0,0.0), glm::vec3(0.0, 1.0, 0.0));
+		clipPlane = waterBuffers.getReflectionClipPlane();
+		glUniform4f(terrainShader->getUniform("plane"), clipPlane.x, clipPlane.y, clipPlane.z, clipPlane.w);
+		glUniform3f(terrainShader->getUniform("viewPos"), underWaterViewPos.x, underWaterViewPos.y, underWaterViewPos.z);
+		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(underWaterViewMatrix));
+		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));		
+		
 		plane.draw();
 		barrier1.draw();
 		barrier2.draw();
@@ -212,13 +249,23 @@ int main() {
 		start.draw();
 		tree.draw();
 		
-		water.unBind(width, height);
+		waterBuffers.unBind(width, height);
+		proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
 
 		//---------------------------------------NORMAL RENDER-----------------------------------
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 
+		//Draw background
+		skyShader->use();
+		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "view"), 1, GL_FALSE, glm::value_ptr(view));
+		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+		skybox.draw();
 
 		terrainShader->use();
 		// Apply view Matrix in secondary shader programs
+		glUniform4f(terrainShader->getUniform("plane"), 0.0, 1.0, 0.0, 10000.0);
+
 		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
@@ -234,18 +281,35 @@ int main() {
 		bridge.draw();
 		start.draw();
 		tree.draw();
-		quad.setTexture(water.getRefractionTexture());
+		quad.setTexture(waterBuffers.getRefractionTexture());
 		quad.draw();
-		quad2.setTexture(water.getReflectionTexture());
+		quad2.setTexture(waterBuffers.getReflectionTexture());
 		quad2.draw();
 		Kart->resetTurnAngle();
 
 		// Main Shader Program
 		waterShader->use();
 		glUniformMatrix4fv(waterShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, waterBuffers.getReflectionTexture());
+		glUniform1i(waterShader->getUniform("reflectionTexture"), 0);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, waterBuffers.getRefractionTexture());
+		glUniform1i(waterShader->getUniform("refractionTexture"), 1);
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, waterBuffers.getDuDvMap());
+		glUniform1i(waterShader->getUniform("dudvMap"), 2);
+		glUniform3f(waterShader->getUniform("cameraPos"), viewPos.x, viewPos.y, viewPos.z);
+		
+		move += water.getMoveFactor()*(glfwGetTime() - currentTime);
+		currentTime = glfwGetTime();
+		if (move > 0.5) move = 0.0;
+		glUniform1f(waterShader->getUniform("moveFactor"),move);
+
+
 		water.draw();
 		
-		game.update(width, height);	
+		game->update(width, height);	
 		
 	
 		// update other events like input handling
@@ -253,15 +317,12 @@ int main() {
 		// put the stuff we've been drawing onto the display
 		glfwSwapBuffers(window);
 		Kart->move(&plane, &bridge, &road);
-		//if (Kart->isAccelarating) {
-		//	engine->play2D("Assets/Sounds/Shift Gears-SoundBible.com-786097341.wav", true);
-		//}
 		tree.setTurningAngle(Kart->getTurnAngle());
 		
 	}
 	music->drop();
 	engine->drop();
-	delete textShader, terrainShader, waterShader, Kart, skyShader;
+	delete textShader, terrainShader, waterShader, Kart, skyShader, game;
 	cleanUp();
 	return 0;
 }
@@ -323,8 +384,8 @@ bool initialize() {
 	glDepthFunc(GL_LESS);	/// The type of testing i.e. a smaller value as "closer"
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	//glfwWindowHint(GLFW_SAMPLES, 4);
-	//glEnable(GL_MULTISAMPLE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_CLIP_DISTANCE0);
 	return true;
 }
@@ -355,12 +416,45 @@ void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, i
 		cleanUp();
 		exit(1);
 	}
+	else if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
+		cheater();
+	}
 
 	if ((key == GLFW_KEY_S || key == GLFW_KEY_W) && action == GLFW_RELEASE) {
 		Kart->notAccelerating();
 	}
 
 	
+}
+
+void cheater() {
+	string option, mode;
+	bool done = false;
+	cout << "Input cheat (type help for options): ";
+	cin >> option >> mode;
+	if (option == "collision") {
+		if (mode == "true")
+			Kart->setCollision(true);
+		else
+			Kart->setCollision(false);
+
+	}
+	else if (option == "help") {
+		cout << "Available options:" << endl;
+		cout << "collision [true|false]" << endl;
+		cout << "game reset" << endl;
+		cout << "laps [number]" << endl;
+	}
+	else if (option == "game") {
+		if (mode == "reset") {
+			Kart->resetGame();
+			game->reset();
+		}
+	}
+	else if (option == "laps") {
+		game->setLaps(atoi(mode.c_str()));
+	}
+
 }
 
 void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight) {

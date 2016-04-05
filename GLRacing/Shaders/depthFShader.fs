@@ -1,5 +1,5 @@
 #version 330 core
-out float fragmentdepth;
+layout(location = 0) out float fragmentdepth;
 
 void main()
 {             

@@ -1,4 +1,4 @@
-#version 130
+#version 330 core
 
 struct Light {
  vec3 direction;
@@ -15,16 +15,16 @@ struct Material {
  float shininess;
 };
 
-uniform sampler2D shadowMap;
+
 uniform sampler2D diffuseTexture;
+uniform sampler2D shadowMap;
 
 uniform Material material;
 uniform Light light;
 uniform vec3 viewPos;
 in vec3 FragPos;  
 in vec3 Normal; 
-in vec3 out_Color;
-out vec4 frag_colour;	//final output color used to render the point
+layout(location = 0) out vec4 frag_colour;	//final output color used to render the point
 in vec4 ShadowCoord;
 in vec2 TextCoord;
 

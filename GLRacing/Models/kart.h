@@ -44,6 +44,8 @@ public:
 	float getTurnAngle();
 	void resetTurnAngle();
 	bool isAccelarating;
+	glm::vec3 getCurrentPosition();
+	void resetGame();
 private:
 	float maxSpeed;
 	float speed;

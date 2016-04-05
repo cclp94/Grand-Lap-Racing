@@ -19,7 +19,7 @@ GameController::GameController(Shader *s, Model *character, Model *start, int la
 	seconds = 0;
 	minutes = 0;
 	currentLap = 0;
-	finaltime = 0.0;
+	finalTime.first = -1;
 
 	FT_Library ft;
 	if (FT_Init_FreeType(&ft))
@@ -81,6 +81,23 @@ GameController::GameController(Shader *s, Model *character, Model *start, int la
 
 	setupRender();
 	gameSounds = irrklang::createIrrKlangDevice();
+
+	ifstream f;
+	f.open("record.txt");
+	if (!f.is_open()) {
+		recordTime.first = 0;
+		recordTime.second = 0;
+	}
+	else {
+		f >> recordTime.first;
+		f >> recordTime.second;
+	}
+}
+
+void GameController::setLaps(int n) {
+	this->laps = n;
+	recordTime.first = 0;
+	recordTime.second = 0;
 }
 
 void GameController::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
@@ -134,13 +151,28 @@ GameController::~GameController()
 {
 }
 
+void GameController::reset() {
+	gameStarted = false;
+	seconds = 0;
+	minutes = 0;
+	currentLap = 0;
+	finalTime.first = -1;
+}
+
 void GameController::update(int width, int height) {
 	//glm::mat4 projection = glm::perspective(0.0f, (float)width / (float)height, 0.0f, 500.0f);
 	glm::mat4 projection = glm::ortho(0.0f, (float) width, 0.0f, (float) height);
 	shader->use();
 	glUniformMatrix4fv(shader->getUniform("projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
-
+	if (beatRecord) {
+		if (complete != NULL) {
+			if (complete->isFinished()) {
+				gameSounds->play2D("Assets/Sounds/record.wav", false);
+				complete->drop();
+				beatRecord = false;
+			}
+		}
+	}
 	
 	glm::vec3 currentPos = character->getPosition();
 	float zthresholdUp = lapPosition.z + threshold/2;
@@ -149,11 +181,12 @@ void GameController::update(int width, int height) {
 	float xthresholdDown = lapPosition.x - threshold;
 	if (currentPos.z < zthresholdUp && currentPos.z > zthresholdDown) {
 		if (currentPos.x < xthresholdUp && currentPos.x > xthresholdDown) {
-			if (finaltime == 0.0) {
+			if (finalTime.first == -1) {
 				if (!gameStarted) {
 					glfwSetTime(0);
-					startTime = glfwGetTime();
-					currentLap = 0;
+					startTime.first = 0;
+					startTime.second = glfwGetTime();
+					currentLap = 1;
 
 					gameStarted = true;
 					gameSounds->play2D("Assets/Sounds/go.wav",false);
@@ -161,16 +194,26 @@ void GameController::update(int width, int height) {
 				else {
 
 					double currentTime = glfwGetTime();
-					if ((currentLap == 0 && currentTime - startTime > 10) ||
-						currentLap > 0 && currentTime - lapTime > 10) {
-						lapTime = currentTime;
+					if ((currentLap == 1 && (minutes > startTime.first || seconds > startTime.second + 20)) ||
+						(currentLap > 1 && (minutes > lapTime.first || seconds > lapTime.second + 20))) {
+						lapTime.first = minutes;
+						lapTime.second = seconds;
 						currentLap++;
-						cout << "Lap " << currentLap - 1 << ": " << lapTime - startTime << endl;
-						if (currentLap == laps) {
+						if (currentLap > laps) {
 							gameStarted = false;
-							finaltime = currentTime - startTime;
-							cout << "Finished!! -- " << finaltime << endl;
+							finalTime.first = minutes;
+							finalTime.second= seconds;
+							complete = gameSounds->play2D("Assets/Sounds/complete.wav", false, false, true);
 							//Save result in file
+
+							if (recordTime.first > finalTime.first ||
+								(recordTime.first  == finalTime.first && recordTime.second > finalTime.second) ||
+								recordTime.first == 0 && recordTime.second == 0.0) {
+								recordTime.first = finalTime.first;
+								recordTime.second = finalTime.second;
+								writeRecord();
+								beatRecord = true;
+							}
 						}
 						else {
 							gameSounds->play2D("Assets/Sounds/crowd.wav", false);
@@ -181,11 +224,11 @@ void GameController::update(int width, int height) {
 			}
 		}
 	}
-	double time = glfwGetTime() - startTime;
+	double time = glfwGetTime();
 
 	if (gameStarted) {
-		seconds = (int)time;
-		if (seconds % 60 == 0 && seconds != 0) {
+		seconds = time;
+		if (((int)seconds) % 60 == 0 && ((int)seconds) != 0) {
 			minutes++;
 			glfwSetTime(0);
 		}
@@ -198,21 +241,49 @@ void GameController::update(int width, int height) {
 			glm::vec3(6.0, 0.0f, 0.0f));
 	}
 	else {
-		if (finaltime == 0) {
+		if (finalTime.first == -1) {
 			RenderText("00:00.00",
 				width - 300.0f, height - 100, 1.0f,
 				glm::vec3(6.0, 0.0f, 0.0f));
 		}
 		else {
 			char min[5], secs[6];
-			sprintf_s(min, "%02d", minutes);
-			sprintf_s(secs, "%04.2f", time);
+			sprintf_s(min, "%02d", finalTime.first);
+			sprintf_s(secs, "%04.2f", finalTime.second);
 			string formatedTime = string(min) + ":" + string(secs);
 			RenderText(formatedTime,
 				width - 300.0f, height - 100, 1.0f,
 				glm::vec3(6.0, 0.0f, 0.0f));
 		}
 	}
+
+	//Show Laps
+	RenderText("LAPS",
+		30.0, height - 100, 1.0f,
+		glm::vec3(0.0, 0.0f, 0.0f));
+	string format = to_string(currentLap) + "/" + to_string(laps);
+	RenderText(format,
+		60.0, height - 120, 0.5f,
+		glm::vec3(0.0, 0.0f, 0.0f));
+
+	//Show Current Record
+	RenderText("Current Record",
+		width - 320.0f, height - 150, 0.7f,
+		glm::vec3(0.0, 0.0f, 0.0f));
+	char min[5], secs[6];
+	sprintf_s(min, "%02d", recordTime.first);
+	sprintf_s(secs, "%04.2f", recordTime.second);
+	format = string(min) + ":" + string(secs);
+	RenderText(format,
+		width - 230.0f, height - 180, 0.5f,
+		glm::vec3(0.0, 0.0f, 0.0f));
+}
+
+void GameController::writeRecord() {
+	ofstream w("record.txt");
+	w << finalTime.first << " " << finalTime.second;
+	w.close();
+	
 }
 
 void GameController::setupRender() {

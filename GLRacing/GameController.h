@@ -11,6 +11,8 @@ public:
 	GameController(Shader *s, Model *character, Model *start, int laps);
 	~GameController();
 	void update(int width, int height);
+	void reset();
+	void setLaps(int n);
 
 private:
 	Model *character;
@@ -18,16 +20,21 @@ private:
 	const float threshold =10.0f;
 	int laps;
 	bool gameStarted;
-	int seconds, minutes;
+	double seconds;
+	int minutes;
 	int currentLap;
-	double lapTime;
-	double startTime;
-	double finaltime;
+	pair<int,double> lapTime;
+	pair<int,double> startTime;
+	pair<int, double> finalTime;
+	pair<int, double> recordTime;
 	std::map<GLchar, Character> Characters;
 	void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale,glm::vec3 color);
 	void setupRender();
 	GLuint VAO, VBO;
 	Shader *shader;
 	irrklang::ISoundEngine* gameSounds;
+	irrklang::ISound* complete;
+	bool beatRecord;
+	void writeRecord();
 };
 

@@ -144,6 +144,7 @@
     <ClCompile Include="Models\StartLine.cpp" />
     <ClCompile Include="Models\Tree.cpp" />
     <ClCompile Include="Models\TestQuad.cpp" />
+    <ClCompile Include="Water\WaterFrameBuffers.cpp" />
     <ClCompile Include="Water\Water.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +169,7 @@
     <ClInclude Include="SplineFactory.h" />
     <ClInclude Include="Models\StartLine.h" />
     <ClInclude Include="Models\Tree.h" />
+    <ClInclude Include="Water\WaterFrameBuffers.h" />
     <ClInclude Include="Water\Water.h" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +208,7 @@
     <Image Include="Assets\Startline\platic.jpg" />
     <Image Include="Assets\Startline\rubberTex.jpg" />
     <Image Include="Assets\Startline\t0001_0.png" />
+    <Image Include="Assets\Textures\dudvmap.jpg" />
     <Image Include="Assets\Textures\grass.jpg" />
     <Image Include="Assets\Textures\opengl.png" />
     <Image Include="Assets\HeightMap\terrain2.tga" />
@@ -215,6 +218,7 @@
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\info.txt" />
     <Text Include="Assets\Startline\info.txt" />
+    <Text Include="record.txt" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\enzo_car.obj">
@@ -242,6 +246,7 @@
     <Media Include="Assets\Sounds\crowd.wav" />
     <Media Include="Assets\Sounds\GLRacing.wav" />
     <Media Include="Assets\Sounds\go.wav" />
+    <Media Include="Assets\Sounds\record.wav" />
     <Media Include="Assets\Sounds\Shift Gears-SoundBible.com-786097341.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -75,6 +75,9 @@
     <ClCompile Include="Models\TestQuad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Water\WaterFrameBuffers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL.h">
@@ -141,6 +144,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Models\TestQuad.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Water\WaterFrameBuffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -249,6 +255,9 @@
     <Image Include="Assets\HeightMap\terrain2.tga">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Textures\dudvmap.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\info.txt" />
@@ -257,6 +266,7 @@
     <Text Include="Assets\bridge\bridge.obj" />
     <Text Include="Assets\Startline\info.txt" />
     <Text Include="Assets\Startline\violet_car.obj" />
+    <Text Include="record.txt" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Assets\Sounds\Car_crash.wav">
@@ -275,6 +285,9 @@
       <Filter>Source Files\Resource Files</Filter>
     </Media>
     <Media Include="Assets\Sounds\crowd.wav">
+      <Filter>Source Files\Resource Files</Filter>
+    </Media>
+    <Media Include="Assets\Sounds\record.wav">
       <Filter>Source Files\Resource Files</Filter>
     </Media>
   </ItemGroup>

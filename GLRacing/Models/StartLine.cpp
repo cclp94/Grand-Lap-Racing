@@ -12,7 +12,7 @@ StartLine::StartLine(Shader *s) : ImportedModel(s)
 	getModel("Assets/Startline/violet_car.obj");
 
 
-	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 0.0, -10.0));
+	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 0.0, 0.0));
 	//model_matrix = glm::scale(model_matrix, glm::vec3(0.2, 0.2, 0.2));
 }
 

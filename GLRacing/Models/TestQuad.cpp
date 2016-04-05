@@ -8,6 +8,7 @@ TestQuad::TestQuad(Shader *s, float xOffset) : Model(s)
 	setupMesh();
 
 	model_matrix = glm::translate(model_matrix, glm::vec3(xOffset, 0, 0.0));
+	model_matrix = glm::scale(model_matrix, glm::vec3(5));
 
 }
 
