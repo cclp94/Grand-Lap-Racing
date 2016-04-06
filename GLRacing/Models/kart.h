@@ -41,7 +41,7 @@ public:
 	void depthDraw(Shader *s);
 	glm::mat4 getCameraSky();
 	void setCollision(bool col);
-	float getTurnAngle();
+	float* getTurnAngle();
 	void resetTurnAngle();
 	bool isAccelarating;
 	glm::vec3 getCurrentPosition();

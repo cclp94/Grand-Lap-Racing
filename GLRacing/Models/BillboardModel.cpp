@@ -2,18 +2,35 @@
 #include "../SOIL.h"
 
 
-BillboardModel::BillboardModel(Shader *s, glm::vec3 translation, glm::vec3 scale, string textureName) : Model(s)
+BillboardModel::BillboardModel(Shader *s, glm::vec3 translation, glm::vec3 scale, string textureName, float * angle) : Model(s)
 {
 	getModel();
 	setupMesh();
-	
-	//model_matrix = glm::translate(model_matrix, glm::vec3(-220.0, -1, 0.0));
-	//model_matrix = glm::scale(model_matrix, glm::vec3(20));
+
+	this->translation = translation;
+	this->scale = scale;
+	rotationAngle = angle;
 
 	model_matrix = glm::translate(model_matrix, translation);
 	model_matrix = glm::scale(model_matrix, scale);
 
 	getTexture(textureName);
+}
+
+BillboardModel::BillboardModel(Shader *s, glm::vec3 translation, glm::vec3 scale, GLuint textureId, float * angle) : Model(s)
+{
+	getModel();
+	setupMesh();
+
+
+	this->translation = translation;
+	this->scale = scale;
+	rotationAngle = angle;
+
+	model_matrix = glm::translate(model_matrix, translation);
+	model_matrix = glm::scale(model_matrix, scale);
+
+	texture = textureId;
 }
 
 void BillboardModel::getTexture(string textureName) {
@@ -39,10 +56,15 @@ BillboardModel::~BillboardModel()
 {
 }
 
-void BillboardModel::setPosition(glm::vec3 trans, glm::vec3 scale, float turningAngle) {
+void BillboardModel::setPosition(glm::vec3 trans, glm::vec3 scale) {
+	this->translation = trans;
+	this->scale = scale;
+
 	model_matrix = glm::translate(glm::mat4(), trans);
 	model_matrix = glm::scale(model_matrix, scale);
-	model_matrix = glm::rotate(model_matrix, turningAngle, glm::vec3(0.0, 1.0, 0.0));
+
+	model_matrix = glm::rotate(model_matrix, *rotationAngle, glm::vec3(0.0, 1.0, 0.0));
+	
 }
 
 void BillboardModel::getModel() {
@@ -67,6 +89,8 @@ void BillboardModel::getModel() {
 }
 
 void BillboardModel::draw() {
+
+	setPosition(translation, scale);
 
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);

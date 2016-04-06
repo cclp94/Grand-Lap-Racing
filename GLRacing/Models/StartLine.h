@@ -8,7 +8,6 @@ public:
 	~StartLine();
 	glm::vec4 position;
 private:
-	vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName);
 
 };
 

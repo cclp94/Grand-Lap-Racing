@@ -14,7 +14,7 @@ Plane::Plane(Shader *s) : Model(s)
 	setupMesh();
 	
 	model_matrix = glm::translate(model_matrix, glm::vec3(-offsetX, -0.1, -offsetZ));
-	model_matrix = glm::scale(model_matrix, glm::vec3(SCALE, SCALE*3, SCALE));
+	model_matrix = glm::scale(model_matrix, glm::vec3(SCALE, SCALE*1.5, SCALE));
 
 	//Main texture
 	texture = loadTextures("Assets/Textures/grass.jpg");
@@ -24,6 +24,18 @@ Plane::Plane(Shader *s) : Model(s)
 
 	//Mountain texture
 	terrainTex2 = loadTextures("Assets/Textures/stone4.jpg");
+
+	//Grass with leaves
+	terrainTex3 = loadTextures("Assets/Textures/grass2.jpg");
+
+	//Dirt texture
+	terrainTex4 = loadTextures("Assets/Textures/dirt.jpg");
+
+	//Paviment texture
+	terrainTex5 = loadTextures("Assets/Textures/path.jpg");
+
+	//Blend Map
+	blendMap = loadBlendMapTexture("Assets/Textures/blendmap.tga");
 }
 
 GLuint Plane::loadTextures(string filename) {
@@ -40,10 +52,33 @@ GLuint Plane::loadTextures(string filename) {
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	// Parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	SOIL_free_image_data(pData);
+	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
+
+	return tex;
+}
+
+GLuint Plane::loadBlendMapTexture(string filename) {
+	//Main Texture
+	//Texture
+	pData = SOIL_load_image(filename.c_str(), &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
+
+	if (pData == 0)
+		cerr << "SOIL loading error: '" << SOIL_last_result() << "' (" << "res_texture.png" << ")" << endl;
+	GLuint tex;
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
+
+	// Parameters
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	SOIL_free_image_data(pData);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
 
@@ -73,7 +108,7 @@ float Plane::getHeight(float modelX, float modelZ) {
 				heights[gridX + 1][gridZ + 1], 1), glm::vec3(0,
 					heights[gridX][gridZ + 1], 1), glm::vec2(xCoord, zCoord));
 	}
-	result.first = answer*SCALE*3;
+	result.first = answer*SCALE*1.5;
 
 	return result.first;
 }
@@ -112,6 +147,18 @@ void Plane::draw() {
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, terrainTex2);
 	glUniform1i(shaderProgram->getUniform("terrainTexture2"), 2);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, terrainTex3);
+	glUniform1i(shaderProgram->getUniform("terrainTexture3"), 3);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, terrainTex4);
+	glUniform1i(shaderProgram->getUniform("terrainTexture4"), 4);
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_2D, terrainTex5);
+	glUniform1i(shaderProgram->getUniform("terrainTexture5"), 5);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, blendMap);
+	glUniform1i(shaderProgram->getUniform("blendMap"), 6);
 
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 
@@ -139,6 +186,8 @@ void Plane::getModel() {
 			vertices.push_back(float(i));
 			vertices.push_back((float)((((float) pData[i + (texture_width*j)])-128)/128)*2);
 			vertices.push_back(float(j));
+			texCoords.push_back(-(float) i/ (float)(texture_width - 1));
+			texCoords.push_back(((float)j / (float)texture_height - 1));
 			heights[i][j] = (float)((((float)pData[i + (texture_width*j)]) - 128) / 128) * 2;
 		}
 	}
@@ -188,22 +237,22 @@ void Plane::getModel() {
 		normals.push_back(normal.z);
 	}
 
-	for (int i = 0; i <= sqrt(vertices.size()/3); i++)
-	{
-		for (int j = 0; j <= sqrt(vertices.size()/3); j +=2)
-		{
-			texCoords.push_back(0.0); texCoords.push_back(0.0);
-			texCoords.push_back(1.0); texCoords.push_back(0.0);
-
-		}
-
-		for (int j = 0; j <= sqrt(vertices.size()/3); j +=2)
-		{
-			texCoords.push_back(0.0); texCoords.push_back(1.0);
-			texCoords.push_back(1.0); texCoords.push_back(1.0);
-
-		}
-
-	}
+	//for (int i = 0; i <= sqrt(vertices.size()/3); i++)
+	//{
+	//	for (int j = 0; j <= sqrt(vertices.size()/3); j +=2)
+	//	{
+	//		texCoords.push_back(0.0); texCoords.push_back(0.0);
+	//		texCoords.push_back(1.0); texCoords.push_back(0.0);
+	//
+	//	}
+	//
+	//	for (int j = 0; j <= sqrt(vertices.size()/3); j +=2)
+	//	{
+	//		texCoords.push_back(0.0); texCoords.push_back(1.0);
+	//		texCoords.push_back(1.0); texCoords.push_back(1.0);
+	//
+	//	}
+	//
+	//}
 
 }

@@ -13,7 +13,7 @@ StartLine::StartLine(Shader *s) : ImportedModel(s)
 
 
 	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 0.0, 0.0));
-	//model_matrix = glm::scale(model_matrix, glm::vec3(0.2, 0.2, 0.2));
+	model_matrix = glm::scale(model_matrix, glm::vec3(2));
 }
 
 
@@ -21,15 +21,3 @@ StartLine::~StartLine()
 {
 }
 
-
-vector<Texture> StartLine::loadMaterialTextures(aiMaterial* mat, aiTextureType type, string typeName)
-{
-	vector<Texture> textures;
-	aiString str;
-	Texture texture;
-	texture.id = Mesh::TextureFromFile("rubberTex.jpg", this->meshDirectory);
-	texture.type = typeName;
-	texture.path = str;
-	textures.push_back(texture);
-	return textures;
-}

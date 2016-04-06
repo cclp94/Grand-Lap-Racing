@@ -6,11 +6,18 @@ ImportedModel::ImportedModel(Shader *s) : Model(s)
 {
 }
 
-ImportedModel::ImportedModel(Shader *s, string objFile, glm::vec3 trans, glm::vec3 scale, float rot) : Model(s) {
+ImportedModel::ImportedModel(Shader *s, string objFile,
+	glm::vec3 trans, glm::vec3 scale, float rot) : Model(s) {
 	getModel(objFile);
 	model_matrix = glm::translate(model_matrix, trans);
 	model_matrix = glm::scale(model_matrix, scale);
-	model_matrix = glm::rotate(model_matrix, rot, glm::vec3(0.0, 1.0, 0.0));
+	model_matrix = glm::rotate(model_matrix,glm::radians(rot), glm::vec3(0.0, 1.0, 0.0));
+}
+
+void ImportedModel::setPosition(glm::vec3 trans, glm::vec3 scale, float rot) {
+	model_matrix = glm::translate(glm::mat4(), trans);
+	model_matrix = glm::scale(model_matrix, scale);
+	model_matrix = glm::rotate(model_matrix, glm::radians(rot), glm::vec3(0.0, 1.0, 0.0));
 }
 
 

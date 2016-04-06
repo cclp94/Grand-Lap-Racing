@@ -12,6 +12,7 @@ public:
 	~ImportedModel();
 	void draw();
 	void depthDraw(Shader *s);
+	void setPosition(glm::vec3 trans, glm::vec3 scale, float rot);
 
 protected:
 	void getModel(string path);
@@ -22,6 +23,7 @@ protected:
 	 vector<Texture> textures_loaded;
 	string meshDirectory;
 private:
+	string texFile;
 	
 	
 };

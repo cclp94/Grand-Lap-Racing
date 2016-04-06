@@ -24,11 +24,12 @@ private:
 	glm::vec2 HALF_TERRAIN_SIZE;
 	vector<GLfloat> normals;
 	GLuint loadTextures(string filename);
+	GLuint loadBlendMapTexture(string filename);
 	GLuint VBO2;
 	GLfloat heights[TERRAIN_WIDTH][TERRAIN_DEPTH];
 	
 	float findHeight(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, glm::vec2 pos);
-	GLuint terrainTex1, terrainTex2;
+	GLuint terrainTex1, terrainTex2, terrainTex3, terrainTex4, terrainTex5, blendMap;
 
 };
 

@@ -31,6 +31,9 @@
 #include "Models/BillboardModel.h"
 #include "Models/TestQuad.h"
 #include "Water/WaterFrameBuffers.h"
+#include "Models/Windmill.h"
+#include "TextureRenderer.h"
+#include "Models/Fence.h"
 
 using namespace std;
 
@@ -47,15 +50,21 @@ GLfloat point_size = 3.0f;
 kart *Kart;
 GameController *game;
 
-vector <Model> sceneModels;
+vector <Model*> sceneModels;
 
 
 
 
 bool initialize();
 bool cleanUp();
-void renderScene(vector<Model*> models);
+void renderScene();
 void cheater();
+void renderForest(BillboardModel *tree, glm::vec3 initial, float scale, float offset, int width, int height);
+void renderBleachers(ImportedModel *bl, glm::vec3 pos1, glm::vec3 pos2, float rot);
+void renderWindmills(ImportedModel *wind, glm::vec3 pos1, glm::vec3 pos2, glm::vec3 pos3, float scale, float rot);
+GLuint renderToTexture(Shader *s, ImportedModel *model);
+void renderDuckFamily(vector<BillboardModel*> &ducks);
+void renderFarm(vector<BillboardModel*> &farmAnimals);
 
 irrklang::ISoundEngine* engine;
 irrklang::ISoundEngine* music;
@@ -95,17 +104,51 @@ int main() {
 	skybox skybox(skyShader);
 
 	// Objects in scene
-	Bridge bridge(terrainShader);						
-	Plane plane(terrainShader);							
-	Road road(terrainShader, &plane);					
-	Barrier barrier1(terrainShader, Barrier::OUTTER);	
-	Barrier barrier2(terrainShader, Barrier::INNER);	
-	Kart = new kart(terrainShader);						
-	BillboardModel tree(terrainShader, glm::vec3(-220.0, -1, 0.0), glm::vec3(20), "tree.png");
-	StartLine start(terrainShader);						
+	Bridge bridge(terrainShader);		sceneModels.push_back(&bridge);
+	Plane plane(terrainShader);			sceneModels.push_back(&plane);
+	Road road(terrainShader, &plane);	sceneModels.push_back(&road);
+	Barrier barrier1(terrainShader, Barrier::OUTTER);	sceneModels.push_back(&barrier1);
+	Barrier barrier2(terrainShader, Barrier::INNER);	sceneModels.push_back(&barrier2);
+	Kart = new kart(terrainShader);		sceneModels.push_back(Kart);
+	BillboardModel tree(terrainShader, glm::vec3(-220.0, -1, 0.0), glm::vec3(20), "tree.png", Kart->getTurnAngle());
+	StartLine start(terrainShader);		sceneModels.push_back(&start);
 	Water water(waterShader);
-	TestQuad quad(terrainShader, -255.0);
-	TestQuad quad2(terrainShader, -247.0);
+	Windmill windmill(terrainShader, "Assets/windmill/windmil.obj", glm::vec3(200, 0.0, 0.0), glm::vec3(5), -90.0); 
+	ImportedModel bench(terrainShader, "Assets/Bench/bench.obj", glm::vec3(10.0, 0.0, -200), glm::vec3(1.2), 90);
+	sceneModels.push_back(&bench);
+	ImportedModel bleachers(terrainShader, "Assets/Bleachers/generic\ medium.obj", glm::vec3(-215.0, 0.0, -50.0), glm::vec3(1), -90);
+	ImportedModel corn(terrainShader, "Assets/corn/corn.obj", glm::vec3(0.0, -1.5, -2), glm::vec3(1), 0);
+	GLuint cornTexture = renderToTexture(terrainShader, &corn);
+	BillboardModel cornBill(terrainShader, glm::vec3(-220.0, 0, 40.0), glm::vec3(3), cornTexture, Kart->getTurnAngle());
+	ImportedModel building(terrainShader, "Assets/Apartment/simple\ building.obj", glm::vec3(0.0), glm::vec3(20), 90);
+	sceneModels.push_back(&building);
+	ImportedModel lakeHouse(terrainShader, "Assets/lakeHouse/Farmhouse\ OBJ.obj", glm::vec3(50.0, 0.0, -400), glm::vec3(0.7), 180);
+	sceneModels.push_back(&lakeHouse);
+
+	BillboardModel cow(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/Cow.png", Kart->getTurnAngle());
+	BillboardModel cow2(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/Cow2.png", Kart->getTurnAngle());
+	sceneModels.push_back(&cow);
+	sceneModels.push_back(&cow2);
+	vector<BillboardModel*> farmAnimals;
+	farmAnimals.push_back(&cow);
+	farmAnimals.push_back(&cow2);
+
+
+
+	BillboardModel duck(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/Duck.png", Kart->getTurnAngle());
+	BillboardModel duck2(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/Duck2.png", Kart->getTurnAngle());
+	BillboardModel duck3(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/babyduck.png", Kart->getTurnAngle());
+	
+	vector<BillboardModel*> ducks;
+	ducks.push_back(&duck);
+	ducks.push_back(&duck2);
+	ducks.push_back(&duck3);
+	
+
+
+	Fence fence(terrainShader, glm::vec3(300.0, 0.1, -100.0), 20);
+	sceneModels.push_back(&fence);
+
 	game = new GameController(textShader, Kart, &start, 3);
 
 	//Shadow Depth Map
@@ -146,6 +189,7 @@ int main() {
 		bridge.depthDraw(depthShader);
 		start.depthDraw(depthShader);
 		water.depthDraw(depthShader);
+		windmill.depthDraw(depthShader);
 		//------------------------------------------
 		depthMap.unbind();
 
@@ -174,13 +218,6 @@ int main() {
 		//---------------------------------WATER REFRACTION-----------------------------------
 		waterBuffers.bindRefractionFBO();
 
-		////Draw background
-		//skyShader->use();
-		//glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "view"), 1, GL_FALSE, glm::value_ptr(view));
-		//glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-		//skybox.draw();
-
-
 		terrainShader->use();
 		proj_matrix = glm::perspective(45.0f,
 			(GLfloat)waterBuffers.REFRACTION_WIDTH / (GLfloat)waterBuffers.REFRACTION_HEIHGT,
@@ -199,18 +236,8 @@ int main() {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
 		glUniform1i(terrainShader->getUniform("shadowMap"), 1);
-		plane.draw();
-		barrier1.draw();
-		barrier2.draw();
-		road.draw();
-		Kart->draw();
-		bridge.draw();
-		start.draw();
-		tree.draw();
-		quad.setTexture(waterBuffers.getRefractionTexture());
-		quad.draw();
-		quad2.setTexture(waterBuffers.getReflectionTexture());
-		quad2.draw();
+		renderScene();
+		renderDuckFamily(ducks);
 
 		waterBuffers.unBind(width, height);
 		
@@ -241,14 +268,10 @@ int main() {
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(underWaterViewMatrix));
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));		
 		
-		plane.draw();
-		barrier1.draw();
-		barrier2.draw();
-		road.draw();
-		Kart->draw();
-		bridge.draw();
-		start.draw();
-		tree.draw();
+		renderScene();
+		renderForest(&tree, glm::vec3(-470, -1, 440.0), 20, 20, 7, 26);
+		renderForest(&cornBill, glm::vec3(300.0, 0, 50.0), 7, 5, 5, 15);
+		renderDuckFamily(ducks);
 		
 		waterBuffers.unBind(width, height);
 		proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
@@ -274,17 +297,13 @@ int main() {
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
-		plane.draw();
-		barrier1.draw();
-		barrier2.draw();
-		road.draw();
-		Kart->draw();
-		bridge.draw();
-		start.draw();
-		tree.setPosition(glm::vec3(-220.0, -1, 0.0), glm::vec3(20), Kart->getTurnAngle());
-		tree.draw();
-		tree.setPosition(glm::vec3(-200.0, -1, 0.0), glm::vec3(25), Kart->getTurnAngle());
-		tree.draw();
+		renderScene();
+		renderForest(&tree, glm::vec3(-470, -1, 440.0), 20, 20, 7, 26);
+		renderForest(&cornBill, glm::vec3(300.0, 0, 50.0), 7, 5, 5, 15);
+		renderDuckFamily(ducks);
+		renderFarm(farmAnimals);
+		renderBleachers(&bleachers, glm::vec3(-215.0, 0.0, -50.0), glm::vec3(-275.0, 0.0, -50.0), 90);
+		renderWindmills(&windmill, glm::vec3(200, 0.0, 0.0), glm::vec3(220, 0.0, 30.0), glm::vec3(220, 0.0, -30.0), 5, -90);
 
 		// Main Shader Program
 		waterShader->use();
@@ -325,11 +344,96 @@ int main() {
 	return 0;
 }
 
-void renderScene(vector<Model*> models) {
-	for (int i = 0; i < models.size(); i++)
+void renderScene() {
+	for (int i = 0; i < sceneModels.size(); i++)
 	{
-		models[i]->draw();
+		sceneModels[i]->draw();
 	}
+}
+
+void renderForest(BillboardModel *tree, glm::vec3 initial, float scale, float offset, int width, int height) {
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			glm::vec3 pos = glm::vec3(initial.x + (j * offset), initial.y, initial.z - i*(offset));
+			tree->setPosition(pos, glm::vec3(scale));
+			tree->draw();
+		}
+	}
+}
+
+void renderBleachers(ImportedModel *bl, glm::vec3 pos1, glm::vec3 pos2, float rot) {
+	bl->setPosition(pos1, glm::vec3(1), -rot);
+	bl->draw();
+	bl->setPosition(pos2, glm::vec3(1), rot);
+	bl->draw();
+}
+
+GLuint renderToTexture(Shader *s, ImportedModel *model) {
+	TextureRenderer t(width, height);
+	glm::mat4 view = glm::lookAt(glm::vec3(0.0, 3.0, 3), glm::vec3(0.0, 1.5, 0.0), glm::vec3(0.0, 0.0, 1.0));
+	t.bind();
+	s->use();
+	glUniformMatrix4fv(s->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(s->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	model->draw();
+	t.unbind(width, height);
+	s->unuse();
+
+	return t.getTexture();
+}
+
+void renderFarm(vector<BillboardModel*> &farmAnimals) {
+	farmAnimals[0]->setPosition(glm::vec3(290.0, 0.0, -90.0), glm::vec3(2));
+	farmAnimals[0]->draw();
+	farmAnimals[0]->setPosition(glm::vec3(300.0, 0, -100), glm::vec3(2));
+	farmAnimals[0]->draw();
+	farmAnimals[0]->setPosition(glm::vec3(310.0, 0, -100), glm::vec3(2));
+	farmAnimals[0]->draw();
+	farmAnimals[0]->setPosition(glm::vec3(300.0, 0, -110), glm::vec3(2));
+	farmAnimals[0]->draw();
+
+
+	farmAnimals[1]->setPosition(glm::vec3(290, 0, -100.0), glm::vec3(2));
+	farmAnimals[1]->draw();
+	farmAnimals[1]->setPosition(glm::vec3(310, 0, -90.0), glm::vec3(2));
+	farmAnimals[1]->draw();
+	farmAnimals[1]->setPosition(glm::vec3(300, 0, -90.0), glm::vec3(2));
+	farmAnimals[1]->draw();
+}
+
+void renderDuckFamily(vector<BillboardModel*> &ducks) {
+
+	ducks[0]->setPosition(glm::vec3(90.0, -5.5, -306.0), glm::vec3(4));
+	ducks[0]->draw();
+	ducks[0]->setPosition(glm::vec3(88.0, -5.5, -303.0), glm::vec3(2));
+	ducks[0]->draw();
+	ducks[0]->setPosition(glm::vec3(86.0, -5.5, -302.0), glm::vec3(2));
+	ducks[0]->draw();
+	ducks[0]->setPosition(glm::vec3(86.0, -5.5, -301.0), glm::vec3(2));
+	ducks[0]->draw();
+	ducks[0]->setPosition(glm::vec3(86.0, -5.5, -300.0), glm::vec3(2));
+	ducks[0]->draw();
+
+
+	ducks[1]->setPosition(glm::vec3(50.0, -5.9, -220.0), glm::vec3(4));
+	ducks[1]->draw();
+
+	ducks[2]->setPosition(glm::vec3(50.0, -5.5, -217.0), glm::vec3(2));
+	ducks[2]->draw();
+	ducks[2]->setPosition(glm::vec3(50.0, -5.5, -215.0), glm::vec3(2));
+	ducks[2]->draw();
+	ducks[2]->setPosition(glm::vec3(50.0, -5.5, -212.0), glm::vec3(2));
+}
+
+void renderWindmills(ImportedModel *wind, glm::vec3 pos1, glm::vec3 pos2, glm::vec3 pos3, float scale, float rot) {
+	wind->setPosition(pos1, glm::vec3(scale), rot);
+	wind->draw();
+	wind->setPosition(pos2, glm::vec3(scale), rot);
+	wind->draw();
+	wind->setPosition(pos3, glm::vec3(scale), rot);
+	wind->draw();
 }
 
 

@@ -22,6 +22,10 @@ uniform sampler2D shadowMap;
 //Terrain
 uniform sampler2D terrainTexture1;
 uniform sampler2D terrainTexture2;
+uniform sampler2D terrainTexture3;
+uniform sampler2D terrainTexture4;
+uniform sampler2D terrainTexture5;
+uniform sampler2D blendMap;
 
 uniform Material material;
 uniform Light light;
@@ -52,24 +56,42 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 
 void main () {
 	vec3 color;
+	
 	if(!terrain)
 		color = texture(texture_diffuse1, TextCoord).rgb;
 	else{
+		vec2 tiledCoords = TextCoord * 300.0;
 		const float zone1 = -2.0;
 		const float zone2 = -1.0;
 		const float zone3 = 0.5;
 		const float zone4 = 4.0;
 
 		if(FragPos.y < zone1)
-			color = texture(terrainTexture1, TextCoord).rgb;
+			color = texture(terrainTexture1, tiledCoords).rgb;
 		else if(FragPos.y > zone1 && FragPos.y < zone2 )
-			color = mix(texture(terrainTexture1, TextCoord), texture(texture_diffuse1, TextCoord), 0.5).rgb;
-		else if(FragPos.y > zone2 && FragPos.y < zone3 )
-			color = texture(texture_diffuse1, TextCoord).rgb;
-		else if(FragPos.y > zone3 && FragPos.y < zone4 )
-			color = mix(texture(texture_diffuse1, TextCoord), texture(terrainTexture2, TextCoord), (FragPos.y - zone3)/(zone4-zone3)).rgb;
+			color = mix(texture(terrainTexture1, tiledCoords), texture(texture_diffuse1, tiledCoords), 0.5).rgb;
+		else if(FragPos.y > zone2 && FragPos.y < zone3 ){
+
+
+			vec3 blendMapColor = texture(blendMap, TextCoord).rgb;
+			
+			float normaltexAmount = 1 - (blendMapColor.r + blendMapColor.g + blendMapColor.b);
+			
+			
+			vec3 normalTex = texture(texture_diffuse1, tiledCoords).rgb * normaltexAmount;
+			
+			vec3 leavesTexColor = texture(terrainTexture3, tiledCoords).rgb * blendMapColor.r ;
+
+			vec3 dirtTexColor =  texture(terrainTexture4, tiledCoords).rgb * blendMapColor.g ;
+
+			vec3 pathTexColor =  texture(terrainTexture5, tiledCoords).rgb * blendMapColor.b ;
+			color = normalTex + leavesTexColor + dirtTexColor + pathTexColor;
+			//color = texture(texture_diffuse1, tiledCoords).rgb;
+		
+		}else if(FragPos.y > zone3 && FragPos.y < zone4 )
+			color = mix(texture(texture_diffuse1, tiledCoords), texture(terrainTexture2, tiledCoords), (FragPos.y - zone3)/(zone4-zone3)).rgb;
 		else
-			color = texture(terrainTexture2, TextCoord).rgb;
+			color = texture(terrainTexture2, tiledCoords).rgb;
 	}
 
 	vec3 lightDir = normalize(light.direction);

@@ -11,8 +11,8 @@ glm::vec3 kart::getCameraPosition() {
 	return camera->cameraPos;
 }
 
-float kart::getTurnAngle() {
-	return turnAngle;
+float* kart::getTurnAngle() {
+	return &turnAngle;
 }
 
 void kart::resetTurnAngle() {
@@ -56,6 +56,8 @@ void kart::resetGame() {
 	model_matrix = glm::translate(model_matrix, glm::vec3(-250.0, 0.0, 50.0));
 	model_matrix = glm::rotate(model_matrix, (float)glm::radians(180.0), glm::vec3(0.0, 1.0, 0.0));
 	model_matrix = glm::scale(model_matrix, glm::vec3(0.4));
+
+	resetTurnAngle();
 
 	position = model_matrix * position;
 }

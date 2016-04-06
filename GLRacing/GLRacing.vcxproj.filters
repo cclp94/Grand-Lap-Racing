@@ -78,6 +78,15 @@
     <ClCompile Include="Models\BillboardModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Models\Windmill.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Models\Fence.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SOIL.h">
@@ -149,6 +158,15 @@
     <ClInclude Include="Models\BillboardModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Models\Windmill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Models\Fence.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Enzo%27s Car\enzo_car.dae" />
@@ -187,6 +205,15 @@
     <None Include="Shaders\MainFShader.fs">
       <Filter>Source Files\Shaders</Filter>
     </None>
+    <None Include="Assets\windmill\windmil.mtl" />
+    <None Include="Assets\hotel\Building house tower N060116.3DS" />
+    <None Include="Assets\hotel\Building house tower N060116.gsm" />
+    <None Include="Assets\hotel\hotel.mtl" />
+    <None Include="Assets\Bleachers\generic medium.mtl" />
+    <None Include="Assets\corn\corn.mtl" />
+    <None Include="Assets\Apartment\simple building.mtl" />
+    <None Include="Assets\lakeHouse\Farmhouse OBJ.mtl" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Enzo%27s Car\car.png">
@@ -258,10 +285,105 @@
     <Image Include="Assets\Textures\dudvmap.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="Assets\Textures\sand.jpg">
+    <Image Include="Assets\Textures\stone.jpg">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
-    <Image Include="Assets\Textures\stone.jpg">
+    <Image Include="Assets\hotel\AGRAG1.JPG">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\AGRAG8.JPG">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Metals.Ornamental Metals.Plate.Mesh.1.bump.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Metals.Ornamental Metals.Plate.Mesh.1.cutout.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Metals.Ornamental Metals.Plate.Mesh.1.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Oldskilt.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Untitled.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Untitled2.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Untitled3.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Untitled20.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Untitled22.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\Untitled23.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\hotel\дложож.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Bench\benchs_diffuse.tga" />
+    <Image Include="Assets\Bench\benchs_normal.tga" />
+    <Image Include="Assets\Bench\benchs_specular.tga" />
+    <Image Include="Assets\Textures\blendmap.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\dudvmap.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\mud.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\stone2.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\stone3.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\stone4.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Bleachers\generic medium_01_a.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Bleachers\generic medium_01_b.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Bleachers\generic medium_01_c.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\corn\corn_d.dds" />
+    <Image Include="Assets\corn\corn_s.dds" />
+    <Image Include="Assets\Apartment\1.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\lakeHouse\tex.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\animals\babyduck.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\animals\Cow.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\animals\cow2.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\animals\Duck.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\animals\Duck2.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\animals\fence.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\animals\horse.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -273,6 +395,14 @@
     <Text Include="Assets\Startline\info.txt" />
     <Text Include="Assets\Startline\violet_car.obj" />
     <Text Include="record.txt" />
+    <Text Include="Assets\windmill\windmil.obj" />
+    <Text Include="Assets\hotel\archibase.net.txt" />
+    <Text Include="Assets\hotel\hotel.obj" />
+    <Text Include="Assets\Bench\bench.obj" />
+    <Text Include="Assets\Bleachers\generic medium.obj" />
+    <Text Include="Assets\corn\corn.obj" />
+    <Text Include="Assets\Apartment\simple building.obj" />
+    <Text Include="Assets\lakeHouse\Farmhouse OBJ.obj" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="Assets\Sounds\Car_crash.wav">
