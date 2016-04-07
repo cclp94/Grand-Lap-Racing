@@ -39,7 +39,6 @@ Plane::Plane(Shader *s) : Model(s)
 }
 
 GLuint Plane::loadTextures(string filename) {
-	//Main Texture
 	//Texture
 	pData = SOIL_load_image(filename.c_str(), &texture_width, &texture_height, &channels, SOIL_LOAD_RGB);
 
@@ -127,10 +126,6 @@ Plane::~Plane()
 
 }
 
-glm::vec3 Plane::getColor() {
-	return color;
-}
-
 void Plane::draw() {
 	glBindVertexArray(VAO);
 	glBindTexture(GL_TEXTURE_2D, texture);
@@ -209,7 +204,6 @@ void Plane::getModel() {
 			indices.push_back(((depth*i) + j + depth));
 		}
 	}
-	//getNormal();
 
 	for (int i = 0; i < indices.size(); i+=3)
 	{
@@ -236,23 +230,5 @@ void Plane::getModel() {
 		normals.push_back(normal.y);
 		normals.push_back(normal.z);
 	}
-
-	//for (int i = 0; i <= sqrt(vertices.size()/3); i++)
-	//{
-	//	for (int j = 0; j <= sqrt(vertices.size()/3); j +=2)
-	//	{
-	//		texCoords.push_back(0.0); texCoords.push_back(0.0);
-	//		texCoords.push_back(1.0); texCoords.push_back(0.0);
-	//
-	//	}
-	//
-	//	for (int j = 0; j <= sqrt(vertices.size()/3); j +=2)
-	//	{
-	//		texCoords.push_back(0.0); texCoords.push_back(1.0);
-	//		texCoords.push_back(1.0); texCoords.push_back(1.0);
-	//
-	//	}
-	//
-	//}
 
 }

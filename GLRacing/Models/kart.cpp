@@ -15,6 +15,10 @@ float* kart::getTurnAngle() {
 	return &turnAngle;
 }
 
+glm::vec3 kart::getPosition() {
+	return glm::vec3(position);
+}
+
 void kart::resetTurnAngle() {
 	turnAngle = 0.0;
 }
@@ -27,12 +31,14 @@ kart::kart(Shader *s) : ImportedModel(s){
 	material.specular = glm::vec4(1, 1, 1, 1.0);
 	material.shininess = 76.8;
 	position = glm::vec4(0.0, 0.0, 0.0, 1.0);
+	//Driving variables
 	maxSpeed = 10.0f;
 	acceleration = 3.0f;
 	speed = 0.0f;
 	isAccelarating = false;
 	getModel("Assets/Enzo\'s Car/enzo_car.obj");
-	//setupMesh();
+
+	// View Camera
 	camera = new Camera();
 	camera->cameraPos = glm::vec3(position.x, position.y + 2, position.z + 5.0);
 
@@ -41,15 +47,25 @@ kart::kart(Shader *s) : ImportedModel(s){
 	model_matrix = glm::scale(model_matrix, glm::vec3(0.4));
 
 	position = model_matrix * position;
-	carSounds = irrklang::createIrrKlangDevice();
 
-	collision = false;
+	// Sound
+	carSounds = irrklang::createIrrKlangDevice();
+	//Collision
+	collision = true;
 }
 
+
+/*
+	Change collsiion flag
+*/
 void kart::setCollision(bool col) {
 	collision = col;
 }
 
+
+/*
+	Resets model position
+*/
 void kart::resetGame() {
 	speed = 0;
 	model_matrix = glm::mat4();
@@ -62,12 +78,15 @@ void kart::resetGame() {
 	position = model_matrix * position;
 }
 
+
+/*
+	Update kart's position keeping track of certain objects
+*/
 void kart::move(Plane *terrain, Bridge *b, Road *r) {
 	pair<float, glm::vec3> heightAndNormal;
-	float height = terrain->getHeight(position.x, position.z);
-	float height2 = b->getHeight(position.x, position.z);
+	float height = terrain->getHeight(position.x, position.z);	// Terrain height
+	float height2 = b->getHeight(position.x, position.z);		// bridge Height
 	
-	//cout << height2 << endl;
 	float yMove;
 	if (height < 0 && height2 < 0) {
 		yMove = 0;
@@ -80,7 +99,6 @@ void kart::move(Plane *terrain, Bridge *b, Road *r) {
 		}
 		else {
 			if (position.y <= height) {
-				isInAir = false;
 				yMove = height - position.y;
 			}
 			else {
@@ -88,12 +106,10 @@ void kart::move(Plane *terrain, Bridge *b, Road *r) {
 			}
 		}
 	}
-	//cout << inBound << endl;
 	float zMove;
-	if (collision) {
+	if (collision) {		// If collision is activated
 		bool inBound = r->checkBound(position.x, position.z);
-		if (!inBound) {
-			//model_matrix = glm::rotate(model_matrix, glm::radians(10.0f * inBound.second), glm::vec3(0.0, 1.0, 0.0));
+		if (!inBound) {		// Collided with barrier
 			if (speed < 0)
 				model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, 5.0));
 			else
@@ -104,30 +120,34 @@ void kart::move(Plane *terrain, Bridge *b, Road *r) {
 		}
 	}
 	zMove = getSpeed();
-	
+	currentHeight = position.y;
 	model_matrix = glm::translate(model_matrix, glm::vec3(0.0, yMove, zMove));
-
-	previousPos = position;
 	position = model_matrix * glm::vec4(0.0, 0.0, 0.0, 1.0);
-	currentHeight = previousPos.y;
 	camera->cameraPos = glm::vec3(model_matrix * glm::vec4(0.0f, 5.0f, -15.0f, 1.0f));
 
-
-	update();
+	update();		// update speed variable
 }
 
+
+/*
+	Turns the car
+*/
 void kart::turn(float angle) {
 	if (speed != 0) {
 		turnAngle += angle;
 		model_matrix = glm::rotate(model_matrix, angle, glm::vec3(0.0, 1.0, 0.0));
 	}
 }
-
+/*
+	Get camera viewMatrix
+*/
 glm::mat4 kart::getCameraView() {
 	view_matrix = glm::lookAt(camera->cameraPos,glm::vec3(position) ,camera->cameraUp);
 	return view_matrix;
 }
-
+/*
+	Get Kart position
+*/
 glm::vec3 kart::getCurrentPosition() {
 	return glm::vec3(position);
 }
@@ -147,7 +167,7 @@ void kart::accelerate() {
 		speed = maxSpeed;
 	}
 	else if(speed < 0){
-		speed += acceleration * 5;
+		speed += acceleration * 5;		// Braking is faster
 	}
 	else {
 		speed += acceleration;
@@ -161,7 +181,7 @@ void kart::deaccelerate() {
 		speed = -maxSpeed;
 	}
 	else if(speed > 0){
-		speed -= acceleration * 5;		// Breaking faster than acceleration
+		speed -= acceleration * 5;		// Braking faster
 	}
 	else {
 		speed -= acceleration;
@@ -204,14 +224,9 @@ void kart::update() {
 	}
 }
 
-glm::vec3 kart::getColor() {
-	return color;
-}
-
 void kart::draw() {
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
 	glUniform3f(shaderProgram->getUniform("viewPos"), camera->cameraPos.x, camera->cameraPos.y, camera->cameraPos.z);
-	//this->setMaterialUniform();
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 		this->meshes[i].Draw(shaderProgram);
 }
@@ -223,6 +238,10 @@ void kart::depthDraw(Shader *s) {
 		this->meshes[i].Draw(shaderProgram);
 }
 
+
+/*
+	View Matrix to be used by skybox
+*/
 glm::mat4 kart::getCameraSky()
 {
 	GLfloat posz = camera->cameraPos.z / 1000.0f;

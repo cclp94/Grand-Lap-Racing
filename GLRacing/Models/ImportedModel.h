@@ -2,6 +2,10 @@
 #include "Model.h"
 #include "Mesh.h"
 
+/*
+	Imported model following assimp model loading from obj files
+*/
+
 
 class ImportedModel :
 	public Model

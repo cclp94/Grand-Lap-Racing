@@ -13,9 +13,12 @@ TextureRenderer::TextureRenderer(int width, int heihgt)
 
 TextureRenderer::~TextureRenderer()
 {
-	glDeleteFramebuffers(1, &FBO);
+	glDeleteFramebuffers(1, &FBO);	// delete FBO
 }
 
+/*
+	Initialize FBO with 1 Color attachment for rendering
+*/
 void TextureRenderer::initializeFrameBuffer() {
 	glGenFramebuffers(1, &FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
@@ -29,12 +32,18 @@ void TextureRenderer::initializeFrameBuffer() {
 	unbind(displayWidth, displayHeihgt);
 }
 
+
+/*
+	@return texture ID
+*/
 GLuint TextureRenderer::getTexture() {
 	return texture;
 }
 
 
-
+/*
+	Generates a texture  and binds it to the framebuffer object
+*/
 GLuint TextureRenderer::frameTextureAttachment(int width, int height) {
 	GLuint tex;
 	glGenTextures(1, &tex);
@@ -48,12 +57,17 @@ GLuint TextureRenderer::frameTextureAttachment(int width, int height) {
 
 	return tex;
 }
-
+/*
+	Unbinds currently bound FBO
+*/
 void TextureRenderer::unbind(int width, int height) {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0, 0, width, height);
 }
 
+/*
+	Binds FBO
+*/
 void TextureRenderer::bind() {
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);

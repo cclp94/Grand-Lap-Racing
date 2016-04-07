@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <random>
 
 #include <vector>
 #include <string>
@@ -15,25 +16,36 @@
 #include <algorithm>
 #include <vector>
 #include <cctype>
+
+//Shader
+#include "Shaders/Shader.h"
+
+//Models
 #include "Models/Model.h"
 #include "Models/Plane.h"
 #include "Models/kart.h"
 #include "Models/Road.h"
-#include "Shaders/Shader.h"
 #include "Models/Barrier.h"
-#include "Light/DirectionalLight.h"
-#include "DepthMap/DepthMap.h"
 #include "Models/Bridge.h"
-#include "Models/StartLine.h"
-#include "GameController.h"
-#include "Water/Water.h"
-#include "Skybox/skybox.h"
 #include "Models/BillboardModel.h"
-#include "Models/TestQuad.h"
-#include "Water/WaterFrameBuffers.h"
 #include "Models/Windmill.h"
-#include "TextureRenderer.h"
 #include "Models/Fence.h"
+
+//SkyBox
+#include "Skybox/skybox.h"
+
+// Water
+#include "Water/WaterFrameBuffers.h"
+#include "Water/Water.h"
+
+//Game Controller
+#include "GameController.h"
+// Light
+#include "Light/DirectionalLight.h"
+
+//Depth Map
+#include "DepthMap/DepthMap.h"
+#include "TextureRenderer.h"
 
 using namespace std;
 
@@ -62,9 +74,10 @@ void cheater();
 void renderForest(BillboardModel *tree, glm::vec3 initial, float scale, float offset, int width, int height);
 void renderBleachers(ImportedModel *bl, glm::vec3 pos1, glm::vec3 pos2, float rot);
 void renderWindmills(ImportedModel *wind, glm::vec3 pos1, glm::vec3 pos2, glm::vec3 pos3, float scale, float rot);
-GLuint renderToTexture(Shader *s, ImportedModel *model);
+GLuint renderToTexture(Shader *s, Model *model);
 void renderDuckFamily(vector<BillboardModel*> &ducks);
 void renderFarm(vector<BillboardModel*> &farmAnimals);
+void renderRandomGrid(vector<BillboardModel*> &models, glm::vec3 initial, float scale, float offset, int width, int height, int random);
 
 irrklang::ISoundEngine* engine;
 irrklang::ISoundEngine* music;
@@ -75,9 +88,7 @@ void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight);
 
 int main() {
 	initialize();
-	//Light
-	DirectionalLight light(glm::vec3(0.0, 50000000, -50000000), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
-
+	
 	//Sound
 	engine = irrklang::createIrrKlangDevice();
 	music = irrklang::createIrrKlangDevice();
@@ -90,40 +101,38 @@ int main() {
 	Shader *skyShader = new Shader("skybox.vs", "skybox.fs");
 	Shader *textShader = new Shader("textVShader.vs", "textFShader.fs");
 
-	// Perspective Projection
-	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
-
-	terrainShader->use();
-	glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	//Light
+	DirectionalLight light(glm::vec3(0.0, 50000000, -50000000), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0), glm::vec3(1.0, 1.0, 1.0));
 	light.setProperties(terrainShader);
 
-	waterShader->use();
-	glUniformMatrix4fv(waterShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
+	// Perspective Projection Matrix
+	proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
 	
 	//SkyBox class
 	skybox skybox(skyShader);
 
-	// Objects in scene
+	// Objects in scene and Push   them into render vector
+	Kart = new kart(terrainShader);		sceneModels.push_back(Kart);
+
 	Bridge bridge(terrainShader);		sceneModels.push_back(&bridge);
 	Plane plane(terrainShader);			sceneModels.push_back(&plane);
 	Road road(terrainShader, &plane);	sceneModels.push_back(&road);
 	Barrier barrier1(terrainShader, Barrier::OUTTER);	sceneModels.push_back(&barrier1);
-	Barrier barrier2(terrainShader, Barrier::INNER);	sceneModels.push_back(&barrier2);
-	Kart = new kart(terrainShader);		sceneModels.push_back(Kart);
-	BillboardModel tree(terrainShader, glm::vec3(-220.0, -1, 0.0), glm::vec3(20), "tree.png", Kart->getTurnAngle());
-	StartLine start(terrainShader);		sceneModels.push_back(&start);
+	Barrier barrier2(terrainShader, Barrier::INNER);	sceneModels.push_back(&barrier2);	
+	ImportedModel start(terrainShader, "Assets/Startline/violet_car.obj", glm::vec3(-250.0, 0.0, 0.0), glm::vec3(2), 0);		sceneModels.push_back(&start);
 	Water water(waterShader);
-	Windmill windmill(terrainShader, "Assets/windmill/windmil.obj", glm::vec3(200, 0.0, 0.0), glm::vec3(5), -90.0); 
-	ImportedModel bench(terrainShader, "Assets/Bench/bench.obj", glm::vec3(10.0, 0.0, -200), glm::vec3(1.2), 90);
-	sceneModels.push_back(&bench);
 	ImportedModel bleachers(terrainShader, "Assets/Bleachers/generic\ medium.obj", glm::vec3(-215.0, 0.0, -50.0), glm::vec3(1), -90);
+	ImportedModel building(terrainShader, "Assets/Apartment/simple\ building.obj", glm::vec3(0.0), glm::vec3(20), 90);
+	sceneModels.push_back(&building);
+
+	BillboardModel tree(terrainShader, glm::vec3(-220.0, -1, 0.0), glm::vec3(20), "tree.png", Kart->getTurnAngle());
+
+	//Farm
+
+	//Render Corn and generate Texture of it
 	ImportedModel corn(terrainShader, "Assets/corn/corn.obj", glm::vec3(0.0, -1.5, -2), glm::vec3(1), 0);
 	GLuint cornTexture = renderToTexture(terrainShader, &corn);
 	BillboardModel cornBill(terrainShader, glm::vec3(-220.0, 0, 40.0), glm::vec3(3), cornTexture, Kart->getTurnAngle());
-	ImportedModel building(terrainShader, "Assets/Apartment/simple\ building.obj", glm::vec3(0.0), glm::vec3(20), 90);
-	sceneModels.push_back(&building);
-	ImportedModel lakeHouse(terrainShader, "Assets/lakeHouse/Farmhouse\ OBJ.obj", glm::vec3(50.0, 0.0, -400), glm::vec3(0.7), 180);
-	sceneModels.push_back(&lakeHouse);
 
 	BillboardModel cow(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/Cow.png", Kart->getTurnAngle());
 	BillboardModel cow2(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/Cow2.png", Kart->getTurnAngle());
@@ -132,9 +141,13 @@ int main() {
 	vector<BillboardModel*> farmAnimals;
 	farmAnimals.push_back(&cow);
 	farmAnimals.push_back(&cow2);
+	Windmill windmill(terrainShader, "Assets/windmill/windmil.obj", glm::vec3(200, 0.0, 0.0), glm::vec3(5), -90.0);
 
-
-
+	// Lake
+	ImportedModel bench(terrainShader, "Assets/Bench/bench.obj", glm::vec3(10.0, 0.0, -200), glm::vec3(1.2), 90);
+	sceneModels.push_back(&bench);
+	ImportedModel lakeHouse(terrainShader, "Assets/lakeHouse/Farmhouse\ OBJ.obj", glm::vec3(50.0, 0.0, -400), glm::vec3(0.7), 180);
+	sceneModels.push_back(&lakeHouse);
 	BillboardModel duck(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/Duck.png", Kart->getTurnAngle());
 	BillboardModel duck2(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/Duck2.png", Kart->getTurnAngle());
 	BillboardModel duck3(terrainShader, glm::vec3(270.0, 0, -200.0), glm::vec3(2), "animals/babyduck.png", Kart->getTurnAngle());
@@ -159,22 +172,24 @@ int main() {
 	music->play2D("Assets/Sounds/GLRacing.wav", true);
 	
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-
-	//-------------------------------------------------------------
+	
+	// Water movement Variables-------
 	float move = 0;
 	double currentTime = glfwGetTime();
+	//---------------------------------
+	srand(time(NULL));
+	int random = rand();
 
 	// Game Loop
 	while (!glfwWindowShouldClose(window)) {
 		
 		
-		// Depth Scene Rendering
+		// View- Projection Matrix from light perspective
 		glm::mat4 lightSpaceMatrix = light.getLightSpaceMatrix(width, height);
 
 		// 1. Render depth of scene to texture (from light's perspective)
 		// - Get light projection/view matrix.
 		// - render scene from light's point of view
-		
 		depthShader->use();
 		glUniformMatrix4fv(depthShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 		
@@ -200,9 +215,9 @@ int main() {
 		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 		glPointSize(point_size);
 
-		glm::mat4 view = Kart->getCameraSky();
 
-		
+		// View Matrix for Skybox
+		glm::mat4 view = Kart->getCameraSky();
 
 		// Projectiion Matrix and light
 		terrainShader->use();
@@ -211,92 +226,102 @@ int main() {
 		glUniformMatrix4fv(waterShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		
 		
-		view_matrix = Kart->getCameraView(); // Get Camera View Matrix
-		glm::vec3 viewPos = Kart->getCameraPosition();
+		view_matrix = Kart->getCameraView();				// Get Camera View Matrix
+		glm::vec3 viewPos = Kart->getCameraPosition();		// Camera Position
 
 
 		//---------------------------------WATER REFRACTION-----------------------------------
-		waterBuffers.bindRefractionFBO();
+		waterBuffers.bindRefractionFBO();		// Bind Water Refraction Framebuffer Object
 
-		terrainShader->use();
+
+		// Adjust projection
 		proj_matrix = glm::perspective(45.0f,
 			(GLfloat)waterBuffers.REFRACTION_WIDTH / (GLfloat)waterBuffers.REFRACTION_HEIHGT,
 			0.1f, 1000.0f);
 
 		terrainShader->use();
-		glm::vec4 clipPlane = waterBuffers.getRefractionClipPlane();
+		glm::vec4 clipPlane = waterBuffers.getRefractionClipPlane();		// Set Clip Plane
 		glUniform4f(terrainShader->getUniform("plane"), clipPlane.x, clipPlane.y, clipPlane.z, clipPlane.w);
 		glUniformMatrix4fv(terrainShader->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-		// Apply view Matrix in secondary shader programs
 		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-		glUniformMatrix4fv(terrainShader->getUniform("shadowBias"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-
-		glActiveTexture(GL_TEXTURE1);
+		glActiveTexture(GL_TEXTURE1);					// DepthMap Texture
 		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
 		glUniform1i(terrainShader->getUniform("shadowMap"), 1);
+		//Render Relevant scene
 		renderScene();
 		renderDuckFamily(ducks);
 
-		waterBuffers.unBind(width, height);
+		waterBuffers.unBind(width, height);		// Unbind FBO
+
+		//-----------------------------------WATER REFLECTION-------------------------
 		
+		// Readjust Projection matrix for reflection
 		proj_matrix = glm::perspective(45.0f,
 			(GLfloat)waterBuffers.REFLECTION_WIDTH / (GLfloat)waterBuffers.REFLECTION_HEIGHT,
 			0.1f, 1000.0f);
+		//Bind FBO
 		waterBuffers.bindReflectionFBO();
 
-		//Draw background
+		//Draw Skybox
 		skyShader->use();
 		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		skybox.draw();
 		
-		//-----------------------------------WATER REFLECTION-------------------------
+		
 		terrainShader->use();
-		//// Apply view Matrix in secondary shader programs
 		//Position camera under water
 		glm::vec3 underWaterViewPos = viewPos;
 		float distance = 2 * (viewPos.y - water.getHeight());
 		underWaterViewPos.y = distance;
-		glm::mat4 underWaterViewMatrix;// = glm::translate(view_matrix, glm::vec3(0.0, -20, 0.0));
+		glm::mat4 underWaterViewMatrix;
 		glm::vec3 pos = Kart->getPosition();
 		underWaterViewMatrix = glm::lookAt(underWaterViewPos, glm::vec3(0.0, 0.0,0.0), glm::vec3(0.0, 1.0, 0.0));
-		clipPlane = waterBuffers.getReflectionClipPlane();
+
+		clipPlane = waterBuffers.getReflectionClipPlane();	// Set clip plane to clip bellow water
 		glUniform4f(terrainShader->getUniform("plane"), clipPlane.x, clipPlane.y, clipPlane.z, clipPlane.w);
 		glUniform3f(terrainShader->getUniform("viewPos"), underWaterViewPos.x, underWaterViewPos.y, underWaterViewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(underWaterViewMatrix));
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));		
 		
+		// Render
 		renderScene();
 		renderForest(&tree, glm::vec3(-470, -1, 440.0), 20, 20, 7, 26);
 		renderForest(&cornBill, glm::vec3(300.0, 0, 50.0), 7, 5, 5, 15);
 		renderDuckFamily(ducks);
 		
 		waterBuffers.unBind(width, height);
-		proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
 
 		//---------------------------------------NORMAL RENDER-----------------------------------
+
+		// Readjust Projection Matrix
+		proj_matrix = glm::perspective(45.0f, (GLfloat)width / (GLfloat)height, 0.1f, 1000.0f);
+
+		//Clear screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.8f, 0.9f, 0.9f, 1.0f);
 
-		//Draw background
+		//Draw Skybox
 		skyShader->use();
 		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "view"), 1, GL_FALSE, glm::value_ptr(view));
 		glUniformMatrix4fv(glGetUniformLocation(skyShader->programID, "projection"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
 		skybox.draw();
 
 		terrainShader->use();
-		// Apply view Matrix in secondary shader programs
+
 		glUniform4f(terrainShader->getUniform("plane"), 0.0, 1.0, 0.0, 10000.0);
 
 		glUniform3f(terrainShader->getUniform("viewPos"), viewPos.x, viewPos.y, viewPos.z);
 		glUniformMatrix4fv(terrainShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
 		glUniformMatrix4fv(terrainShader->getUniform("lightSpaceMatrix"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
 		glUniformMatrix4fv(terrainShader->getUniform("shadowBias"), 1, GL_FALSE, glm::value_ptr(lightSpaceMatrix));
-		
+		// DepthMap
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, depthMap.getId());
+
+		// Render Scene
 		renderScene();
 		renderForest(&tree, glm::vec3(-470, -1, 440.0), 20, 20, 7, 26);
 		renderForest(&cornBill, glm::vec3(300.0, 0, 50.0), 7, 5, 5, 15);
@@ -304,29 +329,34 @@ int main() {
 		renderFarm(farmAnimals);
 		renderBleachers(&bleachers, glm::vec3(-215.0, 0.0, -50.0), glm::vec3(-275.0, 0.0, -50.0), 90);
 		renderWindmills(&windmill, glm::vec3(200, 0.0, 0.0), glm::vec3(220, 0.0, 30.0), glm::vec3(220, 0.0, -30.0), 5, -90);
+		// ------------------------------------Water---------------------------------
 
-		// Main Shader Program
 		waterShader->use();
-		glUniformMatrix4fv(waterShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, waterBuffers.getReflectionTexture());
-		glUniform1i(waterShader->getUniform("reflectionTexture"), 0);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, waterBuffers.getRefractionTexture());
-		glUniform1i(waterShader->getUniform("refractionTexture"), 1);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, waterBuffers.getDuDvMap());
-		glUniform1i(waterShader->getUniform("dudvMap"), 2);
-		glUniform3f(waterShader->getUniform("cameraPos"), viewPos.x, viewPos.y, viewPos.z);
-		
-		move += water.getMoveFactor()*(glfwGetTime() - currentTime);
-		currentTime = glfwGetTime();
-		if (move > 0.5) move = 0.0;
-		glUniform1f(waterShader->getUniform("moveFactor"),move);
+
+			glUniformMatrix4fv(waterShader->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view_matrix));
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, waterBuffers.getReflectionTexture());
+			glUniform1i(waterShader->getUniform("reflectionTexture"), 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, waterBuffers.getRefractionTexture());
+			glUniform1i(waterShader->getUniform("refractionTexture"), 1);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, waterBuffers.getDuDvMap());
+			glUniform1i(waterShader->getUniform("dudvMap"), 2);
+			glUniform3f(waterShader->getUniform("cameraPos"), viewPos.x, viewPos.y, viewPos.z);
+			// Water Moviment
+			move += water.getMoveFactor()*(glfwGetTime() - currentTime);
+			currentTime = glfwGetTime();
+			if (move > 0.5) move = 0.0;
+			glUniform1f(waterShader->getUniform("moveFactor"),move);
+
+			// Render
+			water.draw();
+
+		//--------------------------------------------------------------------------------
 
 
-		water.draw();
-		
+		// Update Game Controller
 		game->update(width, height);	
 		
 	
@@ -334,9 +364,11 @@ int main() {
 		glfwPollEvents();
 		// put the stuff we've been drawing onto the display
 		glfwSwapBuffers(window);
-		Kart->move(&plane, &bridge, &road);
+		Kart->move(&plane, &bridge, &road);		// Update Kart moviment
 		
 	}
+
+	// Clear alocated Memory
 	music->drop();
 	engine->drop();
 	delete textShader, terrainShader, waterShader, Kart, skyShader, game;
@@ -344,6 +376,10 @@ int main() {
 	return 0;
 }
 
+
+/*
+	Renders objects inside the sceneModels vector
+*/
 void renderScene() {
 	for (int i = 0; i < sceneModels.size(); i++)
 	{
@@ -351,18 +387,60 @@ void renderScene() {
 	}
 }
 
+
+/*
+	Render Generic Billboards in a grid formation
+	@param tree pointer to Billboard model
+	@param initial Initial bottom left position for grid
+	@param scale scale factor for model transformation
+	@param offset How far model are from each other
+	@param width number of objects in the X direction
+	@param height number of object in the z direction
+*/
 void renderForest(BillboardModel *tree, glm::vec3 initial, float scale, float offset, int width, int height) {
 	for (int i = 0; i < height; i++)
 	{
 		for (int j = 0; j < width; j++)
 		{
 			glm::vec3 pos = glm::vec3(initial.x + (j * offset), initial.y, initial.z - i*(offset));
-			tree->setPosition(pos, glm::vec3(scale));
-			tree->draw();
+			tree->setPosition(pos, glm::vec3(scale));	// Move object
+			tree->draw();								// Render Instance
 		}
 	}
 }
 
+
+/*
+	Render Generic multiple billboards in a ramdom grid formation
+	@param tree pointer to Billboard model
+	@param initial Initial bottom left position for grid
+	@param scale scale factor for model transformation
+	@param offset How far model are from each other
+	@param width number of objects in the X direction
+	@param height number of object in the z direction
+*/
+void renderRandomGrid(vector<BillboardModel*> &models, 
+	glm::vec3 initial, float scale, float offset, int width, int height, int random) {
+	int numberOfEntities = models.size();
+	int place = random % numberOfEntities;
+	
+	for (int i = 0; i < height; i++)
+	{
+		for (int j = 0; j < width; j++)
+		{
+			
+			glm::vec3 pos = glm::vec3(initial.x + (j * offset), initial.y, initial.z + (offset / 2 * (j % 2)) - i*(offset));
+			models[(place + (j * i) + random) % numberOfEntities]->setPosition(pos, glm::vec3(scale));	// Move object
+			models[(place + (j * i) + random) % numberOfEntities]->draw();								// Render Instance
+		}
+	}
+	
+}
+
+
+/*
+	Renders 2 instances of Bleacher facing each other 
+*/
 void renderBleachers(ImportedModel *bl, glm::vec3 pos1, glm::vec3 pos2, float rot) {
 	bl->setPosition(pos1, glm::vec3(1), -rot);
 	bl->draw();
@@ -370,20 +448,30 @@ void renderBleachers(ImportedModel *bl, glm::vec3 pos1, glm::vec3 pos2, float ro
 	bl->draw();
 }
 
-GLuint renderToTexture(Shader *s, ImportedModel *model) {
+
+/*
+	Renders to Framebuffer and return a texture of the model
+	@param s Shader program used by the model
+	@param model model to be rendered
+*/
+GLuint renderToTexture(Shader *s, Model *model) {
 	TextureRenderer t(width, height);
+	// Set simple View Matrix
 	glm::mat4 view = glm::lookAt(glm::vec3(0.0, 3.0, 3), glm::vec3(0.0, 1.5, 0.0), glm::vec3(0.0, 0.0, 1.0));
-	t.bind();
-	s->use();
+	t.bind();	// Bind FBO
+	s->use();	// Use Shader
 	glUniformMatrix4fv(s->getUniform("view_matrix"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(s->getUniform("proj_matrix"), 1, GL_FALSE, glm::value_ptr(proj_matrix));
-	model->draw();
-	t.unbind(width, height);
-	s->unuse();
+	model->draw();		// Render
+	t.unbind(width, height);	// Unbind FBO
+	s->unuse();			// Unbind shader
 
-	return t.getTexture();
+	return t.getTexture();		// Return Texture ID
 }
-
+/*
+	Render animal in the farm
+	@param farmAnimals Vector of animals to be rendered
+*/
 void renderFarm(vector<BillboardModel*> &farmAnimals) {
 	farmAnimals[0]->setPosition(glm::vec3(290.0, 0.0, -90.0), glm::vec3(2));
 	farmAnimals[0]->draw();
@@ -403,6 +491,10 @@ void renderFarm(vector<BillboardModel*> &farmAnimals) {
 	farmAnimals[1]->draw();
 }
 
+
+/*
+	Render family of ducks in the lake
+*/
 void renderDuckFamily(vector<BillboardModel*> &ducks) {
 
 	ducks[0]->setPosition(glm::vec3(90.0, -5.5, -306.0), glm::vec3(4));
@@ -427,6 +519,14 @@ void renderDuckFamily(vector<BillboardModel*> &ducks) {
 	ducks[2]->setPosition(glm::vec3(50.0, -5.5, -212.0), glm::vec3(2));
 }
 
+
+/*
+	Render 3 instances of Windmills in the scene
+	@param wind Windmill object to render
+	@param pos1, pos2, pos3 position of windMills
+	@param scale scale value for windmill
+	@rot rotation angle for transformation
+*/
 void renderWindmills(ImportedModel *wind, glm::vec3 pos1, glm::vec3 pos2, glm::vec3 pos3, float scale, float rot) {
 	wind->setPosition(pos1, glm::vec3(scale), rot);
 	wind->draw();
@@ -437,6 +537,11 @@ void renderWindmills(ImportedModel *wind, glm::vec3 pos1, glm::vec3 pos2, glm::v
 }
 
 
+/*
+	Initializes GLFW and GLEW , creates full screen window, 
+	set event callbacks, and enables features used by the
+	program such as Depth testing, Multisapling antialiasing, etc;
+*/
 bool initialize() {
 	/// Initialize GL context and O/S window using the GLFW helper library
 	if (!glfwInit()) {
@@ -503,7 +608,9 @@ bool cleanUp() {
 
 	return true;
 }
-
+/*
+	Keyboard callback
+*/
 void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (key == GLFW_KEY_S) {
 		Kart->deaccelerate();
@@ -528,7 +635,9 @@ void keyPressedCallback(GLFWwindow* window, int key, int scancode, int action, i
 
 	
 }
-
+/*
+	Cheater Feature changes variables in the program
+*/
 void cheater() {
 	string option, mode;
 	bool done = false;
@@ -559,6 +668,10 @@ void cheater() {
 
 }
 
+
+/*
+	Window resize callback
+*/
 void windowResizeCallback(GLFWwindow * window, int newWidth, int newHeight) {
 	width = newWidth;
 	height = newHeight;

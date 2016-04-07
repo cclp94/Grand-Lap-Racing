@@ -10,14 +10,15 @@ Model::Model(Shader *shader)
 Model::~Model()
 {
 	glDisableVertexAttribArray(0);
-	//Properly de-allocate all resources once they've outlived their purpose
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
-
-
 }
 
+
+/*
+	set buffers up depending of entered values for models
+*/
 void Model::setupMesh() {
 
 
@@ -59,14 +60,6 @@ void Model::setupMesh() {
 	}
 
 	glBindVertexArray(0);
-}
-
-float*  Model::getModelVertices() {
-	return &vertices[0];
-}
-
-GLuint Model::getModelsize() {
-	return sizeof(GLfloat) * vertices.size();
 }
 
 void Model::setMaterialUniform() {

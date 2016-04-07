@@ -10,6 +10,10 @@
 
 using namespace std;
 
+/*
+	Creates shader program from vertex shader and fragment shader files
+*/
+
 class Shader
 {
 public:

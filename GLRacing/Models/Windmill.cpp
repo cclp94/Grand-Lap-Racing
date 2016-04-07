@@ -13,9 +13,12 @@ Windmill::~Windmill()
 {
 }
 
+
+/*
+	Draw windmill with animation in the properler
+*/
 void Windmill::draw() {
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
-	//this->setMaterialUniform();
 	glm::mat4 savedModelMatrix = model_matrix;
 	for (GLuint i = 0; i < this->meshes.size(); i++) {
 		if (i ==0) {

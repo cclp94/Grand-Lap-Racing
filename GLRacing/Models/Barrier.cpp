@@ -25,6 +25,9 @@ Barrier::~Barrier()
 {
 }
 
+/*
+	Gets model, transforms it into spline mesh and places it outside or inside road
+*/
 void Barrier::getModel() {
 	float y = -0.0001f;
 	vertices.push_back(-0.5f); vertices.push_back(y); vertices.push_back(0.0f);
@@ -125,6 +128,8 @@ void Barrier::getModel() {
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
 
+
+	// Texture Coordinates
 	for (int i = 0; i < vertices.size() / (6); i += 2)
 	{
 		

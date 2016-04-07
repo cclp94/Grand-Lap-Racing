@@ -2,6 +2,10 @@
 #include "Model.h"
 #include <glm\vec3.hpp>
 
+/*
+	Square object that uses just a texture and rotates to face the camera at all times
+*/
+
 class BillboardModel :
 	public Model
 {

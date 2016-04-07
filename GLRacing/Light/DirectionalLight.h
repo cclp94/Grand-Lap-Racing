@@ -3,6 +3,10 @@
 #include <glm/ext.hpp>
 #include "../Shaders/Shader.h"
 
+/*
+	Directional light class
+*/
+
 class DirectionalLight
 {
 public:
@@ -12,8 +16,6 @@ public:
 	glm::vec3 getAmbientColor();
 	glm::vec3 getDiffuseColor();
 	glm::vec3 getSpecularColor();
-	glm::mat4 getLightViewMatrix();
-	glm::mat4 getLightProjectionMatrix();
 	glm::mat4 getLightSpaceMatrix(int width, int height);
 	void setProperties(Shader *s);
 

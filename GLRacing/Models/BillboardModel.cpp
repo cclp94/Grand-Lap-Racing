@@ -41,7 +41,7 @@ void BillboardModel::getTexture(string textureName) {
 
 	glGenTextures(1, &texture);
 	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);    // Set texture wrapping to GL_REPEAT (usually basic wrapping method)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);  
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	// Set texture filtering parameters
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -56,6 +56,10 @@ BillboardModel::~BillboardModel()
 {
 }
 
+
+/*
+	Sets poisiton of the billboard and rotates it relatively to the camera
+*/
 void BillboardModel::setPosition(glm::vec3 trans, glm::vec3 scale) {
 	this->translation = trans;
 	this->scale = scale;
@@ -67,6 +71,9 @@ void BillboardModel::setPosition(glm::vec3 trans, glm::vec3 scale) {
 	
 }
 
+/*
+	Simple Quad Mesh
+*/
 void BillboardModel::getModel() {
 	
 

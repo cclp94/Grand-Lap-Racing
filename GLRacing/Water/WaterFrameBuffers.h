@@ -3,6 +3,10 @@
 #include <GLFW\glfw3.h>
 #include <glm\vec4.hpp>
 
+/*
+	Renders scenes from the water's reflection and refraction perspectives
+*/
+
 class WaterFrameBuffers
 {
 public:

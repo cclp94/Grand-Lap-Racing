@@ -1,6 +1,9 @@
 #pragma once
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
+/*
+	TextureRenderer renders model object into Framebuffer object and generates a texture
+*/
 
 class TextureRenderer
 {

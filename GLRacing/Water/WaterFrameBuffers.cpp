@@ -9,9 +9,11 @@ WaterFrameBuffers::WaterFrameBuffers(int width, int height)
 	displayHeihgt = height;
 	initializeReflectBuffer();
 	initializeRefractBuffer();
-	loadDuDvMap();
+	loadDuDvMap();				// DuDv Map for water distortion
 }
-
+/*
+	Loads water DuDv Map for distortion of the water and makes it a texture
+*/
 void WaterFrameBuffers::loadDuDvMap() {
 	int texture_width, texture_height, channels;
 	unsigned char* pData = SOIL_load_image("Assets/Textures/dudvmap.jpg", &texture_width, &texture_height, &channels, SOIL_LOAD_RGBA);
@@ -27,7 +29,7 @@ void WaterFrameBuffers::loadDuDvMap() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, texture_width, texture_height, 0, GL_RGB, GL_UNSIGNED_BYTE, pData);
 	SOIL_free_image_data(pData);
-	glBindTexture(GL_TEXTURE_2D, 0); // Unbi
+	glBindTexture(GL_TEXTURE_2D, 0); 
 }
 
 GLuint WaterFrameBuffers::getDuDvMap() {
@@ -57,6 +59,11 @@ WaterFrameBuffers::~WaterFrameBuffers()
 	glDeleteFramebuffers(1, &refractFBO);
 }
 
+
+/*
+	Creates a Frame Buffer Object that renders into GL_COLOR_ATTACHMENT0
+	and returns its ID
+*/
 GLuint WaterFrameBuffers::getFrameBuffer() {
 	GLuint FBO;
 	glGenFramebuffers(1, &FBO);
@@ -68,6 +75,9 @@ GLuint WaterFrameBuffers::getFrameBuffer() {
 	return FBO;
 }
 
+/*
+	Initializes the Refraction Frame buffer object
+*/
 void WaterFrameBuffers::initializeRefractBuffer() {
 	refractFBO = getFrameBuffer();
 	refractionTexture = frameTextureAttachment(REFRACTION_WIDTH, REFRACTION_HEIHGT);
@@ -78,6 +88,10 @@ void WaterFrameBuffers::initializeRefractBuffer() {
 	unBind(displayWidth, displayHeihgt);
 }
 
+
+/*
+	Initializes the Reflection Frame buffer object
+*/
 void WaterFrameBuffers::initializeReflectBuffer() {
 	reflectFBO = getFrameBuffer();
 	reflectionTexture = frameTextureAttachment(REFLECTION_WIDTH, REFLECTION_HEIGHT);

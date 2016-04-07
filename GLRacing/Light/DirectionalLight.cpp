@@ -12,6 +12,10 @@ DirectionalLight::~DirectionalLight()
 {
 }
 
+
+/*
+	Gets light view projection matrix using orthographic projection
+*/
 glm::mat4 DirectionalLight::getLightSpaceMatrix(int width, int height) {
 	GLfloat near_plane = 1.0f, far_plane = 7.5f;
 	glm::vec3 lightDir = glm::normalize(direction);
@@ -34,6 +38,10 @@ glm::vec3 DirectionalLight::getSpecularColor() {
 	return specular;
 }
 
+
+/*
+	Set light uniform values in a given shader program
+*/
 void DirectionalLight::setProperties(Shader *s) {
 	s->use();
 	glUniform3f(s->getUniform("light.direction"), direction.x, direction.y, direction.z);

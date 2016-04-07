@@ -5,6 +5,12 @@
 #include <irrKlang\irrKlang.h>
 class Character;
 
+/*
+	Controls Game by keep the time, check high scores, laps, etc.
+
+	Renders Text to screen to screen
+*/
+
 class GameController
 {
 public:

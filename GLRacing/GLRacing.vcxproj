@@ -142,9 +142,7 @@
     <ClCompile Include="Models\Road.cpp" />
     <ClCompile Include="Shaders\Shader.cpp" />
     <ClCompile Include="Skybox\skybox.cpp" />
-    <ClCompile Include="Models\StartLine.cpp" />
     <ClCompile Include="Models\BillboardModel.cpp" />
-    <ClCompile Include="Models\TestQuad.cpp" />
     <ClCompile Include="TextureRenderer.cpp" />
     <ClCompile Include="Water\WaterFrameBuffers.cpp" />
     <ClCompile Include="Water\Water.cpp" />
@@ -155,7 +153,6 @@
     <ClInclude Include="Models\Bridge.h" />
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Models\Fence.h" />
-    <ClInclude Include="Models\TestQuad.h" />
     <ClInclude Include="Textrendering\Character.h" />
     <ClInclude Include="DepthMap\DepthMap.h" />
     <ClInclude Include="Light\DirectionalLight.h" />
@@ -171,7 +168,6 @@
     <ClInclude Include="Skybox\skybox.h" />
     <ClInclude Include="SOIL.h" />
     <ClInclude Include="SplineFactory.h" />
-    <ClInclude Include="Models\StartLine.h" />
     <ClInclude Include="Models\BillboardModel.h" />
     <ClInclude Include="TextureRenderer.h" />
     <ClInclude Include="Water\WaterFrameBuffers.h" />
@@ -180,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Apartment\simple building.mtl" />
+    <None Include="Assets\Bench\bench.mtl" />
     <None Include="Assets\Bleachers\generic medium.mtl" />
     <None Include="Assets\bridge\bridge.mtl" />
     <None Include="Assets\bridge\bridge.obj.mtl" />
@@ -210,6 +207,7 @@
     <Image Include="Assets\Bench\benchs_diffuse.tga" />
     <Image Include="Assets\Bench\benchs_normal.tga" />
     <Image Include="Assets\Bench\benchs_specular.tga" />
+    <Image Include="Assets\Bench\wood floor 2.png" />
     <Image Include="Assets\Bleachers\generic medium_01_a.png" />
     <Image Include="Assets\Bleachers\generic medium_01_b.png" />
     <Image Include="Assets\Bleachers\generic medium_01_c.png" />
@@ -221,6 +219,7 @@
     <Image Include="Assets\bridge\brick.jpg" />
     <Image Include="Assets\bridge\rock 5.png" />
     <Image Include="Assets\corn\corn_d.dds" />
+    <Image Include="Assets\corn\corn_d.png" />
     <Image Include="Assets\corn\corn_s.dds" />
     <Image Include="Assets\Enzo%27s Car\car.png" />
     <Image Include="Assets\Enzo%27s Car\car_bump.png" />
@@ -243,7 +242,15 @@
     <Image Include="Assets\hotel\Untitled3.jpg" />
     <Image Include="Assets\hotel\дложож.jpg" />
     <Image Include="Assets\lakeHouse\tex.jpg" />
+    <Image Include="Assets\skybox\back.jpg" />
+    <Image Include="Assets\skybox\bottom.jpg" />
+    <Image Include="Assets\skybox\front.jpg" />
+    <Image Include="Assets\skybox\left.jpg" />
+    <Image Include="Assets\skybox\right.jpg" />
+    <Image Include="Assets\skybox\top.jpg" />
+    <Image Include="Assets\Startline\checker.png" />
     <Image Include="Assets\Startline\platic.jpg" />
+    <Image Include="Assets\Startline\rivet7.jpg" />
     <Image Include="Assets\Startline\rubberTex.jpg" />
     <Image Include="Assets\Startline\t0001_0.png" />
     <Image Include="Assets\Textures\animals\babyduck.png" />
@@ -254,12 +261,19 @@
     <Image Include="Assets\Textures\animals\fence.png" />
     <Image Include="Assets\Textures\animals\horse.png" />
     <Image Include="Assets\Textures\blendmap.png" />
+    <Image Include="Assets\Textures\blendmap.tga" />
+    <Image Include="Assets\Textures\dirt.jpg" />
     <Image Include="Assets\Textures\dudvmap.jpg" />
     <Image Include="Assets\Textures\dudvmap.png" />
+    <Image Include="Assets\Textures\flower1.png" />
+    <Image Include="Assets\Textures\flower2.png" />
+    <Image Include="Assets\Textures\flower3.png" />
     <Image Include="Assets\Textures\grass.jpg" />
+    <Image Include="Assets\Textures\grass2.jpg" />
     <Image Include="Assets\Textures\mud.jpg" />
     <Image Include="Assets\Textures\opengl.png" />
     <Image Include="Assets\HeightMap\terrain2.tga" />
+    <Image Include="Assets\Textures\path.jpg" />
     <Image Include="Assets\Textures\stone.jpg" />
     <Image Include="Assets\Textures\stone2.jpg" />
     <Image Include="Assets\Textures\stone3.jpg" />
@@ -336,6 +350,10 @@
     <Text Include="Assets\lakeHouse\Farmhouse OBJ.obj">
       <FileType>Document</FileType>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Assets\fonts\arial.ttf" />
+    <Font Include="Assets\fonts\audimb.TTF" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

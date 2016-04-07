@@ -33,9 +33,9 @@ public:
 	void notAccelerating();
 	void accelerating();
 	void  draw();
-	glm::vec3  getColor();
 	glm::mat4 getCameraView();
 	glm::vec3 getCameraPosition();
+	glm::vec3 getPosition();
 	void move(Plane *terrain, Bridge *b, Road *r);
 	void turn(float angle);
 	void depthDraw(Shader *s);
@@ -49,15 +49,12 @@ public:
 private:
 	float maxSpeed;
 	float speed;
-	glm::vec4 previousPos;
 	float acceleration;
 	
 	bool isReverse;
-	glm::vec3 color;
 	Camera *camera;
 	glm::vec4 position;
 	float currentHeight;
-	bool isInAir;
 	bool collision;
 	float turnAngle;
 	irrklang::ISoundEngine* carSounds;

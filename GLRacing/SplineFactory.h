@@ -8,6 +8,10 @@
 
 using namespace std;
 
+/*
+	Spline Factory generates Catmull Spline curves from given vertices
+*/
+
 class SplineFactory {
 
 	static void subdivide(vector<GLfloat> &spline, float u0, float u1, float angleThreshold, 
@@ -99,6 +103,10 @@ public:
 		}
 		return spline;
 	}
+
+	/*
+		Extrudes a given spline curve to generate Mesh
+	*/
 
 	static vector<GLfloat> extrudeSpline(vector<GLfloat> vertices, int scale) {
 		vector<GLfloat> spline;

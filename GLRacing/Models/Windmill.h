@@ -1,5 +1,9 @@
 #pragma once
-#include "C:\Users\Caio\Code\C-C++\COMP 371\Project\GLRacing\GLRacing\Models\ImportedModel.h"
+#include "ImportedModel.h"
+
+/*
+	Windmill model with animation
+*/
 class Windmill :
 	public ImportedModel
 {

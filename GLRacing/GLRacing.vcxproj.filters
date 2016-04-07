@@ -48,9 +48,6 @@
     <ClCompile Include="Models\Road.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
-    <ClCompile Include="Models\StartLine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Camera\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -67,9 +64,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Water\Water.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Models\TestQuad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Water\WaterFrameBuffers.cpp">
@@ -122,9 +116,6 @@
     <ClInclude Include="Models\Road.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Models\StartLine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Camera\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -147,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Models\Material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Models\TestQuad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Water\WaterFrameBuffers.h">
@@ -214,6 +202,7 @@
     <None Include="Assets\Apartment\simple building.mtl" />
     <None Include="Assets\lakeHouse\Farmhouse OBJ.mtl" />
     <None Include="ClassDiagram.cd" />
+    <None Include="Assets\Bench\bench.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Enzo%27s Car\car.png">
@@ -386,6 +375,55 @@
     <Image Include="Assets\Textures\animals\horse.png">
       <Filter>Source Files\Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Bench\wood floor 2.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\corn\corn_d.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\skybox\back.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\skybox\bottom.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\skybox\front.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\skybox\left.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\skybox\right.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\skybox\top.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Startline\checker.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Startline\rivet7.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\blendmap.tga" />
+    <Image Include="Assets\Textures\dirt.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\grass2.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\path.jpg">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\flower1.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\flower2.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Textures\flower3.png">
+      <Filter>Source Files\Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Enzo%27s Car\info.txt" />
@@ -426,5 +464,9 @@
     <Media Include="Assets\Sounds\record.wav">
       <Filter>Source Files\Resource Files</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Assets\fonts\arial.ttf" />
+    <Font Include="Assets\fonts\audimb.TTF" />
   </ItemGroup>
 </Project>

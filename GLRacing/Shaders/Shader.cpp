@@ -66,6 +66,10 @@ void Shader::checkStatus(GLuint shaderID) {
 	}
 }
 
+
+/*
+	Gets location of a uniform
+*/
 GLuint Shader::getUniform(const GLchar* name) {
 	return glGetUniformLocation(programID, name);
 
@@ -84,6 +88,10 @@ Shader::~Shader()
 {
 }
 
+
+/*
+	Links program
+*/
 void Shader::makeProgram(GLuint vShader, GLuint fShader) {
 	GLint Result;
 	GLint InfoLogLength;

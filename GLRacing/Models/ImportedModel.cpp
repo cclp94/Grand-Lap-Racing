@@ -6,6 +6,9 @@ ImportedModel::ImportedModel(Shader *s) : Model(s)
 {
 }
 
+/*
+	Load a generic obj model and places it in the world
+*/
 ImportedModel::ImportedModel(Shader *s, string objFile,
 	glm::vec3 trans, glm::vec3 scale, float rot) : Model(s) {
 	getModel(objFile);
@@ -14,6 +17,10 @@ ImportedModel::ImportedModel(Shader *s, string objFile,
 	model_matrix = glm::rotate(model_matrix,glm::radians(rot), glm::vec3(0.0, 1.0, 0.0));
 }
 
+
+/*
+	Change Models position
+*/
 void ImportedModel::setPosition(glm::vec3 trans, glm::vec3 scale, float rot) {
 	model_matrix = glm::translate(glm::mat4(), trans);
 	model_matrix = glm::scale(model_matrix, scale);
@@ -23,7 +30,6 @@ void ImportedModel::setPosition(glm::vec3 trans, glm::vec3 scale, float rot) {
 
 void ImportedModel::draw() {
 	glUniformMatrix4fv(shaderProgram->getUniform("model_matrix"), 1, GL_FALSE, glm::value_ptr(model_matrix));
-	//this->setMaterialUniform();
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 		this->meshes[i].Draw(shaderProgram);
 }

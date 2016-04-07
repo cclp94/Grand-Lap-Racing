@@ -9,7 +9,13 @@
 
 
 
+/*
+	Binds a character player to keep track, a Lap point position, and the number of laps
 
+	Prepares Text Rendering Faces from Freetype Library
+
+	Reads Record from file
+*/
 GameController::GameController(Shader *s, Model *character, Model *start, int laps)
 {
 	this->character = character;
@@ -94,12 +100,20 @@ GameController::GameController(Shader *s, Model *character, Model *start, int la
 	}
 }
 
+
+/*
+	resets the number of laps and resets the record
+*/
 void GameController::setLaps(int n) {
 	this->laps = n;
 	recordTime.first = 0;
 	recordTime.second = 0;
 }
 
+
+/*
+	Renders text to screen given a certain string, position, size and color
+*/
 void GameController::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, glm::vec3 color)
 {
 	// Activate corresponding render state	
@@ -151,6 +165,9 @@ GameController::~GameController()
 {
 }
 
+/*
+	Resets current game info for replaying
+*/
 void GameController::reset() {
 	gameStarted = false;
 	seconds = 0;
@@ -159,6 +176,9 @@ void GameController::reset() {
 	finalTime.first = -1;
 }
 
+/*
+	Checks character location, laps,  game,  and updates time
+*/
 void GameController::update(int width, int height) {
 	//glm::mat4 projection = glm::perspective(0.0f, (float)width / (float)height, 0.0f, 500.0f);
 	glm::mat4 projection = glm::ortho(0.0f, (float) width, 0.0f, (float) height);
@@ -279,6 +299,10 @@ void GameController::update(int width, int height) {
 		glm::vec3(0.0, 0.0f, 0.0f));
 }
 
+
+/*
+	Writes Record to a file
+*/
 void GameController::writeRecord() {
 	ofstream w("record.txt");
 	w << finalTime.first << " " << finalTime.second;

@@ -12,10 +12,12 @@
 
 using namespace std;
 
+/*
+	Abstract class for Models
+*/
+
 class Model {
 public:
-	virtual float* getModelVertices();
-	virtual  GLuint getModelsize();
 	Model(Shader *shader);
 	virtual ~Model();
 	vector <GLfloat> vertices;
